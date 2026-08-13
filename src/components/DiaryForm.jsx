@@ -126,7 +126,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
       </div>
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-        {/* Title Input */}
+        {/* Title Input (Placeholder Empty as requested) */}
         <div>
           <label className="font-mono" style={{
             display: 'block',
@@ -140,7 +140,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
           </label>
           <input
             type="text"
-            placeholder="e.g. Morning Coffee, A Special Memory, Afternoon Walk..."
+            placeholder=""
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="input-tech font-heading"
@@ -221,7 +221,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
           gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
           gap: '1rem'
         }}>
-          {/* Mood Picker (Clean Text, No Emojis) */}
+          {/* Mood Picker (Maintains Distinct Colors) */}
           <div>
             <label className="font-mono" style={{
               display: 'block',
@@ -241,14 +241,13 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
                     key={m.label}
                     type="button"
                     onClick={() => setMood(m.label)}
-                    className="hud-badge"
+                    className={`hud-badge ${m.color || 'rose'}`}
                     style={{
                       cursor: 'pointer',
-                      border: isSelected ? '1px solid var(--primary-accent)' : '1px solid var(--border-tech)',
-                      backgroundColor: isSelected ? 'var(--rose-glow)' : 'var(--bg-cyber-subtle)',
-                      color: isSelected ? 'var(--rose-accent)' : 'var(--text-main)',
+                      border: isSelected ? '1.5px solid var(--text-bright)' : '1px solid transparent',
+                      opacity: isSelected ? 1 : 0.75,
                       fontSize: '0.78rem',
-                      padding: '0.2rem 0.6rem'
+                      padding: '0.25rem 0.65rem'
                     }}
                   >
                     {m.label}
@@ -258,7 +257,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
             </div>
           </div>
 
-          {/* Category Selector (Clean Text, No Emojis) */}
+          {/* Category Selector (Maintains Distinct Colors) */}
           <div>
             <label className="font-mono" style={{
               display: 'block',
@@ -285,9 +284,9 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
                     style={{
                       cursor: 'pointer',
                       border: isSelected ? '1.5px solid var(--text-bright)' : '1px solid transparent',
-                      opacity: isSelected ? 1 : 0.7,
+                      opacity: isSelected ? 1 : 0.75,
                       fontSize: '0.78rem',
-                      padding: '0.2rem 0.6rem'
+                      padding: '0.25rem 0.65rem'
                     }}
                   >
                     {cat.label}

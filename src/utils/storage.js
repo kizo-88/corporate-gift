@@ -1,5 +1,5 @@
 // Local Storage Key
-const STORAGE_KEY = 'mmorkleyyy_journal_entries_v4';
+const STORAGE_KEY = 'mmorkleyyy_journal_entries_v5';
 const THEME_KEY = 'mmorkleyyy_journal_theme';
 const LOCK_KEY = 'mmorkleyyy_journal_pin';
 
@@ -57,7 +57,7 @@ export const WRITING_PROMPTS = [
   "What is a lesson you learned today that will help you grow tomorrow?"
 ];
 
-// Clean Categories (No Emojis)
+// Colorful Categories
 export const CATEGORIES = [
   { id: 'Personal', label: 'Personal', color: 'rose' },
   { id: 'Reflections', label: 'Reflections', color: 'lavender' },
@@ -69,18 +69,18 @@ export const CATEGORIES = [
   { id: 'Goals & Dreams', label: 'Goals & Dreams', color: 'purple' }
 ];
 
-// Clean Moods (No Emojis)
+// Colorful Moods
 export const MOODS = [
-  { label: 'Happy' },
-  { label: 'Calm' },
-  { label: 'Grateful' },
-  { label: 'Sad' },
-  { label: 'Frustrated' },
-  { label: 'Tired' },
-  { label: 'Reflective' },
-  { label: 'Motivated' },
-  { label: 'Anxious' },
-  { label: 'Peaceful' }
+  { label: 'Happy', color: 'rose' },
+  { label: 'Calm', color: 'lavender' },
+  { label: 'Grateful', color: 'amber' },
+  { label: 'Sad', color: 'sky' },
+  { label: 'Frustrated', color: 'rose' },
+  { label: 'Tired', color: 'purple' },
+  { label: 'Reflective', color: 'cyan' },
+  { label: 'Motivated', color: 'emerald' },
+  { label: 'Anxious', color: 'amber' },
+  { label: 'Peaceful', color: 'mint' }
 ];
 
 // Storage Helpers
