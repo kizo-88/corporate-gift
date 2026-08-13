@@ -394,50 +394,55 @@ button, input, textarea, select {
   animation: spinDisc 4s linear infinite;
 }
 
-/* Animated Running Cat Keyframes */
-@keyframes catRunBounce {
-  0% { transform: translateY(0) scaleX(1); }
-  25% { transform: translateY(-4px) scaleX(1.05); }
-  50% { transform: translateY(0) scaleX(0.98); }
-  75% { transform: translateY(-3px) scaleX(1.03); }
-  100% { transform: translateY(0) scaleX(1); }
+/* Animated Flying Kiss Cat Keyframes */
+@keyframes catKissPulse {
+  0% { transform: scale(1) rotate(0deg); }
+  30% { transform: scale(1.15) rotate(-5deg); }
+  50% { transform: scale(1.05) rotate(3deg); }
+  70% { transform: scale(1.18) rotate(-4deg); }
+  100% { transform: scale(1) rotate(0deg); }
 }
 
-@keyframes catPawsDust {
-  0% { opacity: 0.3; transform: translateX(0) scale(0.8); }
-  50% { opacity: 0.9; transform: translateX(-6px) scale(1.2); }
-  100% { opacity: 0; transform: translateX(-12px) scale(0.6); }
+@keyframes floatKissHeart {
+  0% { opacity: 0; transform: translate(0, 4px) scale(0.6); }
+  40% { opacity: 1; transform: translate(6px, -10px) scale(1.1); }
+  80% { opacity: 0.8; transform: translate(12px, -20px) scale(0.9); }
+  100% { opacity: 0; transform: translate(18px, -28px) scale(0.4); }
 }
 
-.running-cat-container {
+.flying-kiss-cat-container {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  padding: 0.25rem 0.55rem;
+  gap: 0.2rem;
+  padding: 0.3rem 0.6rem;
   border-radius: var(--radius-full);
   background: var(--bg-cyber-subtle);
-  border: 1px solid var(--border-tech-glow);
+  border: 1.5px solid var(--border-tech-glow);
   cursor: pointer;
   user-select: none;
-  transition: transform 0.2s ease;
-  box-shadow: 0 0 10px var(--rose-glow);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 0 14px var(--rose-glow);
+  position: relative;
 }
 
-.running-cat-container:hover {
-  transform: scale(1.1);
+.flying-kiss-cat-container:hover {
+  transform: scale(1.15);
 }
 
-.running-cat-sprite {
-  font-size: 1.35rem;
+.kiss-cat-sprite {
+  font-size: 1.45rem;
   display: inline-block;
-  animation: catRunBounce 0.45s ease-in-out infinite;
-  filter: drop-shadow(0 2px 5px var(--rose-glow));
+  animation: catKissPulse 1.8s ease-in-out infinite;
+  filter: drop-shadow(0 2px 6px var(--rose-glow));
 }
 
-.cat-dust-particles {
-  font-size: 0.75rem;
-  color: var(--rose-accent);
-  animation: catPawsDust 0.5s ease-out infinite;
+.flying-heart-particle {
+  font-size: 0.85rem;
+  display: inline-block;
+  animation: floatKissHeart 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+  position: absolute;
+  top: -4px;
+  right: -2px;
 }
 
 /* Responsive adjustments */

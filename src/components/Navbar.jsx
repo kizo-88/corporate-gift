@@ -39,11 +39,11 @@ export default function Navbar({
           flexWrap: 'wrap',
           gap: '1rem'
         }}>
-          {/* Logo & Branding with Animated Running Cat Icon */}
+          {/* Logo & Branding with Animated Flying Kiss Cat Icon */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div className="running-cat-container" title="Cutest diary cat running beside your journal! 🐈💨" style={{ padding: '0.35rem 0.65rem' }}>
-              <span className="running-cat-sprite" style={{ fontSize: '1.45rem' }}>🐈</span>
-              <span className="cat-dust-particles font-mono" style={{ fontSize: '0.8rem' }}>💨</span>
+            <div className="flying-kiss-cat-container" title="Cutest diary cat sending flying kisses! 😽💖">
+              <span className="kiss-cat-sprite">😽</span>
+              <span className="flying-heart-particle">💖</span>
             </div>
 
             <div>
