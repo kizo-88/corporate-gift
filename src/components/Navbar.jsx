@@ -241,6 +241,12 @@ export default function Navbar({
               <Plus size={18} />
               <span>Write Entry</span>
             </button>
+
+            {/* Animated Running Cat Widget */}
+            <div className="running-cat-container" title="Cutest diary buddy running beside you! 🐈💨">
+              <span className="running-cat-sprite">🐈</span>
+              <span className="cat-dust-particles font-mono">💨</span>
+            </div>
           </div>
         </div>
       </div>
