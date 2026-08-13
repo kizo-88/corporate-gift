@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Lock, Unlock, Download, Sun, Moon, Palette, Search, Sparkles, HelpCircle } from 'lucide-react';
+import { Plus, Lock, Unlock, Download, Sun, Moon, Palette, Search, HelpCircle } from 'lucide-react';
 
 export default function Navbar({
   entryCount,
@@ -39,20 +39,11 @@ export default function Navbar({
           flexWrap: 'wrap',
           gap: '1rem'
         }}>
-          {/* Logo & Branding */}
+          {/* Logo & Branding with Animated Running Cat Icon */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '12px',
-              background: 'linear-gradient(135deg, var(--rose-accent), var(--lavender-accent))',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#FFFFFF',
-              boxShadow: '0 0 15px var(--rose-glow)'
-            }}>
-              <Sparkles size={22} />
+            <div className="running-cat-container" title="Cutest diary cat running beside your journal! 🐈💨" style={{ padding: '0.35rem 0.65rem' }}>
+              <span className="running-cat-sprite" style={{ fontSize: '1.45rem' }}>🐈</span>
+              <span className="cat-dust-particles font-mono" style={{ fontSize: '0.8rem' }}>💨</span>
             </div>
 
             <div>
@@ -241,12 +232,6 @@ export default function Navbar({
               <Plus size={18} />
               <span>Write Entry</span>
             </button>
-
-            {/* Animated Running Cat Widget */}
-            <div className="running-cat-container" title="Cutest diary buddy running beside you! 🐈💨">
-              <span className="running-cat-sprite">🐈</span>
-              <span className="cat-dust-particles font-mono">💨</span>
-            </div>
           </div>
         </div>
       </div>
