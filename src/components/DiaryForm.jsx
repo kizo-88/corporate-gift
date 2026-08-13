@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, Sparkles, Send, X, Calendar, Heart } from 'lucide-react';
+import { Clock, Sparkles, Send, X, Calendar } from 'lucide-react';
 import { formatDateStamp, WRITING_PROMPTS, CATEGORIES, MOODS } from '../utils/storage';
 
 export default function DiaryForm({ initialData = null, onSave, onCancel, isModal = false }) {
@@ -7,7 +7,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
   
   const [title, setTitle] = useState(initialData?.title || '');
   const [content, setContent] = useState(initialData?.content || '');
-  const [mood, setMood] = useState(initialData?.mood || '🌸 Happy');
+  const [mood, setMood] = useState(initialData?.mood || 'Happy');
   const [category, setCategory] = useState(initialData?.category || 'Personal');
   const [color, setColor] = useState(initialData?.color || 'rose');
   const [sticker, setSticker] = useState(initialData?.sticker || '🌸');
@@ -18,7 +18,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
     if (initialData) {
       setTitle(initialData.title || '');
       setContent(initialData.content || '');
-      setMood(initialData.mood || '🌸 Happy');
+      setMood(initialData.mood || 'Happy');
       setCategory(initialData.category || 'Personal');
       setColor(initialData.color || 'rose');
       setSticker(initialData.sticker || '🌸');
@@ -43,7 +43,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
 
     const entryData = {
       id: initialData?.id || `log-${Date.now()}`,
-      title: title.trim() || 'Kenangan Hari Ini ✨',
+      title: title.trim() || 'Today\'s Diary Entry ✨',
       content: content.trim(),
       createdAt: timestampToSave,
       updatedAt: new Date().toISOString(),
@@ -153,13 +153,75 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
           />
         </div>
 
+        {/* Choose Icon: Directly Under Title Diary */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
+          backgroundColor: 'var(--bg-cyber-subtle)',
+          padding: '0.6rem 0.85rem',
+          borderRadius: 'var(--radius-md)',
+          border: '1px solid var(--border-tech)'
+        }}>
+          {/* Sticker / Icon Selector */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span className="font-mono" style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-bright)' }}>Choose Icon:</span>
+            <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap' }}>
+              {stickers.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => setSticker(s)}
+                  style={{
+                    border: 'none',
+                    background: sticker === s ? 'var(--rose-glow)' : 'transparent',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '1.05rem',
+                    padding: '0.1rem 0.25rem'
+                  }}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Custom Date Stamp Option */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={useCustomDate}
+                onChange={(e) => setUseCustomDate(e.target.checked)}
+              />
+              <span>SET CUSTOM DATE</span>
+            </label>
+          </div>
+        </div>
+
+        {useCustomDate && (
+          <div className="animate-fade-in" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Calendar size={15} color="var(--rose-accent)" />
+            <input
+              type="datetime-local"
+              value={createdAt.slice(0, 16)}
+              onChange={(e) => setCreatedAt(new Date(e.target.value).toISOString())}
+              className="input-tech font-mono"
+              style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem' }}
+            />
+          </div>
+        )}
+
         {/* Mood & Category Pickers */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
           gap: '1rem'
         }}>
-          {/* Mood Picker */}
+          {/* Mood Picker (Clean Text, No Emojis) */}
           <div>
             <label className="font-mono" style={{
               display: 'block',
@@ -173,29 +235,30 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
             </label>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
               {MOODS.map((m) => {
-                const isSelected = mood.includes(m.label);
+                const isSelected = mood === m.label || mood.includes(m.label);
                 return (
                   <button
                     key={m.label}
                     type="button"
-                    onClick={() => setMood(`${m.emoji} ${m.label}`)}
+                    onClick={() => setMood(m.label)}
                     className="hud-badge"
                     style={{
                       cursor: 'pointer',
                       border: isSelected ? '1px solid var(--primary-accent)' : '1px solid var(--border-tech)',
                       backgroundColor: isSelected ? 'var(--rose-glow)' : 'var(--bg-cyber-subtle)',
                       color: isSelected ? 'var(--rose-accent)' : 'var(--text-main)',
-                      fontSize: '0.78rem'
+                      fontSize: '0.78rem',
+                      padding: '0.2rem 0.6rem'
                     }}
                   >
-                    {m.emoji} {m.label}
+                    {m.label}
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Category Selector */}
+          {/* Category Selector (Clean Text, No Emojis) */}
           <div>
             <label className="font-mono" style={{
               display: 'block',
@@ -222,79 +285,18 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
                     style={{
                       cursor: 'pointer',
                       border: isSelected ? '1.5px solid var(--text-bright)' : '1px solid transparent',
-                      opacity: isSelected ? 1 : 0.7
+                      opacity: isSelected ? 1 : 0.7,
+                      fontSize: '0.78rem',
+                      padding: '0.2rem 0.6rem'
                     }}
                   >
-                    <span>{cat.icon}</span>
-                    <span>{cat.label}</span>
+                    {cat.label}
                   </button>
                 );
               })}
             </div>
           </div>
         </div>
-
-        {/* Sticker & Custom Date Toggles */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '0.75rem',
-          backgroundColor: 'var(--bg-cyber-subtle)',
-          padding: '0.6rem 0.85rem',
-          borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--border-tech)'
-        }}>
-          {/* Sticker Selector */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span className="font-mono" style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)' }}>Choose Icon:</span>
-            <div style={{ display: 'flex', gap: '0.25rem' }}>
-              {stickers.map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => setSticker(s)}
-                  style={{
-                    border: 'none',
-                    background: sticker === s ? 'var(--rose-glow)' : 'transparent',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    fontSize: '1.05rem',
-                    padding: '0.1rem 0.25rem'
-                  }}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Date Override Option */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer' }}>
-              <input
-                type="checkbox"
-                checked={useCustomDate}
-                onChange={(e) => setUseCustomDate(e.target.checked)}
-              />
-              <span>SET CUSTOM DATE</span>
-            </label>
-          </div>
-        </div>
-
-        {useCustomDate && (
-          <div className="animate-fade-in" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Calendar size={15} color="var(--rose-accent)" />
-            <input
-              type="datetime-local"
-              value={createdAt.slice(0, 16)}
-              onChange={(e) => setCreatedAt(new Date(e.target.value).toISOString())}
-              className="input-tech font-mono"
-              style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem' }}
-            />
-          </div>
-        )}
 
         {/* Content Body Textarea */}
         <div>

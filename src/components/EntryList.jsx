@@ -121,7 +121,7 @@ export default function EntryList({
               color: selectedCategory === 'All' ? 'var(--rose-accent)' : 'var(--text-muted)'
             }}
           >
-            🌸 ALL ENTRIES ({entries.length})
+            ALL ENTRIES ({entries.length})
           </button>
 
           {CATEGORIES.map((cat) => {
@@ -138,7 +138,6 @@ export default function EntryList({
                   opacity: isSelected ? 1 : 0.7
                 }}
               >
-                <span>{cat.icon}</span>
                 <span>{cat.label} [{count}]</span>
               </button>
             );
@@ -168,7 +167,7 @@ export default function EntryList({
                 <option value="All">ALL MOODS</option>
                 {MOODS.map(m => (
                   <option key={m.label} value={m.label}>
-                    {m.emoji} {m.label}
+                    {m.label}
                   </option>
                 ))}
               </select>

@@ -1,5 +1,5 @@
 // Local Storage Key
-const STORAGE_KEY = 'mmorkleyyy_journal_entries_v3';
+const STORAGE_KEY = 'mmorkleyyy_journal_entries_v4';
 const THEME_KEY = 'mmorkleyyy_journal_theme';
 const LOCK_KEY = 'mmorkleyyy_journal_pin';
 
@@ -7,7 +7,7 @@ const LOCK_KEY = 'mmorkleyyy_journal_pin';
 export const DEFAULT_ENTRIES = [
   {
     id: 'entry-1',
-    title: 'Morning Coffee & Peaceful Thoughts 🌸',
+    title: 'Morning Coffee & Peaceful Thoughts',
     content: `There is something so peaceful about quiet morning hours. Enjoyed a warm cup of coffee by the window while watching the soft morning sunlight.
 
 Today's goals:
@@ -16,7 +16,7 @@ Today's goals:
 3. Remember to celebrate small daily progress!`,
     createdAt: new Date(Date.now() - 3600000 * 2).toISOString(), // 2 hours ago
     updatedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
-    mood: '🌸 Happy',
+    mood: 'Happy',
     category: 'Personal',
     color: 'rose',
     sticker: '🌸',
@@ -24,11 +24,11 @@ Today's goals:
   },
   {
     id: 'entry-2',
-    title: 'Quiet Reflections & Books 💭',
+    title: 'Quiet Reflections & Books',
     content: `Spent the evening reading by warm candlelight and organizing my thoughts for the upcoming week. Gratitude is the key to inner peace.`,
     createdAt: new Date(Date.now() - 86400000 * 1 - 3600000 * 4).toISOString(), // Yesterday
     updatedAt: new Date(Date.now() - 86400000 * 1 - 3600000 * 4).toISOString(),
-    mood: '🌙 Reflective',
+    mood: 'Reflective',
     category: 'Reflections',
     color: 'lavender',
     sticker: '📖',
@@ -36,11 +36,11 @@ Today's goals:
   },
   {
     id: 'entry-3',
-    title: 'Growth & Daily Progress 🌱',
+    title: 'Growth & Daily Progress',
     content: `Achieved key milestones today! Remembering that balance between hard work and quiet recovery is essential for long-term happiness.`,
     createdAt: new Date(Date.now() - 86400000 * 3).toISOString(), // 3 days ago
     updatedAt: new Date(Date.now() - 86400000 * 3).toISOString(),
-    mood: '🔥 Motivated',
+    mood: 'Motivated',
     category: 'Growth',
     color: 'emerald',
     sticker: '🌱',
@@ -57,30 +57,30 @@ export const WRITING_PROMPTS = [
   "What is a lesson you learned today that will help you grow tomorrow?"
 ];
 
-// Updated Categories
+// Clean Categories (No Emojis)
 export const CATEGORIES = [
-  { id: 'Personal', label: 'Personal', color: 'rose', icon: '📖' },
-  { id: 'Reflections', label: 'Reflections', color: 'lavender', icon: '💭' },
-  { id: 'Gratitude', label: 'Gratitude', color: 'amber', icon: '🙏' },
-  { id: 'Growth', label: 'Growth', color: 'emerald', icon: '🌱' },
-  { id: 'Work & Career', label: 'Work & Career', color: 'cyan', icon: '💼' },
-  { id: 'Relationships', label: 'Relationships', color: 'pink', icon: '❤️' },
-  { id: 'Travel & Memories', label: 'Travel & Memories', color: 'sky', icon: '✈️' },
-  { id: 'Goals & Dreams', label: 'Goals & Dreams', color: 'purple', icon: '🎯' }
+  { id: 'Personal', label: 'Personal', color: 'rose' },
+  { id: 'Reflections', label: 'Reflections', color: 'lavender' },
+  { id: 'Gratitude', label: 'Gratitude', color: 'amber' },
+  { id: 'Growth', label: 'Growth', color: 'emerald' },
+  { id: 'Work & Career', label: 'Work & Career', color: 'cyan' },
+  { id: 'Relationships', label: 'Relationships', color: 'pink' },
+  { id: 'Travel & Memories', label: 'Travel & Memories', color: 'sky' },
+  { id: 'Goals & Dreams', label: 'Goals & Dreams', color: 'purple' }
 ];
 
-// Updated Moods
+// Clean Moods (No Emojis)
 export const MOODS = [
-  { emoji: '🌸', label: 'Happy' },
-  { emoji: '😌', label: 'Calm' },
-  { emoji: '🥺', label: 'Grateful' },
-  { emoji: '😔', label: 'Sad' },
-  { emoji: '😤', label: 'Frustrated' },
-  { emoji: '🥱', label: 'Tired' },
-  { emoji: '🌙', label: 'Reflective' },
-  { emoji: '🔥', label: 'Motivated' },
-  { emoji: '😰', label: 'Anxious' },
-  { emoji: '🤍', label: 'Peaceful' }
+  { label: 'Happy' },
+  { label: 'Calm' },
+  { label: 'Grateful' },
+  { label: 'Sad' },
+  { label: 'Frustrated' },
+  { label: 'Tired' },
+  { label: 'Reflective' },
+  { label: 'Motivated' },
+  { label: 'Anxious' },
+  { label: 'Peaceful' }
 ];
 
 // Storage Helpers
