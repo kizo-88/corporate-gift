@@ -40,21 +40,21 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-xl border-b border-slate-800/80 transition-all">
+    <header className="sticky top-0 z-50 bg-[#173F35] border-b border-[#245447] shadow-lg transition-all">
       <div className="container mx-auto h-24 flex items-center justify-between">
         {/* Brand Logo - Left */}
         <div
           onClick={() => setActiveTab("catalog")}
           className="flex items-center gap-3 cursor-pointer group shrink-0"
         >
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
-            <Crown className="w-6 h-6 text-slate-950" />
+          <div className="w-11 h-11 rounded-2xl bg-[#C6A15B] flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+            <Crown className="w-6 h-6 text-[#173F35]" />
           </div>
           <div>
-            <span className="font-extrabold text-2xl tracking-wider text-slate-100 font-heading">
-              KIZO <span className="gold-gradient-text">GIFTS</span>
+            <span className="font-extrabold text-2xl tracking-wider text-[#F7F1E7] font-heading">
+              KIZO <span className="text-[#C6A15B]">GIFTS</span>
             </span>
-            <p className="text-[11px] text-slate-400 tracking-widest uppercase font-semibold">
+            <p className="text-[11px] text-[#C6A15B]/80 tracking-widest uppercase font-semibold">
               Bespoke Corporate Gifting
             </p>
           </div>
@@ -70,13 +70,13 @@ export default function Navbar() {
                 onClick={() => setActiveTab(link.id)}
                 className={`text-base font-semibold transition-all relative py-2 ${
                   isActive
-                    ? "text-amber-400 font-bold"
-                    : "text-slate-300 hover:text-white"
+                    ? "text-[#C6A15B] font-bold"
+                    : "text-[#F7F1E7]/80 hover:text-[#FFFDF8]"
                 }`}
               >
                 <span>{link.label}</span>
                 {isActive && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400 rounded-full animate-fade-in" />
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#C6A15B] rounded-full animate-fade-in" />
                 )}
               </button>
             );
@@ -86,16 +86,16 @@ export default function Navbar() {
         {/* Right Action Controls */}
         <div className="flex items-center gap-4">
           {/* Currency Switcher */}
-          <div className="hidden sm:flex items-center gap-1 bg-slate-900/80 border border-slate-800 rounded-xl p-1.5">
-            <Globe className="w-4 h-4 text-slate-400 ml-1.5" />
+          <div className="hidden sm:flex items-center gap-1 bg-[#245447]/60 border border-[#245447] rounded-xl p-1.5">
+            <Globe className="w-4 h-4 text-[#C6A15B] ml-1.5" />
             {Object.keys(currencySymbols).map((curr) => (
               <button
                 key={curr}
                 onClick={() => setCurrency(curr)}
                 className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
                   currency === curr
-                    ? "bg-amber-500 text-slate-950 shadow"
-                    : "text-slate-400 hover:text-slate-200"
+                    ? "bg-[#C6A15B] text-[#173F35] shadow"
+                    : "text-[#F7F1E7]/70 hover:text-[#FFFDF8]"
                 }`}
               >
                 {curr} ({currencySymbols[curr]})
@@ -106,12 +106,12 @@ export default function Navbar() {
           {/* Cart Drawer Trigger */}
           <button
             onClick={() => setIsCartOpen(true)}
-            className="relative p-3 rounded-2xl bg-slate-900 border border-slate-800 text-slate-200 hover:border-amber-500/50 hover:text-amber-400 transition-all"
+            className="relative p-3 rounded-2xl bg-[#245447]/60 border border-[#245447] text-[#F7F1E7] hover:border-[#C6A15B] hover:text-[#C6A15B] transition-all"
             aria-label="Open Quote Cart"
           >
             <ShoppingBag className="w-5 h-5" />
             {totalCartItems > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-amber-500 text-slate-950 text-xs font-black w-5 h-5 rounded-full flex items-center justify-center shadow-lg shadow-amber-500/40 animate-pulse">
+              <span className="absolute -top-1.5 -right-1.5 bg-[#C6A15B] text-[#173F35] text-xs font-black w-5 h-5 rounded-full flex items-center justify-center shadow-lg">
                 {totalCartItems}
               </span>
             )}
@@ -120,16 +120,16 @@ export default function Navbar() {
           {/* Request Quote CTA Button */}
           <button
             onClick={() => setIsQuoteModalOpen(true)}
-            className="hidden md:flex btn-primary text-sm py-3 px-6 shadow-lg shadow-amber-500/20"
+            className="hidden md:flex btn-gold text-sm py-3 px-6 shadow-md"
           >
-            <FileText className="w-4 h-4 text-slate-950" />
+            <FileText className="w-4 h-4 text-[#173F35]" />
             <span>Request Quote</span>
           </button>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-slate-400 hover:text-white"
+            className="lg:hidden p-2 text-[#F7F1E7] hover:text-[#C6A15B]"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>

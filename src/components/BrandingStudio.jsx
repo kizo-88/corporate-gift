@@ -38,16 +38,16 @@ export default function BrandingStudio() {
 
   const productColors = [
     { name: "Midnight Slate", hex: "#1e293b" },
-    { name: "Royal Emerald", hex: "#064e3b" },
-    { name: "Champagne Gold", hex: "#78350f" },
-    { name: "Matte White", hex: "#e2e8f0" }
+    { name: "Royal Emerald", hex: "#173F35" },
+    { name: "Champagne Gold", hex: "#C6A15B" },
+    { name: "Matte Cream", hex: "#F7F1E7" }
   ];
 
   const imprintMethods = [
-    { id: "laser", name: "Laser Engraving", textStyle: "text-amber-400 font-extrabold tracking-widest opacity-90 drop-shadow" },
-    { id: "foil-gold", name: "Metallic Gold Foil", textStyle: "text-amber-300 font-black tracking-widest drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]" },
-    { id: "deboss", name: "Blind Debossed", textStyle: "text-slate-900/80 font-black tracking-widest mix-blend-multiply" },
-    { id: "screen", name: "Full Color Screen Print", textStyle: "text-cyan-400 font-bold tracking-widest" }
+    { id: "laser", name: "Laser Engraving", textStyle: "text-[#C6A15B] font-extrabold tracking-widest opacity-90 drop-shadow" },
+    { id: "foil-gold", name: "Metallic Gold Foil", textStyle: "text-[#C6A15B] font-black tracking-widest drop-shadow-[0_0_8px_rgba(198,161,91,0.8)]" },
+    { id: "deboss", name: "Blind Debossed", textStyle: "text-[#173F35] font-black tracking-widest mix-blend-multiply" },
+    { id: "screen", name: "Full Color Screen Print", textStyle: "text-[#173F35] font-bold tracking-widest" }
   ];
 
   const sampleLogos = [
@@ -80,17 +80,17 @@ export default function BrandingStudio() {
   };
 
   return (
-    <section className="section-padding bg-slate-900/40 border-b border-slate-800/80">
+    <section className="section-padding bg-[#F7F1E7] border-b border-[#E5D9C8]">
       <div className="container mx-auto">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span className="text-sm font-bold uppercase tracking-widest text-cyan-400">
+          <span className="text-sm font-bold uppercase tracking-widest text-[#C6A15B]">
             3D Virtual Proofing
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-100 leading-tight">
-            Custom Logo <span className="cyan-gradient-text">Branding Studio</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#173F35] leading-tight font-heading">
+            Custom Logo <span className="text-[#C6A15B]">Branding Studio</span>
           </h2>
-          <p className="text-slate-300 text-base md:text-lg leading-relaxed">
+          <p className="text-[#6F6A62] text-base md:text-lg leading-relaxed">
             Preview laser engraving, metallic foil stamping, and debossing directly on luxury merchandise before production.
           </p>
         </div>
@@ -98,10 +98,10 @@ export default function BrandingStudio() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column: Controls & Logo Upload (5 cols) */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="bg-slate-900/80 p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+            <div className="bg-[#FFFDF8] p-8 rounded-3xl border border-[#E5D9C8] space-y-6 shadow-md text-[#252525]">
               {/* Product Selection */}
               <div className="space-y-3">
-                <label className="text-sm font-bold uppercase tracking-wider text-slate-200 block">
+                <label className="text-sm font-bold uppercase tracking-wider text-[#173F35] block">
                   1. Select Merchandise Item
                 </label>
                 <div className="grid grid-cols-1 gap-3">
@@ -111,14 +111,14 @@ export default function BrandingStudio() {
                       onClick={() => setSelectedProduct(p)}
                       className={`p-4 rounded-2xl border text-left flex items-center gap-4 transition-all ${
                         selectedProduct.id === p.id
-                          ? "bg-slate-950 border-cyan-500 text-cyan-300 font-bold shadow-lg"
-                          : "bg-slate-950/40 border-slate-800 text-slate-400 hover:text-slate-200"
+                          ? "bg-[#173F35] text-[#F7F1E7] font-bold shadow-md"
+                          : "bg-[#F7F1E7] border-[#E5D9C8] text-[#252525] hover:border-[#173F35]"
                       }`}
                     >
-                      <img src={p.baseImage} alt={p.name} className="w-12 h-12 rounded-xl object-cover" />
+                      <img src={p.baseImage} alt={p.name} className="w-12 h-12 rounded-xl object-cover border border-[#E5D9C8]" />
                       <div>
-                        <div className="text-sm font-bold text-slate-100">{p.name}</div>
-                        <div className="text-xs text-slate-400">{p.category}</div>
+                        <div className="text-sm font-bold">{p.name}</div>
+                        <div className={`text-xs ${selectedProduct.id === p.id ? "text-[#C6A15B]" : "text-[#6F6A62]"}`}>{p.category}</div>
                       </div>
                     </button>
                   ))}
@@ -126,8 +126,8 @@ export default function BrandingStudio() {
               </div>
 
               {/* Imprint Finish Selection */}
-              <div className="space-y-3 pt-4 border-t border-slate-800">
-                <label className="text-sm font-bold uppercase tracking-wider text-slate-200 block">
+              <div className="space-y-3 pt-4 border-t border-[#E5D9C8]">
+                <label className="text-sm font-bold uppercase tracking-wider text-[#173F35] block">
                   2. Choose Logo Imprint Finish
                 </label>
                 <div className="grid grid-cols-2 gap-3">
@@ -137,8 +137,8 @@ export default function BrandingStudio() {
                       onClick={() => setSelectedImprint(imp)}
                       className={`p-3 rounded-xl border text-xs font-bold transition-all ${
                         selectedImprint.id === imp.id
-                          ? "bg-cyan-500 text-slate-950 font-bold border-cyan-500 shadow"
-                          : "bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700"
+                          ? "bg-[#C6A15B] text-[#173F35] border-[#C6A15B] font-extrabold shadow"
+                          : "bg-[#F7F1E7] border-[#E5D9C8] text-[#252525] hover:border-[#173F35]"
                       }`}
                     >
                       {imp.name}
@@ -148,24 +148,24 @@ export default function BrandingStudio() {
               </div>
 
               {/* Upload Logo vs Preset */}
-              <div className="space-y-3 pt-4 border-t border-slate-800">
-                <label className="text-sm font-bold uppercase tracking-wider text-slate-200 block">
+              <div className="space-y-3 pt-4 border-t border-[#E5D9C8]">
+                <label className="text-sm font-bold uppercase tracking-wider text-[#173F35] block">
                   3. Upload Company Vector Logo
                 </label>
-                <div className="border-2 border-dashed border-slate-800 hover:border-cyan-500/50 p-5 rounded-2xl text-center bg-slate-950/60 transition-colors">
+                <div className="border-2 border-dashed border-[#E5D9C8] hover:border-[#173F35] p-5 rounded-2xl text-center bg-[#F7F1E7] transition-colors">
                   {logoFile ? (
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-emerald-400 font-semibold truncate">{logoFile.name}</span>
+                      <span className="text-[#173F35] font-bold truncate">{logoFile.name}</span>
                       <button
                         onClick={() => setLogoFile(null)}
-                        className="text-rose-400 hover:underline text-xs font-bold"
+                        className="text-rose-600 hover:underline text-xs font-bold"
                       >
                         Reset Logo
                       </button>
                     </div>
                   ) : (
-                    <label className="cursor-pointer flex items-center justify-center gap-2 text-sm font-semibold text-cyan-300 py-2">
-                      <Upload className="w-5 h-5" />
+                    <label className="cursor-pointer flex items-center justify-center gap-2 text-sm font-semibold text-[#173F35] py-2">
+                      <Upload className="w-5 h-5 text-[#C6A15B]" />
                       <span>Click to Upload Logo File (PNG / SVG)</span>
                       <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
                     </label>
@@ -174,15 +174,15 @@ export default function BrandingStudio() {
 
                 {!logoFile && (
                   <div className="flex flex-wrap gap-2 pt-2">
-                    <span className="text-xs text-slate-400 w-full font-semibold">Or test preset brand text:</span>
+                    <span className="text-xs text-[#6F6A62] w-full font-semibold">Or test preset brand text:</span>
                     {sampleLogos.map((txt) => (
                       <button
                         key={txt}
                         onClick={() => setSampleTextLogo(txt)}
                         className={`text-xs px-3 py-1.5 rounded-lg border font-bold ${
                           sampleTextLogo === txt
-                            ? "bg-slate-800 text-amber-300 border-amber-500/50"
-                            : "bg-slate-950 text-slate-400 border-slate-800"
+                            ? "bg-[#173F35] text-[#F7F1E7] border-[#173F35]"
+                            : "bg-[#F7F1E7] text-[#252525] border-[#E5D9C8]"
                         }`}
                       >
                         {txt}
@@ -193,9 +193,9 @@ export default function BrandingStudio() {
               </div>
 
               {/* Sliders: Scale & Position */}
-              <div className="space-y-4 pt-4 border-t border-slate-800 text-xs">
+              <div className="space-y-4 pt-4 border-t border-[#E5D9C8] text-xs">
                 <div>
-                  <div className="flex justify-between text-slate-300 font-semibold mb-1.5">
+                  <div className="flex justify-between text-[#173F35] font-semibold mb-1.5">
                     <span>Logo Scale ({logoScale}%)</span>
                   </div>
                   <input
@@ -204,12 +204,12 @@ export default function BrandingStudio() {
                     max={160}
                     value={logoScale}
                     onChange={(e) => setLogoScale(Number(e.target.value))}
-                    className="w-full h-2 bg-slate-800 rounded appearance-none"
+                    className="w-full h-2 bg-[#E5D9C8] rounded appearance-none cursor-pointer"
                   />
                 </div>
 
                 <div>
-                  <div className="flex justify-between text-slate-300 font-semibold mb-1.5">
+                  <div className="flex justify-between text-[#173F35] font-semibold mb-1.5">
                     <span>Vertical Position ({logoYPos}%)</span>
                   </div>
                   <input
@@ -218,24 +218,24 @@ export default function BrandingStudio() {
                     max={75}
                     value={logoYPos}
                     onChange={(e) => setLogoYPos(Number(e.target.value))}
-                    className="w-full h-2 bg-slate-800 rounded appearance-none"
+                    className="w-full h-2 bg-[#E5D9C8] rounded appearance-none cursor-pointer"
                   />
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right Column: LARGE Merchandise Mockup Preview Canvas (7 cols) */}
+          {/* Right Column: Merchandise Mockup Preview Canvas */}
           <div className="lg:col-span-7">
-            <div className="bg-slate-900/80 p-8 rounded-3xl border border-slate-800 space-y-4 shadow-2xl text-center">
-              <div className="flex items-center justify-between text-xs text-slate-400 border-b border-slate-800 pb-4">
-                <span className="font-extrabold text-slate-200 text-base">{selectedProduct.name}</span>
-                <span className="badge badge-cyan">{selectedImprint.name}</span>
+            <div className="bg-[#FFFDF8] p-8 rounded-3xl border border-[#E5D9C8] space-y-4 shadow-xl text-center">
+              <div className="flex items-center justify-between text-xs text-[#6F6A62] border-b border-[#E5D9C8] pb-4">
+                <span className="font-extrabold text-[#173F35] text-base font-heading">{selectedProduct.name}</span>
+                <span className="badge badge-forest">{selectedImprint.name}</span>
               </div>
 
               {/* Large Mockup Canvas (h-[520px]) */}
               <div
-                className="relative rounded-2xl overflow-hidden h-[520px] flex items-center justify-center border border-slate-800 transition-colors shadow-inner"
+                className="relative rounded-2xl overflow-hidden h-[520px] flex items-center justify-center border border-[#E5D9C8] transition-colors shadow-inner"
                 style={{ backgroundColor: selectedColor.hex }}
               >
                 <img
@@ -267,8 +267,8 @@ export default function BrandingStudio() {
                   )}
                 </div>
 
-                <div className="absolute bottom-4 left-4 text-xs bg-slate-950/85 px-4 py-1.5 rounded-full text-slate-300 border border-slate-800 font-semibold">
-                  Visual Proof • Precision Laser Scale: {logoScale}%
+                <div className="absolute bottom-4 left-4 text-xs bg-[#FFFDF8]/90 px-4 py-1.5 rounded-full text-[#173F35] border border-[#E5D9C8] font-bold shadow-md">
+                  Visual Proof • Precision Scale: {logoScale}%
                 </div>
               </div>
             </div>

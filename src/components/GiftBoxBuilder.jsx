@@ -101,17 +101,17 @@ export default function GiftBoxBuilder() {
   };
 
   return (
-    <section className="section-padding bg-slate-900/50 border-b border-slate-800/80">
+    <section className="section-padding bg-[#173F35] text-[#F7F1E7] border-b border-[#245447]">
       <div className="container mx-auto">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span className="text-sm font-bold uppercase tracking-widest text-amber-400">
+          <span className="text-sm font-bold uppercase tracking-widest text-[#C6A15B]">
             Interactive Box Studio
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-100 leading-tight">
-            Build Your Custom <span className="gold-gradient-text">Gift Box</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#F7F1E7] leading-tight font-heading">
+            Build Your Custom <span className="text-[#C6A15B]">Gift Box</span>
           </h2>
-          <p className="text-slate-300 text-base md:text-lg leading-relaxed">
+          <p className="text-[#F7F1E7]/85 text-base md:text-lg leading-relaxed">
             Curate luxury packaging, handpick artisan swag, upload your company logo, and generate personalized card notes with real-time pricing.
           </p>
         </div>
@@ -133,26 +133,28 @@ export default function GiftBoxBuilder() {
                   onClick={() => setCurrentStep(step.num)}
                   className={`p-5 rounded-2xl border text-left transition-all flex items-center gap-4 ${
                     isCurrent
-                      ? "bg-slate-900 border-amber-500 text-amber-300 shadow-xl shadow-amber-500/10 ring-1 ring-amber-500/40"
+                      ? "bg-[#C6A15B] text-[#173F35] border-[#C6A15B] shadow-xl font-bold"
                       : isDone
-                      ? "bg-slate-950/80 border-slate-800 text-emerald-400"
-                      : "bg-slate-950/40 border-slate-800 text-slate-500 opacity-60"
+                      ? "bg-[#245447] border-[#C6A15B]/40 text-[#C6A15B]"
+                      : "bg-[#245447]/40 border-[#245447] text-[#F7F1E7]/60"
                   }`}
                 >
                   <div
                     className={`w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-sm ${
                       isCurrent
-                        ? "bg-amber-500 text-slate-950 font-heading"
+                        ? "bg-[#173F35] text-[#C6A15B] font-heading"
                         : isDone
-                        ? "bg-emerald-500/20 text-emerald-400"
-                        : "bg-slate-800 text-slate-400"
+                        ? "bg-[#C6A15B] text-[#173F35]"
+                        : "bg-[#173F35]/60 text-[#F7F1E7]/60"
                     }`}
                   >
                     {isDone ? <CheckCircle2 className="w-5 h-5" /> : step.code}
                   </div>
                   <div>
-                    <div className="text-sm font-bold text-slate-200">{step.title}</div>
-                    <div className="text-xs text-slate-400 mt-0.5">
+                    <div className={`text-sm font-bold ${isCurrent ? "text-[#173F35]" : "text-[#F7F1E7]"}`}>
+                      {step.title}
+                    </div>
+                    <div className={`text-xs mt-0.5 ${isCurrent ? "text-[#173F35]/80" : "text-[#F7F1E7]/70"}`}>
                       {step.num === 1
                         ? selectedPkg.name.split(" ")[0]
                         : step.num === 2
@@ -174,11 +176,11 @@ export default function GiftBoxBuilder() {
           <div className="lg:col-span-8 space-y-6">
             {/* STEP 1: PACKAGING SELECTOR */}
             {currentStep === 1 && (
-              <div className="glass-panel p-6 md:p-8 space-y-6 animate-fade-in">
-                <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div className="bg-[#FFFDF8] p-6 md:p-8 rounded-3xl border border-[#E5D9C8] space-y-6 animate-fade-in text-[#252525] shadow-lg">
+                <div className="flex items-center justify-between border-b border-[#E5D9C8] pb-4">
                   <div>
-                    <h3 className="text-xl font-bold text-slate-100">Step 1: Choose Luxury Packaging</h3>
-                    <p className="text-xs text-slate-400">Every box includes custom shredded paper fill, tissue wrap & magnetic seal.</p>
+                    <h3 className="text-xl font-bold text-[#173F35]">Step 1: Choose Luxury Packaging</h3>
+                    <p className="text-xs text-[#6F6A62]">Every box includes custom shredded paper fill, tissue wrap & magnetic seal.</p>
                   </div>
                   <span className="badge badge-gold">Box Capacity & Aesthetics</span>
                 </div>
@@ -192,12 +194,12 @@ export default function GiftBoxBuilder() {
                         onClick={() => setSelectedPkg(pkg)}
                         className={`cursor-pointer p-5 rounded-2xl border transition-all relative overflow-hidden group ${
                           isSelected
-                            ? "bg-slate-900 border-amber-500 shadow-xl shadow-amber-500/10"
-                            : "bg-slate-900/40 border-slate-800 hover:border-slate-700"
+                            ? "bg-[#FFFDF8] border-[#C6A15B] ring-2 ring-[#C6A15B]/40 shadow-md"
+                            : "bg-[#F7F1E7] border-[#E5D9C8] hover:border-[#173F35]"
                         }`}
                       >
                         {pkg.badge && (
-                          <span className="absolute top-3 right-3 text-[10px] px-2 py-0.5 rounded-full font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                          <span className="absolute top-3 right-3 text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-[#C6A15B]/20 text-[#A9843F] border border-[#C6A15B]/40">
                             {pkg.badge}
                           </span>
                         )}
@@ -205,17 +207,17 @@ export default function GiftBoxBuilder() {
                           <img
                             src={pkg.image}
                             alt={pkg.name}
-                            className="w-20 h-20 rounded-xl object-cover border border-slate-800"
+                            className="w-20 h-20 rounded-xl object-cover border border-[#E5D9C8]"
                           />
                           <div className="space-y-1">
-                            <h4 className="font-bold text-sm text-slate-100 group-hover:text-amber-300 transition-colors">
+                            <h4 className="font-bold text-sm text-[#173F35] group-hover:text-[#C6A15B] transition-colors font-heading">
                               {pkg.name}
                             </h4>
-                            <p className="text-xs text-slate-400 line-clamp-2">{pkg.description}</p>
+                            <p className="text-xs text-[#6F6A62] line-clamp-2">{pkg.description}</p>
                             <div className="flex items-center gap-3 pt-2 text-xs font-semibold">
-                              <span className="text-amber-400">{formatPrice(pkg.price)} / box</span>
-                              <span className="text-slate-500">•</span>
-                              <span className="text-slate-300">Max {pkg.maxVolumeUnits} Items</span>
+                              <span className="text-[#C6A15B] font-bold">{formatPrice(pkg.price)} / box</span>
+                              <span className="text-[#E5D9C8]">•</span>
+                              <span className="text-[#252525]">Max {pkg.maxVolumeUnits} Items</span>
                             </div>
                           </div>
                         </div>
@@ -228,31 +230,31 @@ export default function GiftBoxBuilder() {
 
             {/* STEP 2: ADD ITEMS */}
             {currentStep === 2 && (
-              <div className="glass-panel p-6 md:p-8 space-y-6 animate-fade-in">
-                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
+              <div className="bg-[#FFFDF8] p-6 md:p-8 rounded-3xl border border-[#E5D9C8] space-y-6 animate-fade-in text-[#252525] shadow-lg">
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#E5D9C8] pb-4">
                   <div>
-                    <h3 className="text-xl font-bold text-slate-100">Step 2: Handpick Artisan Swag</h3>
-                    <p className="text-xs text-slate-400">Click items to toggle them into your custom gift box.</p>
+                    <h3 className="text-xl font-bold text-[#173F35]">Step 2: Handpick Artisan Swag</h3>
+                    <p className="text-xs text-[#6F6A62]">Click items to toggle them into your custom gift box.</p>
                   </div>
 
-                  {/* Visual Capacity Meter Bar */}
-                  <div className="bg-slate-900 px-4 py-2 rounded-xl border border-slate-800 flex items-center gap-3">
-                    <span className="text-xs text-slate-400 font-semibold">Box Fill:</span>
-                    <div className="w-32 bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                  {/* Capacity Meter Bar */}
+                  <div className="bg-[#F7F1E7] px-4 py-2 rounded-xl border border-[#E5D9C8] flex items-center gap-3">
+                    <span className="text-xs text-[#6F6A62] font-semibold">Box Fill:</span>
+                    <div className="w-32 bg-[#E5D9C8] h-2.5 rounded-full overflow-hidden">
                       <div
                         className={`h-full transition-all duration-300 ${
                           isOverCapacity
                             ? "bg-rose-500"
                             : totalVolumeUnits / maxVolume > 0.8
-                            ? "bg-amber-400"
-                            : "bg-emerald-400"
+                            ? "bg-[#C6A15B]"
+                            : "bg-[#173F35]"
                         }`}
                         style={{ width: `${Math.min(100, (totalVolumeUnits / maxVolume) * 100)}%` }}
                       />
                     </div>
                     <span
                       className={`text-xs font-bold ${
-                        isOverCapacity ? "text-rose-400" : "text-amber-400"
+                        isOverCapacity ? "text-rose-600" : "text-[#173F35]"
                       }`}
                     >
                       {totalVolumeUnits} / {maxVolume} Units
@@ -269,32 +271,32 @@ export default function GiftBoxBuilder() {
                         onClick={() => toggleItemSelection(item)}
                         className={`cursor-pointer p-4 rounded-xl border transition-all flex items-center gap-4 ${
                           isSelected
-                            ? "bg-slate-900 border-amber-500 ring-1 ring-amber-500/50"
-                            : "bg-slate-900/40 border-slate-800 hover:border-slate-700"
+                            ? "bg-[#FFFDF8] border-[#C6A15B] ring-2 ring-[#C6A15B]/40 shadow-sm"
+                            : "bg-[#F7F1E7] border-[#E5D9C8] hover:border-[#173F35]"
                         }`}
                       >
                         <img
                           src={item.image}
                           alt={item.name}
-                          className="w-16 h-16 rounded-lg object-cover border border-slate-800"
+                          className="w-16 h-16 rounded-lg object-cover border border-[#E5D9C8]"
                         />
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between">
-                            <h4 className="text-sm font-bold text-slate-100 truncate">{item.name}</h4>
-                            <span className="text-xs font-bold text-amber-400 ml-2">
+                            <h4 className="text-sm font-bold text-[#173F35] truncate">{item.name}</h4>
+                            <span className="text-xs font-bold text-[#C6A15B] ml-2">
                               {formatPrice(item.price)}
                             </span>
                           </div>
-                          <p className="text-xs text-slate-400 truncate">{item.description}</p>
+                          <p className="text-xs text-[#6F6A62] truncate">{item.description}</p>
                           <div className="mt-2 flex items-center justify-between">
-                            <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+                            <span className="text-[10px] px-2 py-0.5 rounded bg-[#E5D9C8]/60 text-[#252525] font-semibold">
                               {item.category} ({item.volumeUnits} Vol)
                             </span>
                             <span
                               className={`text-xs font-bold px-2 py-0.5 rounded ${
                                 isSelected
-                                  ? "bg-amber-500 text-slate-950"
-                                  : "bg-slate-800 text-slate-400"
+                                  ? "bg-[#173F35] text-[#F7F1E7]"
+                                  : "bg-[#E5D9C8] text-[#252525]"
                               }`}
                             >
                               {isSelected ? "Added ✓" : "+ Add Item"}
@@ -310,41 +312,41 @@ export default function GiftBoxBuilder() {
 
             {/* STEP 3: BRANDING & RIBBON */}
             {currentStep === 3 && (
-              <div className="glass-panel p-6 md:p-8 space-y-6 animate-fade-in">
-                <div className="border-b border-slate-800 pb-4">
-                  <h3 className="text-xl font-bold text-slate-100">Step 3: Corporate Branding & Ribbon</h3>
-                  <p className="text-xs text-slate-400">Personalize box lid finishes and ribbon accenting with your brand identity.</p>
+              <div className="bg-[#FFFDF8] p-6 md:p-8 rounded-3xl border border-[#E5D9C8] space-y-6 animate-fade-in text-[#252525] shadow-lg">
+                <div className="border-b border-[#E5D9C8] pb-4">
+                  <h3 className="text-xl font-bold text-[#173F35]">Step 3: Corporate Branding & Ribbon</h3>
+                  <p className="text-xs text-[#6F6A62]">Personalize box lid finishes and ribbon accenting with your brand identity.</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Logo Upload Box */}
                   <div className="space-y-3">
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-300">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#173F35]">
                       1. Upload Corporate Logo Vector / PNG
                     </label>
-                    <div className="border-2 border-dashed border-slate-700 hover:border-amber-500/50 rounded-2xl p-6 text-center bg-slate-900/50 transition-colors">
+                    <div className="border-2 border-dashed border-[#E5D9C8] hover:border-[#173F35] rounded-2xl p-6 text-center bg-[#F7F1E7] transition-colors">
                       {logoFile ? (
                         <div className="space-y-3">
                           <img
                             src={logoFile.url}
                             alt="Logo preview"
-                            className="max-h-20 mx-auto object-contain p-2 bg-slate-950 rounded-lg border border-slate-800"
+                            className="max-h-20 mx-auto object-contain p-2 bg-[#FFFDF8] rounded-lg border border-[#E5D9C8]"
                           />
-                          <p className="text-xs text-emerald-400 font-semibold">{logoFile.name}</p>
+                          <p className="text-xs text-[#173F35] font-bold">{logoFile.name}</p>
                           <button
                             onClick={() => setLogoFile(null)}
-                            className="text-xs text-rose-400 hover:underline"
+                            className="text-xs text-rose-600 hover:underline font-bold"
                           >
                             Remove Logo
                           </button>
                         </div>
                       ) : (
                         <label className="cursor-pointer space-y-2 block">
-                          <Upload className="w-8 h-8 text-amber-400 mx-auto" />
-                          <div className="text-sm font-semibold text-slate-200">
+                          <Upload className="w-8 h-8 text-[#C6A15B] mx-auto" />
+                          <div className="text-sm font-semibold text-[#173F35]">
                             Click to Upload Logo File
                           </div>
-                          <p className="text-xs text-slate-500">Supports SVG, PNG, AI, EPS (High Res)</p>
+                          <p className="text-xs text-[#6F6A62]">Supports SVG, PNG, AI, EPS (High Res)</p>
                           <input
                             type="file"
                             accept="image/*"
@@ -358,7 +360,7 @@ export default function GiftBoxBuilder() {
 
                   {/* Ribbon Selection */}
                   <div className="space-y-3">
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-300">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#173F35]">
                       2. Select Satin Ribbon Accent
                     </label>
                     <div className="grid grid-cols-2 gap-2">
@@ -370,15 +372,15 @@ export default function GiftBoxBuilder() {
                             onClick={() => setSelectedRibbon(ribbon)}
                             className={`p-3 rounded-xl border text-left flex items-center gap-3 transition-all ${
                               isSelected
-                                ? "bg-slate-900 border-amber-500 ring-1 ring-amber-500/50"
-                                : "bg-slate-900/40 border-slate-800 hover:border-slate-700"
+                                ? "bg-[#FFFDF8] border-[#C6A15B] ring-2 ring-[#C6A15B]/40 font-bold"
+                                : "bg-[#F7F1E7] border-[#E5D9C8] text-[#252525]"
                             }`}
                           >
                             <span
-                              className="w-5 h-5 rounded-full border border-white/20 shadow-inner"
+                              className="w-5 h-5 rounded-full border border-black/10 shadow-inner"
                               style={{ backgroundColor: ribbon.hex }}
                             />
-                            <span className="text-xs font-semibold text-slate-200 truncate">
+                            <span className="text-xs font-semibold text-[#252525] truncate">
                               {ribbon.name}
                             </span>
                           </button>
@@ -389,8 +391,8 @@ export default function GiftBoxBuilder() {
                 </div>
 
                 {/* Box Foil Stamping Finish */}
-                <div className="pt-4 border-t border-slate-800 space-y-3">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-300">
+                <div className="pt-4 border-t border-[#E5D9C8] space-y-3">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#173F35]">
                     3. Outer Lid Foil Imprint Style
                   </label>
                   <div className="grid grid-cols-3 gap-3">
@@ -400,8 +402,8 @@ export default function GiftBoxBuilder() {
                         onClick={() => setCustomFoilStyle(style)}
                         className={`p-3 rounded-xl border text-xs font-bold transition-all text-center ${
                           customFoilStyle === style
-                            ? "bg-amber-500 text-slate-950 border-amber-500"
-                            : "bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700"
+                            ? "bg-[#173F35] text-[#F7F1E7] border-[#173F35]"
+                            : "bg-[#F7F1E7] border-[#E5D9C8] text-[#252525] hover:border-[#173F35]"
                         }`}
                       >
                         {style}
@@ -414,15 +416,15 @@ export default function GiftBoxBuilder() {
 
             {/* STEP 4: CARD & QUANTITY */}
             {currentStep === 4 && (
-              <div className="glass-panel p-6 md:p-8 space-y-6 animate-fade-in">
-                <div className="border-b border-slate-800 pb-4">
-                  <h3 className="text-xl font-bold text-slate-100">Step 4: Personalised Card Note & Volume Order</h3>
-                  <p className="text-xs text-slate-400">Choose a greeting message template and specify total unit box quantity.</p>
+              <div className="bg-[#FFFDF8] p-6 md:p-8 rounded-3xl border border-[#E5D9C8] space-y-6 animate-fade-in text-[#252525] shadow-lg">
+                <div className="border-b border-[#E5D9C8] pb-4">
+                  <h3 className="text-xl font-bold text-[#173F35]">Step 4: Personalised Card Note & Volume Order</h3>
+                  <p className="text-xs text-[#6F6A62]">Choose a greeting message template and specify total unit box quantity.</p>
                 </div>
 
                 {/* Box Name Input */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase text-slate-300">
+                  <label className="text-xs font-bold uppercase text-[#173F35]">
                     Project / Box Name Reference
                   </label>
                   <input
@@ -436,7 +438,7 @@ export default function GiftBoxBuilder() {
 
                 {/* Card Templates */}
                 <div className="space-y-3">
-                  <label className="text-xs font-bold uppercase text-slate-300">
+                  <label className="text-xs font-bold uppercase text-[#173F35]">
                     Greeting Card Template
                   </label>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -449,12 +451,12 @@ export default function GiftBoxBuilder() {
                         }}
                         className={`p-3 rounded-xl border text-left transition-all ${
                           selectedCardTemplate.id === tpl.id
-                            ? "bg-slate-900 border-amber-500 text-amber-300"
-                            : "bg-slate-900/40 border-slate-800 text-slate-400 hover:text-slate-200"
+                            ? "bg-[#173F35] text-[#F7F1E7] border-[#173F35]"
+                            : "bg-[#F7F1E7] border-[#E5D9C8] text-[#252525]"
                         }`}
                       >
                         <div className="text-xs font-bold">{tpl.title}</div>
-                        <div className="text-[10px] text-slate-500 mt-1">{tpl.category}</div>
+                        <div className="text-[10px] opacity-75 mt-1">{tpl.category}</div>
                       </button>
                     ))}
                   </div>
@@ -469,19 +471,19 @@ export default function GiftBoxBuilder() {
                 </div>
 
                 {/* Order Quantity Slider */}
-                <div className="pt-4 border-t border-slate-800 space-y-4">
+                <div className="pt-4 border-t border-[#E5D9C8] space-y-4">
                   <div className="flex justify-between items-center">
                     <div>
-                      <label className="text-xs font-bold uppercase text-slate-300">
+                      <label className="text-xs font-bold uppercase text-[#173F35]">
                         Total Order Box Quantity
                       </label>
-                      <p className="text-xs text-slate-400">Tier discount applies automatically.</p>
+                      <p className="text-xs text-[#6F6A62]">Tier discount applies automatically.</p>
                     </div>
                     <div className="text-right">
-                      <span className="text-2xl font-extrabold text-amber-400 font-heading">
+                      <span className="text-2xl font-extrabold text-[#C6A15B] font-heading">
                         {boxQuantity}
                       </span>
-                      <span className="text-xs text-slate-400 ml-1">Boxes</span>
+                      <span className="text-xs text-[#6F6A62] ml-1">Boxes</span>
                     </div>
                   </div>
 
@@ -492,14 +494,14 @@ export default function GiftBoxBuilder() {
                     step={10}
                     value={boxQuantity}
                     onChange={(e) => setBoxQuantity(Number(e.target.value))}
-                    className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer"
+                    className="w-full h-2 bg-[#E5D9C8] rounded-lg appearance-none cursor-pointer"
                   />
 
-                  <div className="flex justify-between text-[11px] text-slate-500 font-semibold">
+                  <div className="flex justify-between text-[11px] text-[#6F6A62] font-semibold">
                     <span>10 (Base)</span>
-                    <span className={boxQuantity >= 50 ? "text-amber-400" : ""}>50 (10% OFF)</span>
-                    <span className={boxQuantity >= 200 ? "text-amber-400" : ""}>200 (18% OFF)</span>
-                    <span className={boxQuantity >= 500 ? "text-amber-400" : ""}>500+ (25% OFF)</span>
+                    <span className={boxQuantity >= 50 ? "text-[#173F35] font-bold" : ""}>50 (10% OFF)</span>
+                    <span className={boxQuantity >= 200 ? "text-[#173F35] font-bold" : ""}>200 (18% OFF)</span>
+                    <span className={boxQuantity >= 500 ? "text-[#173F35] font-bold" : ""}>500+ (25% OFF)</span>
                   </div>
                 </div>
               </div>
@@ -510,48 +512,48 @@ export default function GiftBoxBuilder() {
               <button
                 disabled={currentStep === 1}
                 onClick={() => setCurrentStep((prev) => Math.max(1, prev - 1))}
-                className="btn-secondary text-xs disabled:opacity-30"
+                className="btn-secondary text-xs disabled:opacity-30 bg-[#FFFDF8]"
               >
-                <ArrowLeft className="w-4 h-4" />
+                <ArrowLeft className="w-4 h-4 text-[#173F35]" />
                 <span>Previous Step</span>
               </button>
 
               {currentStep < 4 ? (
                 <button
                   onClick={() => setCurrentStep((prev) => Math.min(4, prev + 1))}
-                  className="btn-primary text-xs"
+                  className="btn-gold text-xs py-3 px-6 shadow-md"
                 >
                   <span>Next Step</span>
-                  <ArrowRight className="w-4 h-4 text-slate-950" />
+                  <ArrowRight className="w-4 h-4 text-[#173F35]" />
                 </button>
               ) : (
                 <button
                   onClick={handleAddCustomBoxToCart}
-                  className="btn-primary text-xs py-3 px-6 shadow-xl shadow-amber-500/30"
+                  className="btn-gold text-xs py-3 px-6 shadow-md"
                 >
-                  <ShoppingBag className="w-4 h-4 text-slate-950" />
-                  <span>Add Custom Order to Cart ({formatPrice(totalOrderPrice)})</span>
+                  <ShoppingBag className="w-4 h-4 text-[#173F35]" />
+                  <span>Add Custom Order ({formatPrice(totalOrderPrice)})</span>
                 </button>
               )}
             </div>
           </div>
 
-          {/* Right Column: Live Box Preview Card & Pricing Summary (4 Cols) */}
+          {/* Right Column: Live Box Preview Card (Soft Ivory Card) */}
           <div className="lg:col-span-4 sticky top-24 space-y-6">
-            <div className="glass-panel-gold p-6 space-y-6">
-              <div className="flex items-center justify-between border-b border-amber-500/20 pb-3">
-                <span className="text-xs font-extrabold uppercase tracking-widest text-amber-400">
+            <div className="bg-[#FFFDF8] p-6 rounded-3xl border border-[#E5D9C8] space-y-6 text-[#252525] shadow-xl">
+              <div className="flex items-center justify-between border-b border-[#E5D9C8] pb-3">
+                <span className="text-xs font-extrabold uppercase tracking-widest text-[#173F35]">
                   Live Custom Box Summary
                 </span>
-                <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#C6A15B]" />
               </div>
 
               {/* Box Image Visualizer */}
-              <div className="relative rounded-2xl overflow-hidden border border-amber-500/30 bg-slate-950 h-44 flex items-center justify-center p-4">
+              <div className="relative rounded-2xl overflow-hidden border border-[#E5D9C8] bg-[#F7F1E7] h-44 flex items-center justify-center p-4">
                 <img
                   src={selectedPkg.image}
                   alt={selectedPkg.name}
-                  className="absolute inset-0 w-full h-full object-cover opacity-40"
+                  className="absolute inset-0 w-full h-full object-cover opacity-50"
                 />
                 <div className="relative z-10 text-center space-y-2">
                   {logoFile ? (
@@ -561,11 +563,11 @@ export default function GiftBoxBuilder() {
                       className="max-h-12 mx-auto filter drop-shadow-md"
                     />
                   ) : (
-                    <div className="text-xs font-bold px-3 py-1 bg-slate-950/80 rounded-lg text-amber-300 border border-amber-500/40 uppercase tracking-widest">
+                    <div className="text-xs font-bold px-3 py-1 bg-[#FFFDF8]/90 rounded-lg text-[#173F35] border border-[#E5D9C8] uppercase tracking-widest">
                       [ YOUR LOGO FOIL ]
                     </div>
                   )}
-                  <div className="text-xs font-semibold text-slate-200">
+                  <div className="text-xs font-semibold text-[#173F35]">
                     Ribbon: {selectedRibbon.name}
                   </div>
                 </div>
@@ -573,7 +575,7 @@ export default function GiftBoxBuilder() {
 
               {/* Items Selected Checklist */}
               <div className="space-y-2">
-                <div className="flex justify-between text-xs font-bold text-slate-300">
+                <div className="flex justify-between text-xs font-bold text-[#173F35]">
                   <span>Selected Swag ({selectedItems.length})</span>
                   <span>{totalVolumeUnits}/{maxVolume} Vol</span>
                 </div>
@@ -581,55 +583,55 @@ export default function GiftBoxBuilder() {
                   {selectedItems.map((item) => (
                     <div
                       key={item.id}
-                      className="flex items-center justify-between text-xs p-2 rounded bg-slate-900/60 border border-slate-800"
+                      className="flex items-center justify-between text-xs p-2 rounded bg-[#F7F1E7] border border-[#E5D9C8]"
                     >
-                      <span className="text-slate-300 truncate">{item.name}</span>
-                      <span className="text-amber-400 font-semibold">{formatPrice(item.price)}</span>
+                      <span className="text-[#252525] truncate">{item.name}</span>
+                      <span className="text-[#C6A15B] font-bold">{formatPrice(item.price)}</span>
                     </div>
                   ))}
                   {selectedItems.length === 0 && (
-                    <p className="text-xs text-slate-500 italic">No swag items added yet.</p>
+                    <p className="text-xs text-[#6F6A62] italic">No swag items added yet.</p>
                   )}
                 </div>
               </div>
 
               {/* Price Calculation Table */}
-              <div className="pt-4 border-t border-amber-500/20 space-y-2 text-xs">
-                <div className="flex justify-between text-slate-400">
+              <div className="pt-4 border-t border-[#E5D9C8] space-y-2 text-xs">
+                <div className="flex justify-between text-[#6F6A62]">
                   <span>Box Packaging ({selectedPkg.name.split(" ")[0]})</span>
                   <span>{formatPrice(selectedPkg.price)}</span>
                 </div>
-                <div className="flex justify-between text-slate-400">
+                <div className="flex justify-between text-[#6F6A62]">
                   <span>Swag Contents Total</span>
                   <span>{formatPrice(itemsTotalCost)}</span>
                 </div>
-                <div className="flex justify-between text-slate-400">
+                <div className="flex justify-between text-[#6F6A62]">
                   <span>Custom Branding & Assembly</span>
                   <span>{formatPrice(5)}</span>
                 </div>
 
-                <div className="flex justify-between text-slate-300 pt-2 border-t border-slate-800 font-semibold">
+                <div className="flex justify-between text-[#252525] pt-2 border-t border-[#E5D9C8] font-semibold">
                   <span>Standard Unit Price</span>
-                  <span className={discountRate > 0 ? "line-through text-slate-500" : ""}>
+                  <span className={discountRate > 0 ? "line-through text-[#6F6A62]" : ""}>
                     {formatPrice(baseBoxUnitPrice)}
                   </span>
                 </div>
 
                 {discountRate > 0 && (
-                  <div className="flex justify-between text-emerald-400 font-bold">
+                  <div className="flex justify-between text-[#173F35] font-bold">
                     <span>Volume Discount ({(discountRate * 100).toFixed(0)}%)</span>
                     <span>-{formatPrice(baseBoxUnitPrice - discountedUnitPrice)} / unit</span>
                   </div>
                 )}
 
-                <div className="pt-3 border-t border-amber-500/30 flex justify-between items-baseline">
+                <div className="pt-3 border-t border-[#E5D9C8] flex justify-between items-baseline">
                   <div>
-                    <div className="text-xs text-slate-400">Total ({boxQuantity} Boxes)</div>
-                    <div className="text-xs font-bold text-amber-400">
+                    <div className="text-xs text-[#6F6A62]">Total ({boxQuantity} Boxes)</div>
+                    <div className="text-xs font-bold text-[#C6A15B]">
                       {formatPrice(discountedUnitPrice)} / box
                     </div>
                   </div>
-                  <div className="text-2xl font-extrabold text-slate-100 font-heading">
+                  <div className="text-2xl font-extrabold text-[#173F35] font-heading">
                     {formatPrice(totalOrderPrice)}
                   </div>
                 </div>
@@ -637,9 +639,9 @@ export default function GiftBoxBuilder() {
 
               <button
                 onClick={handleAddCustomBoxToCart}
-                className="w-full btn-primary text-xs justify-center py-3"
+                className="w-full btn-primary text-xs justify-center py-3 shadow-md"
               >
-                <ShoppingBag className="w-4 h-4 text-slate-950" />
+                <ShoppingBag className="w-4 h-4 text-[#F7F1E7]" />
                 <span>Save & Add to Quote</span>
               </button>
             </div>
