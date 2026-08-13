@@ -384,6 +384,16 @@ button, input, textarea, select {
   background: var(--rose-accent);
 }
 
+/* Music Player Disc Spinning Animation */
+@keyframes spinDisc {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin-disc {
+  animation: spinDisc 4s linear infinite;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   h1 { font-size: 1.8rem; }

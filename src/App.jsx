@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import StatsHeader from './components/StatsHeader';
+import MusicPlayer from './components/MusicPlayer';
 import DiaryForm from './components/DiaryForm';
 import EntryList from './components/EntryList';
 import EntryViewModal from './components/EntryViewModal';
@@ -161,6 +162,11 @@ export default function App() {
             <span>{toastMessage}</span>
           </div>
         )}
+
+        {/* Background Music Player Widget */}
+        <div style={{ marginBottom: '1.25rem' }}>
+          <MusicPlayer />
+        </div>
 
         {/* Dashboard Telemetry Header */}
         <StatsHeader
