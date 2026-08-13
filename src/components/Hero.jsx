@@ -1,134 +1,165 @@
-import React from "react";
-import { useGiftContext } from "../context/GiftContext";
-import {
-  Sparkles,
-  ShieldCheck,
-  Truck,
-  Building2,
-  Gift,
-  ArrowRight,
-  Sliders,
-  CheckCircle2,
-  Boxes
-} from "lucide-react";
+import React from 'react';
 
-export default function Hero() {
-  const { setActiveTab, setIsQuoteModalOpen } = useGiftContext();
-
+export default function Hero({ onBookNow, onExploreServices }) {
   return (
-    <>
-      {/* 1. HERO SECTION (Warm Cream Background) */}
-      <section className="relative overflow-hidden min-h-[75vh] lg:min-h-[85vh] flex items-center bg-[#F7F1E7] py-20 lg:py-28 border-b border-[#E5D9C8]">
-        <div className="container mx-auto relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-            {/* Left Column */}
-            <div className="lg:col-span-7 space-y-8 text-left">
-              {/* Small Premium Label */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FFFDF8] border border-[#C6A15B]/40 text-[#173F35] text-sm font-semibold tracking-wide shadow-sm">
-                <Sparkles className="w-4 h-4 text-[#C6A15B]" />
-                <span>Bespoke Corporate Gifting Partner</span>
-              </div>
-
-              {/* Large Dominant Headline (Deep Forest Green with Gold Highlight) */}
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[76px] font-extrabold text-[#173F35] leading-[1.08] tracking-tight font-heading">
-                Gifts That Make <br className="hidden sm:inline" />
-                <span className="text-[#C6A15B] serif-font italic font-normal">
-                  Business Feel Personal
-                </span>
-              </h1>
-
-              {/* Short 2-3 Line Description */}
-              <p className="text-lg md:text-xl text-[#6F6A62] max-w-xl leading-relaxed font-normal">
-                Curated luxury gift boxes, custom logo branding, and seamless doorstep delivery across Malaysia for VIP clients and high-performing teams.
-              </p>
-
-              {/* Action Buttons */}
-              <div className="pt-2 flex flex-wrap items-center gap-5">
-                <button
-                  onClick={() => {
-                    const el = document.getElementById("product-catalog-section");
-                    if (el) el.scrollIntoView({ behavior: "smooth" });
-                    else setActiveTab("products");
-                  }}
-                  className="btn-primary text-base py-4 px-9"
-                >
-                  <Gift className="w-5 h-5 text-[#F7F1E7]" />
-                  <span>Explore Gifts</span>
-                  <ArrowRight className="w-4 h-4 text-[#F7F1E7]" />
-                </button>
-
-                <button
-                  onClick={() => setIsQuoteModalOpen(true)}
-                  className="btn-secondary text-base py-4 px-9"
-                >
-                  <Building2 className="w-5 h-5 text-[#173F35]" />
-                  <span>Request a Quote</span>
-                </button>
-              </div>
+    <section
+      id="hero"
+      style={{
+        backgroundColor: 'var(--bg-cream)',
+        position: 'relative',
+        overflow: 'hidden',
+        minHeight: '88vh',
+        display: 'flex',
+        alignItems: 'center',
+        paddingTop: '3.5rem',
+        paddingBottom: '5rem'
+      }}
+    >
+      <div className="container" style={{ width: '100%' }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '45% 51%',
+            justifyContent: 'space-between',
+            gap: '4rem',
+            alignItems: 'center'
+          }}
+          className="hero-grid"
+        >
+          {/* Left Column - Headline & CTA */}
+          <div className="hero-left">
+            <span className="eyebrow">PREMIUM BEAUTY &amp; WELLNESS</span>
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontWeight: 500,
+                color: 'var(--color-forest)',
+                marginTop: '0.75rem',
+                marginBottom: '2rem',
+                lineHeight: 1.05
+              }}
+            >
+              Your Time.<br />
+              <span style={{ fontStyle: 'italic', color: 'var(--color-gold)' }}>Your Ritual.</span><br />
+              Your Glow.
+            </h1>
+            <p
+              style={{
+                fontSize: '1.2rem',
+                color: 'var(--color-warm-gray)',
+                marginBottom: '3rem',
+                maxWidth: '620px',
+                lineHeight: 1.75
+              }}
+            >
+              Lumé Studio delivers tailored beauty, hair, skin, and spa rituals crafted with precision. Reclaim your stillness in a serene space dedicated entirely to your renewal.
+            </p>
+            
+            <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
+              <button
+                onClick={() => onBookNow()}
+                className="btn btn-primary"
+                style={{ padding: '1.25rem 2.85rem', fontSize: '1.1rem' }}
+              >
+                Book an Appointment
+              </button>
+              <a
+                href="#services"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onExploreServices();
+                }}
+                className="btn btn-secondary"
+                style={{ padding: '1.25rem 2.6rem', fontSize: '1.1rem' }}
+              >
+                Explore Services
+              </a>
             </div>
 
-            {/* Right Column: One Large Premium Corporate Gift Image */}
-            <div className="lg:col-span-5 relative">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-[#E5D9C8] bg-[#FFFDF8] group">
-                <img
-                  src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=1200&q=80"
-                  alt="Premium Executive Gift Set"
-                  className="w-full h-[440px] lg:h-[540px] object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#173F35]/90 via-transparent to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 p-5 rounded-2xl bg-[#FFFDF8]/95 backdrop-blur-md border border-[#E5D9C8] shadow-lg">
-                  <div className="text-xs uppercase font-bold text-[#C6A15B] tracking-wider">Featured Collection</div>
-                  <div className="text-lg font-bold text-[#173F35] mt-0.5">The C-Suite Executive Box</div>
-                  <div className="text-xs text-[#6F6A62] mt-0.5">Handcrafted Saffiano leather, thermal tumbler & ANC audio</div>
+            {/* Subtle Key Highlights */}
+            <div
+              style={{
+                display: 'flex',
+                gap: '3.5rem',
+                marginTop: '4rem',
+                paddingTop: '2.5rem',
+                borderTop: '1px solid var(--color-border)'
+              }}
+            >
+              <div>
+                <span style={{ display: 'block', fontFamily: 'var(--font-serif)', fontSize: '2.1rem', color: 'var(--color-forest)', fontWeight: 600 }}>100%</span>
+                <span style={{ fontSize: '0.9rem', color: 'var(--color-warm-gray)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>Organic Formulations</span>
+              </div>
+              <div style={{ borderLeft: '1px solid var(--color-border)', paddingLeft: '3.5rem' }}>
+                <span style={{ display: 'block', fontFamily: 'var(--font-serif)', fontSize: '2.1rem', color: 'var(--color-forest)', fontWeight: 600 }}>Private</span>
+                <span style={{ fontSize: '0.9rem', color: 'var(--color-warm-gray)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>Treatment Suites</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Large Premium Spa Visual */}
+          <div className="hero-right" style={{ position: 'relative' }}>
+            <div
+              style={{
+                position: 'relative',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                boxShadow: 'var(--shadow-hover)',
+                border: '1px solid var(--color-border)'
+              }}
+            >
+              <img
+                src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1600&q=80"
+                alt="Lumé Studio Spa Sanctuary"
+                style={{
+                  width: '100%',
+                  height: '660px',
+                  objectFit: 'cover',
+                  display: 'block'
+                }}
+              />
+              {/* Subtle overlay accent card */}
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: '2.5rem',
+                  left: '2.5rem',
+                  right: '2.5rem',
+                  backgroundColor: 'rgba(255, 253, 248, 0.94)',
+                  backdropFilter: 'blur(16px)',
+                  padding: '1.65rem 2.25rem',
+                  borderRadius: '6px',
+                  border: '1px solid var(--color-border)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <div>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-gold)' }}>CURATED EXPERIENCE</span>
+                  <h4 style={{ fontSize: '1.3rem', fontFamily: 'var(--font-serif)', color: 'var(--color-forest)', margin: '0.3rem 0 0 0' }}>Botanical Aromatherapy &amp; Dermal Care</h4>
                 </div>
+                <div style={{ fontSize: '1.85rem', color: 'var(--color-forest)', fontStyle: 'italic', fontFamily: 'var(--font-serif)' }}>✧</div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* 2. STANDALONE STATISTICS SECTION (Soft Ivory Background) */}
-      <section className="py-16 md:py-20 bg-[#FFFDF8] border-b border-[#E5D9C8]">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 text-center">
-            <div className="space-y-2 p-4">
-              <div className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#173F35] font-heading">
-                50,000+
-              </div>
-              <div className="text-sm md:text-base font-semibold text-[#6F6A62] tracking-wide uppercase">
-                Gifts Delivered
-              </div>
-            </div>
-
-            <div className="space-y-2 p-4">
-              <div className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#173F35] font-heading">
-                99.8%
-              </div>
-              <div className="text-sm md:text-base font-semibold text-[#6F6A62] tracking-wide uppercase">
-                On-Time Delivery
-              </div>
-            </div>
-
-            <div className="space-y-2 p-4">
-              <div className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#173F35] font-heading">
-                450+
-              </div>
-              <div className="text-sm md:text-base font-semibold text-[#6F6A62] tracking-wide uppercase">
-                Corporate Clients
-              </div>
-            </div>
-
-            <div className="space-y-2 p-4">
-              <div className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#C6A15B] font-heading">
-                RM 0
-              </div>
-              <div className="text-sm md:text-base font-semibold text-[#6F6A62] tracking-wide uppercase">
-                Design & Proofing Fee
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
+      <style>{`
+        @media (max-width: 1100px) {
+          .hero-grid {
+            display: flex !important;
+            flex-direction: column !important;
+          }
+          .hero-left, .hero-right {
+            width: 100% !important;
+          }
+          .hero-right img {
+            height: 480px !important;
+          }
+        }
+      `}</style>
+    </section>
   );
 }

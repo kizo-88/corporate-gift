@@ -1,192 +1,237 @@
-import React, { useState } from "react";
-import { useGiftContext, currencySymbols } from "../context/GiftContext";
-import {
-  Crown,
-  ShoppingBag,
-  Sliders,
-  Sparkles,
-  Layers,
-  FileText,
-  Users,
-  Award,
-  Globe,
-  Menu,
-  X,
-  Plus
-} from "lucide-react";
+import React, { useState, useEffect } from 'react';
 
-export default function Navbar() {
-  const {
-    cart,
-    currency,
-    setCurrency,
-    setIsCartOpen,
-    setIsQuoteModalOpen,
-    activeTab,
-    setActiveTab,
-    savedQuotes
-  } = useGiftContext();
-
+export default function Navbar({ onOpenBooking, onOpenAppointments, appointmentCount = 0 }) {
+  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const totalCartItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navLinks = [
-    { id: "catalog", label: "Home" },
-    { id: "products", label: "Gifts" },
-    { id: "builder", label: "Build a Box" },
-    { id: "estimator", label: "Corporate" },
-    { id: "branding", label: "Branding" }
+    { name: 'Home', href: '#hero' },
+    { name: 'Services', href: '#services' },
+    { name: 'Specialists', href: '#specialists' },
+    { name: 'Packages', href: '#packages' },
+    { name: 'About', href: '#about' },
+    { name: 'Contact', href: '#contact' },
   ];
 
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    const target = document.querySelector(href);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-50 bg-[#173F35] border-b border-[#245447] shadow-lg transition-all">
-      <div className="container mx-auto h-24 flex items-center justify-between">
-        {/* Brand Logo - Left */}
-        <div
-          onClick={() => setActiveTab("catalog")}
-          className="flex items-center gap-3 cursor-pointer group shrink-0"
-        >
-          <div className="w-11 h-11 rounded-2xl bg-[#C6A15B] flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-            <Crown className="w-6 h-6 text-[#173F35]" />
-          </div>
-          <div>
-            <span className="font-extrabold text-2xl tracking-wider text-[#F7F1E7] font-heading">
-              KIZO <span className="text-[#C6A15B]">GIFTS</span>
-            </span>
-            <p className="text-[11px] text-[#C6A15B]/80 tracking-widest uppercase font-semibold">
-              Bespoke Corporate Gifting
-            </p>
-          </div>
-        </div>
+    <>
+      <header
+        style={{
+          position: 'sticky',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 100,
+          backgroundColor: isScrolled ? 'rgba(255, 253, 248, 0.96)' : 'var(--bg-cream)',
+          backdropFilter: isScrolled ? 'blur(16px)' : 'none',
+          borderBottom: isScrolled ? '1px solid var(--color-border)' : '1px solid transparent',
+          transition: 'all 0.35s ease',
+          padding: isScrolled ? '1.15rem 0' : '1.75rem 0',
+          minHeight: isScrolled ? '88px' : '98px',
+          display: 'flex',
+          alignItems: 'center'
+        }}
+      >
+        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          {/* Logo */}
+          <a
+            href="#hero"
+            onClick={(e) => handleNavClick(e, '#hero')}
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontSize: '2.25rem',
+              fontWeight: 600,
+              color: 'var(--color-forest)',
+              textDecoration: 'none',
+              letterSpacing: '-0.02em',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}
+          >
+            <span style={{ color: 'var(--color-gold)', fontStyle: 'italic', fontWeight: 400, fontSize: '2.35rem' }}>Lumé</span>
+            <span style={{ textTransform: 'uppercase', fontSize: '1.1rem', letterSpacing: '0.18em', fontWeight: 700, color: 'var(--color-forest)' }}>Studio</span>
+          </a>
 
-        {/* Middle Nav Links */}
-        <nav className="hidden lg:flex items-center gap-8">
-          {navLinks.map((link) => {
-            const isActive = activeTab === link.id;
-            return (
-              <button
-                key={link.id}
-                onClick={() => setActiveTab(link.id)}
-                className={`text-base font-semibold transition-all relative py-2 ${
-                  isActive
-                    ? "text-[#C6A15B] font-bold"
-                    : "text-[#F7F1E7]/80 hover:text-[#FFFDF8]"
-                }`}
+          {/* Desktop Navigation Links */}
+          <nav style={{ display: 'flex', alignItems: 'center', gap: '2.75rem' }} className="desktop-nav">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '1.05rem',
+                  fontWeight: 500,
+                  color: 'var(--color-charcoal)',
+                  textDecoration: 'none',
+                  letterSpacing: '0.02em',
+                  transition: 'color 0.25s ease'
+                }}
+                onMouseEnter={(e) => (e.target.style.color = 'var(--color-forest)')}
+                onMouseLeave={(e) => (e.target.style.color = 'var(--color-charcoal)')}
               >
-                <span>{link.label}</span>
-                {isActive && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#C6A15B] rounded-full animate-fade-in" />
-                )}
-              </button>
-            );
-          })}
-        </nav>
-
-        {/* Right Action Controls */}
-        <div className="flex items-center gap-4">
-          {/* Currency Switcher */}
-          <div className="hidden sm:flex items-center gap-1 bg-[#245447]/60 border border-[#245447] rounded-xl p-1.5">
-            <Globe className="w-4 h-4 text-[#C6A15B] ml-1.5" />
-            {Object.keys(currencySymbols).map((curr) => (
-              <button
-                key={curr}
-                onClick={() => setCurrency(curr)}
-                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
-                  currency === curr
-                    ? "bg-[#C6A15B] text-[#173F35] shadow"
-                    : "text-[#F7F1E7]/70 hover:text-[#FFFDF8]"
-                }`}
-              >
-                {curr} ({currencySymbols[curr]})
-              </button>
+                {link.name}
+              </a>
             ))}
+          </nav>
+
+          {/* Action Buttons */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }} className="desktop-actions">
+            {appointmentCount > 0 && (
+              <button
+                onClick={onOpenAppointments}
+                style={{
+                  background: 'transparent',
+                  border: '1px solid var(--color-border)',
+                  color: 'var(--color-forest)',
+                  padding: '0.75rem 1.35rem',
+                  borderRadius: '3px',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '0.95rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}
+              >
+                Appointments
+                <span
+                  style={{
+                    backgroundColor: 'var(--color-gold)',
+                    color: '#fff',
+                    borderRadius: '50%',
+                    width: '22px',
+                    height: '22px',
+                    fontSize: '0.8rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontWeight: 700
+                  }}
+                >
+                  {appointmentCount}
+                </span>
+              </button>
+            )}
+
+            <button
+              onClick={() => onOpenBooking()}
+              className="btn btn-primary"
+              style={{ padding: '0.85rem 1.85rem', fontSize: '1rem' }}
+            >
+              Book Now
+            </button>
           </div>
 
-          {/* Cart Drawer Trigger */}
-          <button
-            onClick={() => setIsCartOpen(true)}
-            className="relative p-3 rounded-2xl bg-[#245447]/60 border border-[#245447] text-[#F7F1E7] hover:border-[#C6A15B] hover:text-[#C6A15B] transition-all"
-            aria-label="Open Quote Cart"
-          >
-            <ShoppingBag className="w-5 h-5" />
-            {totalCartItems > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-[#C6A15B] text-[#173F35] text-xs font-black w-5 h-5 rounded-full flex items-center justify-center shadow-lg">
-                {totalCartItems}
-              </span>
-            )}
-          </button>
-
-          {/* Request Quote CTA Button */}
-          <button
-            onClick={() => setIsQuoteModalOpen(true)}
-            className="hidden md:flex btn-gold text-sm py-3 px-6 shadow-md"
-          >
-            <FileText className="w-4 h-4 text-[#173F35]" />
-            <span>Request Quote</span>
-          </button>
-
-          {/* Mobile Menu Button */}
+          {/* Mobile Hamburger Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-[#F7F1E7] hover:text-[#C6A15B]"
+            className="mobile-toggle"
+            aria-label="Toggle menu"
+            style={{
+              display: 'none',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '0.5rem',
+              color: 'var(--color-forest)'
+            }}
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              {mobileMenuOpen ? (
+                <path d="M18 6L6 18M6 6l12 12" />
+              ) : (
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
           </button>
         </div>
-      </div>
 
-      {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden bg-slate-900 border-b border-slate-800 p-4 space-y-2 animate-fade-in">
-          {navLinks.map((link) => {
-            const Icon = link.icon;
-            const isActive = activeTab === link.id;
-            return (
-              <button
-                key={link.id}
-                onClick={() => {
-                  setActiveTab(link.id);
-                  setMobileMenuOpen(false);
+        {/* Mobile Menu Drawer */}
+        {mobileMenuOpen && (
+          <div
+            style={{
+              position: 'absolute',
+              top: '100%',
+              left: 0,
+              right: 0,
+              backgroundColor: 'var(--bg-ivory)',
+              borderBottom: '1px solid var(--color-border)',
+              padding: '1.75rem 2rem 2.25rem 2rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1.35rem',
+              boxShadow: 'var(--shadow-hover)'
+            }}
+          >
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '1.2rem',
+                  fontWeight: 500,
+                  color: 'var(--color-forest)',
+                  textDecoration: 'none'
                 }}
-                className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                  isActive
-                    ? "bg-amber-500 text-slate-950"
-                    : "text-slate-300 hover:bg-slate-800"
-                }`}
               >
-                <div className="flex items-center gap-3">
-                  <Icon className="w-5 h-5" />
-                  <span>{link.label}</span>
-                </div>
-                {link.badge && (
-                  <span className="text-xs bg-slate-950/20 px-2 py-0.5 rounded-full">
-                    {link.badge}
-                  </span>
-                )}
-              </button>
-            );
-          })}
-          <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
-            <span className="text-xs text-slate-400">Select Currency:</span>
-            <div className="flex gap-2">
-              {Object.keys(currencySymbols).map((curr) => (
+                {link.name}
+              </a>
+            ))}
+
+            <div style={{ paddingTop: '1.25rem', borderTop: '1px solid var(--color-border-light)', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              {appointmentCount > 0 && (
                 <button
-                  key={curr}
-                  onClick={() => setCurrency(curr)}
-                  className={`px-3 py-1 rounded text-xs font-bold ${
-                    currency === curr
-                      ? "bg-amber-500 text-slate-950"
-                      : "bg-slate-800 text-slate-300"
-                  }`}
+                  onClick={() => { setMobileMenuOpen(false); onOpenAppointments(); }}
+                  className="btn btn-secondary btn-full"
                 >
-                  {curr}
+                  My Appointments ({appointmentCount})
                 </button>
-              ))}
+              )}
+              <button
+                onClick={() => { setMobileMenuOpen(false); onOpenBooking(); }}
+                className="btn btn-primary btn-full"
+              >
+                Book Appointment
+              </button>
             </div>
           </div>
-        </div>
-      )}
-    </header>
+        )}
+      </header>
+
+      {/* Responsive Inline CSS rules for Navbar */}
+      <style>{`
+        @media (max-width: 1024px) {
+          .desktop-nav, .desktop-actions {
+            display: none !important;
+          }
+          .mobile-toggle {
+            display: block !important;
+          }
+        }
+      `}</style>
+    </>
   );
 }

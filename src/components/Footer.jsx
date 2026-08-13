@@ -1,148 +1,143 @@
-import React from "react";
-import { useGiftContext } from "../context/GiftContext";
-import { Crown, ShieldCheck, Mail, Phone, MapPin, Award, Check, Globe, Share2, Send, MessageSquare } from "lucide-react";
+import React from 'react';
 
-export default function Footer() {
-  const { setActiveTab, toastMessage } = useGiftContext();
-
+export default function Footer({ onOpenBooking }) {
   return (
-    <footer className="bg-[#173F35] border-t border-[#245447] text-[#F7F1E7] relative py-20 lg:py-24">
-      {/* Toast Notification Floating Banner */}
-      {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#FFFDF8] border border-[#C6A15B] text-[#173F35] px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 animate-fade-in font-bold">
-          <div className="w-6 h-6 rounded-full bg-[#173F35] text-[#C6A15B] flex items-center justify-center font-bold text-xs">
-            <Check className="w-4 h-4" />
-          </div>
-          <span className="text-sm font-semibold">{toastMessage}</span>
-        </div>
-      )}
-
-      <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16">
-          {/* Column 1: Brand Info (4 cols) */}
-          <div className="lg:col-span-4 space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-2xl bg-[#C6A15B] flex items-center justify-center text-[#173F35] font-bold">
-                <Crown className="w-6 h-6 text-[#173F35]" />
-              </div>
-              <span className="font-extrabold text-2xl text-[#F7F1E7] font-heading tracking-wider">
-                KIZO <span className="text-[#C6A15B]">GIFTS</span>
-              </span>
-            </div>
-
-            <p className="text-sm md:text-base leading-relaxed text-[#F7F1E7]/80">
-              Malaysia's premier corporate gifting platform. Executive gift sets, custom logo branding, volume pricing discounts, and doorstep delivery across Malaysia and worldwide.
+    <footer style={{ backgroundColor: 'var(--color-forest)', color: 'var(--bg-cream)', paddingTop: '6.5rem', paddingBottom: '3.5rem' }}>
+      <div className="container">
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(12, 1fr)',
+            gap: '4rem',
+            marginBottom: '5rem'
+          }}
+          className="footer-grid"
+        >
+          {/* Brand Column */}
+          <div style={{ gridColumn: 'span 4' }} className="footer-col">
+            <h3 style={{ fontFamily: 'var(--font-serif)', color: 'var(--bg-ivory)', fontSize: '2.35rem', marginBottom: '1.25rem' }}>
+              <span style={{ color: 'var(--color-gold)', fontStyle: 'italic' }}>Lumé</span> Studio
+            </h3>
+            <p style={{ color: 'rgba(247, 241, 231, 0.8)', fontSize: '1.05rem', marginBottom: '2rem', lineHeight: 1.75, maxWidth: '360px' }}>
+              Your Time. Your Ritual. Your Glow. Dedicated to bespoke beauty treatments and serene wellness experiences in Kuala Lumpur.
             </p>
-
-            <div className="flex flex-wrap items-center gap-3 text-xs text-[#F7F1E7]/80 pt-2">
-              <div className="flex items-center gap-2 bg-[#245447] px-3.5 py-2 rounded-xl border border-[#245447]">
-                <ShieldCheck className="w-4 h-4 text-[#C6A15B]" />
-                <span>FSC Certified Eco Goods</span>
-              </div>
-              <div className="flex items-center gap-2 bg-[#245447] px-3.5 py-2 rounded-xl border border-[#245447]">
-                <Award className="w-4 h-4 text-[#C6A15B]" />
-                <span>100% On-Time Guarantee</span>
-              </div>
-            </div>
+            <button onClick={onOpenBooking} className="btn btn-gold" style={{ padding: '0.85rem 1.75rem', fontSize: '0.95rem' }}>
+              Book Appointment
+            </button>
           </div>
 
-          {/* Column 2: Explore Navigation (2 cols) */}
-          <div className="lg:col-span-2 space-y-4">
-            <h4 className="text-base font-bold text-[#C6A15B] uppercase tracking-wider font-heading">
-              Explore
+          {/* Quick Links */}
+          <div style={{ gridColumn: 'span 2' }} className="footer-col">
+            <h4 style={{ color: 'var(--color-gold-light)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.12em', fontFamily: 'var(--font-sans)', marginBottom: '1.5rem', fontWeight: 700 }}>
+              NAVIGATION
             </h4>
-            <ul className="space-y-3 text-sm">
-              <li>
-                <button onClick={() => setActiveTab("catalog")} className="hover:text-[#C6A15B] transition-colors text-[#F7F1E7]/80">
-                  Home
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActiveTab("products")} className="hover:text-[#C6A15B] transition-colors text-[#F7F1E7]/80">
-                  Gifts Catalog
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActiveTab("builder")} className="hover:text-[#C6A15B] transition-colors text-[#F7F1E7]/80">
-                  Build a Box
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActiveTab("estimator")} className="hover:text-[#C6A15B] transition-colors text-[#F7F1E7]/80">
-                  Bulk Estimator
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActiveTab("branding")} className="hover:text-[#C6A15B] transition-colors text-[#F7F1E7]/80">
-                  Branding Studio
-                </button>
-              </li>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.95rem' }}>
+              {['Home', 'Services', 'Specialists', 'Packages', 'About', 'Contact'].map((item) => (
+                <li key={item}>
+                  <a
+                    href={`#${item.toLowerCase()}`}
+                    style={{ color: 'rgba(247, 241, 231, 0.85)', textDecoration: 'none', fontSize: '1.025rem', transition: 'color 0.25s ease' }}
+                    onMouseEnter={(e) => e.target.style.color = 'var(--color-gold)'}
+                    onMouseLeave={(e) => e.target.style.color = 'rgba(247, 241, 231, 0.85)'}
+                  >
+                    {item}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Column 3: Corporate Services (3 cols) */}
-          <div className="lg:col-span-3 space-y-4">
-            <h4 className="text-base font-bold text-[#C6A15B] uppercase tracking-wider font-heading">
-              Corporate Services
+          {/* Treatment Menu */}
+          <div style={{ gridColumn: 'span 3' }} className="footer-col">
+            <h4 style={{ color: 'var(--color-gold-light)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.12em', fontFamily: 'var(--font-sans)', marginBottom: '1.5rem', fontWeight: 700 }}>
+              SERVICES
             </h4>
-            <ul className="space-y-3 text-sm text-[#F7F1E7]/80">
-              <li className="hover:text-[#C6A15B] cursor-pointer">Executive Onboarding Kits</li>
-              <li className="hover:text-[#C6A15B] cursor-pointer">Client Appreciation Gifts</li>
-              <li className="hover:text-[#C6A15B] cursor-pointer">Verdant Eco-Gift Hampers</li>
-              <li className="hover:text-[#C6A15B] cursor-pointer">Multi-Address Drop-Shipping</li>
-              <li className="hover:text-[#C6A15B] cursor-pointer">Tax-Compliant SST Invoicing</li>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.95rem', fontSize: '1.025rem', color: 'rgba(247, 241, 231, 0.85)' }}>
+              <li>Signature Glow Facial</li>
+              <li>Aromatherapy Massage</li>
+              <li>Botanical Hair Spa</li>
+              <li>Luxury Spa Manicure</li>
+              <li>Precision Brow Sculpting</li>
+              <li>Holistic Wellness Ritual</li>
             </ul>
           </div>
 
-          {/* Column 4: Contact & Social (3 cols) */}
-          <div className="lg:col-span-3 space-y-4">
-            <h4 className="text-base font-bold text-[#C6A15B] uppercase tracking-wider font-heading">
-              Contact Us
+          {/* Hours & Contact */}
+          <div style={{ gridColumn: 'span 3' }} className="footer-col">
+            <h4 style={{ color: 'var(--color-gold-light)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.12em', fontFamily: 'var(--font-sans)', marginBottom: '1.5rem', fontWeight: 700 }}>
+              HOURS &amp; ADDRESS
             </h4>
-            <div className="space-y-3 text-sm text-[#F7F1E7]/90">
-              <div className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-[#C6A15B] shrink-0" />
-                <span>enterprise@kizogifts.com.my</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-[#C6A15B] shrink-0" />
-                <span>+60 3-8000 9988</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <MapPin className="w-4 h-4 text-[#C6A15B] shrink-0" />
-                <span>Kuala Lumpur, Malaysia</span>
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-[#245447] space-y-3">
-              <span className="text-xs font-bold text-[#C6A15B] uppercase block">Follow Our Socials</span>
-              <div className="flex items-center gap-3">
-                <a href="#linkedin" className="p-3 rounded-xl bg-[#245447] border border-[#245447] text-[#F7F1E7] hover:text-[#C6A15B] hover:border-[#C6A15B] transition-colors" title="Website">
-                  <Globe className="w-4 h-4" />
+            <p style={{ fontSize: '1rem', color: 'rgba(247, 241, 231, 0.85)', margin: '0 0 1.25rem 0', lineHeight: 1.6 }}>
+              18, Jalan Telawi 3, Bangsar, 59100 Kuala Lumpur
+            </p>
+            <p style={{ fontSize: '0.95rem', color: 'rgba(247, 241, 231, 0.75)', margin: '0 0 0.5rem 0' }}>
+              Mon – Fri: 10:00 AM – 8:00 PM
+            </p>
+            <p style={{ fontSize: '0.95rem', color: 'rgba(247, 241, 231, 0.75)', margin: '0 0 1.75rem 0' }}>
+              Sat – Sun: 9:00 AM – 7:00 PM
+            </p>
+            
+            {/* Social Icons */}
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              {['Instagram', 'Facebook', 'Pinterest'].map((social) => (
+                <a
+                  key={social}
+                  href={`#${social.toLowerCase()}`}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '50%',
+                    border: '1px solid rgba(198, 161, 91, 0.45)',
+                    color: 'var(--color-gold)',
+                    textDecoration: 'none',
+                    fontSize: '0.85rem',
+                    fontWeight: 600
+                  }}
+                >
+                  {social[0]}
                 </a>
-                <a href="#twitter" className="p-3 rounded-xl bg-[#245447] border border-[#245447] text-[#F7F1E7] hover:text-[#C6A15B] hover:border-[#C6A15B] transition-colors" title="Share">
-                  <Share2 className="w-4 h-4" />
-                </a>
-                <a href="#instagram" className="p-3 rounded-xl bg-[#245447] border border-[#245447] text-[#F7F1E7] hover:text-[#C6A15B] hover:border-[#C6A15B] transition-colors" title="Message">
-                  <MessageSquare className="w-4 h-4" />
-                </a>
-                <a href="#facebook" className="p-3 rounded-xl bg-[#245447] border border-[#245447] text-[#F7F1E7] hover:text-[#C6A15B] hover:border-[#C6A15B] transition-colors" title="Send">
-                  <Send className="w-4 h-4" />
-                </a>
-              </div>
+              ))}
             </div>
           </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-[#245447] flex flex-wrap justify-between items-center gap-4 text-sm text-[#F7F1E7]/60">
-          <div>© {new Date().getFullYear()} KIZO Corporate Gifts Enterprise. All rights reserved.</div>
-          <div className="flex gap-6">
-            <span className="hover:underline cursor-pointer">Privacy Policy</span>
-            <span className="hover:underline cursor-pointer">Terms of Service</span>
-            <span className="hover:underline cursor-pointer">SST Compliance</span>
-          </div>
+        {/* Bottom Bar */}
+        <div
+          style={{
+            paddingTop: '2.5rem',
+            borderTop: '1px solid rgba(247, 241, 231, 0.15)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            fontSize: '0.95rem',
+            color: 'rgba(247, 241, 231, 0.65)'
+          }}
+          className="footer-bottom"
+        >
+          <span>© {new Date().getFullYear()} Lumé Studio. All rights reserved.</span>
+          <span style={{ fontStyle: 'italic', fontFamily: 'var(--font-serif)', color: 'var(--color-gold-light)', fontSize: '1.05rem' }}>Your Time. Your Ritual. Your Glow.</span>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 992px) {
+          .footer-grid {
+            display: flex !important;
+            flex-direction: column !important;
+          }
+          .footer-col {
+            width: 100% !important;
+          }
+          .footer-bottom {
+            flex-direction: column !important;
+            gap: 0.85rem !important;
+            text-align: center;
+          }
+        }
+      `}</style>
     </footer>
   );
 }

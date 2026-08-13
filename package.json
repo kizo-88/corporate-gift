@@ -1,5 +1,5 @@
 {
-  "name": "corporate-gift-app",
+  "name": "lume-booking",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,12 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.3.3",
-    "canvas-confetti": "^1.9.4",
-    "lucide-react": "^1.29.0",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "tailwindcss": "^4.3.3"
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
     "@types/react": "^19.2.17",
