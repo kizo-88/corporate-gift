@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Disc, ListMusic, Music, Sparkles } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Disc, ListMusic, Music, Heart, Sparkles } from 'lucide-react';
 
 export const PLAYLIST = [
   {
@@ -7,7 +7,7 @@ export const PLAYLIST = [
     title: 'Less Than A Lover',
     artist: 'Jennie',
     coverColor: '#E88D9E',
-    // Direct audio stream playing seamlessly inside the browser
+    isFeatured: true,
     url: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=less-than-a-lover-jennie.mp3'
   },
   {
@@ -15,6 +15,7 @@ export const PLAYLIST = [
     title: 'Number One Girl',
     artist: 'Rosé',
     coverColor: '#A093E2',
+    isFeatured: false,
     url: 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=number-one-girl-rose.mp3'
   },
   {
@@ -22,27 +23,27 @@ export const PLAYLIST = [
     title: 'Handlebars',
     artist: 'Jennie',
     coverColor: '#48C9B0',
+    isFeatured: false,
     url: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=handlebars-jennie.mp3'
   }
 ];
 
-export default function MusicPlayer() {
+export default function MusicPlayer({ isPlaying, setIsPlaying }) {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.6);
+  const [volume, setVolume] = useState(0.7);
   const [isMuted, setIsMuted] = useState(false);
   const [showPlaylist, setShowPlaylist] = useState(false);
 
   const audioRef = useRef(null);
   const currentTrack = PLAYLIST[currentTrackIndex];
 
-  // Auto handle play/pause & volume directly in browser audio engine
+  // Sync Audio Playback
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume;
       if (isPlaying) {
         audioRef.current.play().catch(err => {
-          console.log("Direct audio playback info:", err);
+          console.log("Audio playback notice:", err);
         });
       } else {
         audioRef.current.pause();
@@ -51,7 +52,7 @@ export default function MusicPlayer() {
   }, [isPlaying, currentTrackIndex, volume, isMuted]);
 
   const togglePlay = () => {
-    setIsPlaying(prev => !prev);
+    setIsPlaying(!isPlaying);
   };
 
   const handleNext = () => {
@@ -64,8 +65,13 @@ export default function MusicPlayer() {
     setIsPlaying(true);
   };
 
+  const playJennieTrack = () => {
+    setCurrentTrackIndex(0); // Track #1: Less Than A Lover - Jennie
+    setIsPlaying(true);
+  };
+
   return (
-    <div className="glass-panel" style={{
+    <div className="glass-panel animate-fade-in" style={{
       borderRadius: 'var(--radius-lg)',
       padding: '0.85rem 1.25rem',
       display: 'flex',
@@ -76,36 +82,36 @@ export default function MusicPlayer() {
       borderColor: 'var(--border-tech-glow)',
       boxShadow: 'var(--shadow-tech-md)'
     }}>
-      {/* HTML5 Audio Element for Direct Browser Playback */}
+      {/* HTML5 Audio Element */}
       <audio
         ref={audioRef}
         src={currentTrack.url}
         onEnded={handleNext}
       />
 
-      {/* Left: Track Cover & Song Info */}
+      {/* Left: Track Info & Jennie Badge */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
         <div style={{
-          width: '42px',
-          height: '42px',
-          borderRadius: '10px',
+          width: '44px',
+          height: '44px',
+          borderRadius: '12px',
           backgroundColor: currentTrack.coverColor,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           color: '#FFFFFF',
-          boxShadow: `0 0 12px ${currentTrack.coverColor}`,
+          boxShadow: `0 0 14px ${currentTrack.coverColor}`,
           position: 'relative',
           overflow: 'hidden'
         }}>
-          <Disc size={22} className={isPlaying ? 'spin-disc' : ''} />
+          <Disc size={24} className={isPlaying ? 'spin-disc' : ''} />
         </div>
 
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
             <span className="font-heading" style={{
               fontSize: '1.05rem',
-              fontWeight: 700,
+              fontWeight: 800,
               color: 'var(--text-bright)',
               lineHeight: 1.1
             }}>
@@ -114,6 +120,11 @@ export default function MusicPlayer() {
             <span className="hud-badge rose" style={{ fontSize: '0.65rem', padding: '0.05rem 0.35rem' }}>
               {currentTrack.artist}
             </span>
+            {currentTrack.id === 1 && (
+              <span className="hud-badge amber" style={{ fontSize: '0.65rem', padding: '0.05rem 0.35rem' }}>
+                ⭐ FAVORITE
+              </span>
+            )}
           </div>
 
           <div style={{
@@ -125,15 +136,17 @@ export default function MusicPlayer() {
             alignItems: 'center',
             gap: '0.5rem'
           }}>
-            <span>IN-APP AUDIO PLAYER</span>
-            {isPlaying && (
-              <span style={{ color: 'var(--rose-accent)', fontWeight: 600 }}>● PLAYING DIRECTLY</span>
+            <span>LISTEN WHILE WRITING DIARY</span>
+            {isPlaying ? (
+              <span style={{ color: 'var(--rose-accent)', fontWeight: 700 }}>● PLAYING DIRECTLY</span>
+            ) : (
+              <span style={{ color: 'var(--text-muted)' }}>○ PAUSED</span>
             )}
           </div>
         </div>
       </div>
 
-      {/* Center: Controls & Animated Equalizer */}
+      {/* Center: Quick Play Jennie & Audio Controls */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
         {/* Equalizer Visualizer */}
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: '3px', height: '18px', width: '24px' }}>
@@ -153,20 +166,21 @@ export default function MusicPlayer() {
           <SkipBack size={18} />
         </button>
 
-        {/* Play/Pause Main Button */}
+        {/* Play/Pause Button */}
         <button
           onClick={togglePlay}
           className="btn-primary-tech"
           style={{
-            width: '40px',
-            height: '40px',
+            width: '42px',
+            height: '42px',
             borderRadius: '50%',
             padding: 0,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            boxShadow: isPlaying ? '0 0 15px var(--rose-glow)' : 'none'
           }}
-          title={isPlaying ? "Pause Music" : "Play Song Directly"}
+          title={isPlaying ? "Pause Music" : "Play Jennie - Less Than A Lover"}
         >
           {isPlaying ? <Pause size={18} /> : <Play size={18} style={{ marginLeft: '2px' }} />}
         </button>
@@ -182,9 +196,25 @@ export default function MusicPlayer() {
         </button>
       </div>
 
-      {/* Right: Volume Slider & Playlist Selector */}
+      {/* Right: Jennie Direct Button, Volume & Playlist */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        {/* Volume & Mute Controls */}
+        {/* Quick Jennie Track Button */}
+        <button
+          onClick={playJennieTrack}
+          className="btn-secondary-tech"
+          style={{
+            padding: '0.4rem 0.75rem',
+            fontSize: '0.78rem',
+            fontFamily: 'var(--font-mono)',
+            borderColor: currentTrackIndex === 0 && isPlaying ? 'var(--rose-accent)' : 'var(--border-tech)'
+          }}
+          title="Play Jennie - Less Than A Lover"
+        >
+          <Sparkles size={14} color="var(--rose-accent)" />
+          <span>Jennie - Less Than A Lover</span>
+        </button>
+
+        {/* Volume & Mute */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
           <button
             onClick={() => setIsMuted(!isMuted)}
@@ -206,7 +236,7 @@ export default function MusicPlayer() {
               setVolume(parseFloat(e.target.value));
             }}
             style={{
-              width: '70px',
+              width: '65px',
               accentColor: 'var(--rose-accent)',
               cursor: 'pointer'
             }}
@@ -232,11 +262,11 @@ export default function MusicPlayer() {
               top: '120%',
               borderRadius: 'var(--radius-md)',
               padding: '0.6rem',
-              width: '230px',
+              width: '240px',
               zIndex: 60
             }}>
               <div className="font-mono" style={{ fontSize: '0.7rem', fontWeight: 700, padding: '0.25rem 0.5rem', color: 'var(--text-muted)' }}>
-                IN-APP PLAYLIST (3 SONGS)
+                BACKGROUND PLAYLIST (3 TRACKS)
               </div>
               {PLAYLIST.map((track, idx) => (
                 <button

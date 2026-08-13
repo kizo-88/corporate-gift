@@ -30,6 +30,7 @@ export default function App() {
   const [showFormModal, setShowFormModal] = useState(false);
   const [showLockModal, setShowLockModal] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
+  const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
   // Save entries to LocalStorage
@@ -168,7 +169,7 @@ export default function App() {
 
         {/* Background Music Player Widget */}
         <div style={{ marginBottom: '1.25rem' }}>
-          <MusicPlayer />
+          <MusicPlayer isPlaying={isPlayingMusic} setIsPlaying={setIsPlayingMusic} />
         </div>
 
         {/* Dashboard Telemetry Header */}
@@ -222,6 +223,12 @@ export default function App() {
                 setEditingEntry(null);
               }}
               isModal={true}
+              onPlayMusic={() => {
+                const nextState = !isPlayingMusic;
+                setIsPlayingMusic(nextState);
+                showToast(nextState ? 'Playing Jennie - Less Than A Lover 🎵' : 'Music Paused ⏸️');
+              }}
+              isMusicPlaying={isPlayingMusic}
             />
           </div>
         </div>

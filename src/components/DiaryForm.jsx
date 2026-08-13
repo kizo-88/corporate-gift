@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Clock, Sparkles, Send, X, Calendar } from 'lucide-react';
 import { formatDateStamp, WRITING_PROMPTS, CATEGORIES, MOODS } from '../utils/storage';
 
-export default function DiaryForm({ initialData = null, onSave, onCancel, isModal = false }) {
+export default function DiaryForm({ initialData = null, onSave, onCancel, isModal = false, onPlayMusic = null, isMusicPlaying = false }) {
   const nowIso = new Date().toISOString();
   
   const [title, setTitle] = useState(initialData?.title || '');
@@ -100,7 +100,25 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+          {onPlayMusic && (
+            <button
+              type="button"
+              onClick={onPlayMusic}
+              className="btn-secondary-tech"
+              style={{
+                fontSize: '0.78rem',
+                padding: '0.35rem 0.75rem',
+                fontFamily: 'var(--font-mono)',
+                borderColor: isMusicPlaying ? 'var(--rose-accent)' : 'var(--border-tech)'
+              }}
+              title="Play Jennie - Less Than A Lover while writing"
+            >
+              <Sparkles size={13} color="var(--rose-accent)" />
+              <span>{isMusicPlaying ? '▶ PLAYING JENNIE' : '🎵 JENNIE SONG'}</span>
+            </button>
+          )}
+
           <button
             type="button"
             onClick={handleInsertPrompt}
