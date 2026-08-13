@@ -18,8 +18,8 @@ export default function Navbar({
   const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
 
   const themes = [
-    { id: 'cream-rose', name: 'Cream Rose (Terang)', color: '#FAF6F0', accent: '#E88D9E' },
-    { id: 'midnight-rose', name: 'Midnight Rose (Gelap)', color: '#140E17', accent: '#FF9EAE' },
+    { id: 'cream-rose', name: 'Cream Rose (Light)', color: '#FAF6F0', accent: '#E88D9E' },
+    { id: 'midnight-rose', name: 'Midnight Rose (Dark)', color: '#140E17', accent: '#FF9EAE' },
     { id: 'matcha-cream', name: 'Matcha Cream', color: '#F4F7F4', accent: '#52B788' },
     { id: 'lavender-cream', name: 'Lavender Quartz', color: '#F7F5FC', accent: '#A093E2' }
   ];
@@ -67,7 +67,7 @@ export default function Navbar({
                 }}>
                   Mmorkleyyy's Little Journal
                 </h1>
-                <span className="pulse-dot" title="Tersimpan & Selamat" />
+                <span className="pulse-dot" title="Safe & Encrypted" />
               </div>
 
               <div style={{
@@ -82,7 +82,7 @@ export default function Navbar({
                 <span>DIARY</span>
                 <span>•</span>
                 <span className="hud-badge rose" style={{ padding: '0.1rem 0.45rem', fontSize: '0.7rem' }}>
-                  {entryCount} {entryCount === 1 ? 'TULISAN' : 'TULISAN'}
+                  {entryCount} {entryCount === 1 ? 'ENTRY' : 'ENTRIES'}
                 </span>
               </div>
             </div>
@@ -106,7 +106,7 @@ export default function Navbar({
               }} />
               <input
                 type="text"
-                placeholder="Cari diari..."
+                placeholder="Search diary..."
                 value={searchTerm}
                 onChange={(e) => onSearchChange(e.target.value)}
                 className="input-tech font-mono"
@@ -120,33 +120,33 @@ export default function Navbar({
               />
             </div>
 
-            {/* Panduan / Help Button */}
+            {/* Help Button */}
             <button
               onClick={onOpenHelp}
               className="btn-secondary-tech"
-              title="Panduan Pengguna (Help Guide)"
+              title="User Guide & Help"
               style={{ padding: '0.45rem 0.75rem', fontSize: '0.8rem' }}
             >
               <HelpCircle size={16} color="var(--rose-accent)" />
-              <span className="font-mono" style={{ fontSize: '0.75rem' }}>Bantuan</span>
+              <span className="font-mono" style={{ fontSize: '0.75rem' }}>Help</span>
             </button>
 
             {/* Direct Dark Mode / Light Mode Switch Toggle */}
             <button
               onClick={onToggleDarkMode}
               className="btn-secondary-tech"
-              title={isDarkMode ? "Tukar ke Mod Terang (Cream Light)" : "Tukar ke Mod Gelap (Midnight Dark)"}
+              title={isDarkMode ? "Switch to Light Mode (Cream Light)" : "Switch to Dark Mode (Midnight Dark)"}
               style={{ padding: '0.45rem 0.85rem', fontSize: '0.85rem' }}
             >
               {isDarkMode ? (
                 <>
                   <Sun size={16} color="var(--amber-accent)" />
-                  <span style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)' }}>Terang</span>
+                  <span style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)' }}>Light</span>
                 </>
               ) : (
                 <>
                   <Moon size={16} color="var(--lavender-accent)" />
-                  <span style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)' }}>Gelap</span>
+                  <span style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)' }}>Dark</span>
                 </>
               )}
             </button>
@@ -156,7 +156,7 @@ export default function Navbar({
               <button
                 onClick={() => setIsThemeMenuOpen(!isThemeMenuOpen)}
                 className="btn-secondary-tech"
-                title="Pilih Warna Tema"
+                title="Select Theme Palette"
                 style={{ padding: '0.45rem 0.75rem' }}
               >
                 <Palette size={16} />
@@ -173,7 +173,7 @@ export default function Navbar({
                   zIndex: 50
                 }}>
                   <div style={{ fontSize: '0.7rem', fontWeight: 700, padding: '0.25rem 0.5rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                    PILIHAN TEMA WARNA
+                    THEME PALETTES
                   </div>
                   {themes.map((t) => (
                     <button
@@ -216,7 +216,7 @@ export default function Navbar({
             <button
               onClick={onExportData}
               className="btn-secondary-tech"
-              title="Simpan Backup Diari (Muat turun JSON)"
+              title="Save Backup File (Download JSON)"
               style={{ padding: '0.45rem 0.75rem', fontSize: '0.85rem' }}
             >
               <Download size={16} />
@@ -226,7 +226,7 @@ export default function Navbar({
             <button
               onClick={onToggleLock}
               className="btn-secondary-tech"
-              title={isLocked ? "Diari Terkunci (PIN Aktif)" : "Tetapkan PIN Keselamatan"}
+              title={isLocked ? "Diary Protected (PIN Active)" : "Set Security PIN"}
               style={{ padding: '0.45rem 0.75rem', fontSize: '0.85rem' }}
             >
               {isLocked ? <Lock size={16} color="var(--rose-accent)" /> : <Unlock size={16} />}
@@ -239,7 +239,7 @@ export default function Navbar({
               style={{ padding: '0.5rem 1.1rem', fontSize: '0.85rem' }}
             >
               <Plus size={18} />
-              <span>Tulis Diari</span>
+              <span>Write Entry</span>
             </button>
           </div>
         </div>

@@ -79,10 +79,10 @@ export default function EntryList({
           fontSize: '0.95rem',
           fontWeight: 700
         }}
-        title="Tulis Diari Baru"
+        title="Write New Entry"
       >
         <PenTool size={18} />
-        <span>+ Tulis Diari</span>
+        <span>+ Write Entry</span>
       </button>
 
       {/* Search & Filter Header Toolbar */}
@@ -108,7 +108,7 @@ export default function EntryList({
             letterSpacing: '0.05em',
             marginRight: '0.25rem'
           }}>
-            TUKAR KATEGORI:
+            CATEGORY:
           </span>
 
           <button
@@ -121,7 +121,7 @@ export default function EntryList({
               color: selectedCategory === 'All' ? 'var(--rose-accent)' : 'var(--text-muted)'
             }}
           >
-            🌸 SEMUA TULISAN ({entries.length})
+            🌸 ALL ENTRIES ({entries.length})
           </button>
 
           {CATEGORIES.map((cat) => {
@@ -165,7 +165,7 @@ export default function EntryList({
                 className="input-tech font-mono"
                 style={{ padding: '0.35rem 0.75rem', fontSize: '0.78rem', width: 'auto' }}
               >
-                <option value="All">SEMUA PERASAAN (MOOD)</option>
+                <option value="All">ALL MOODS</option>
                 {MOODS.map(m => (
                   <option key={m.label} value={m.label}>
                     {m.emoji} {m.label}
@@ -181,7 +181,7 @@ export default function EntryList({
                 style={{ fontSize: '0.78rem', color: 'var(--primary-accent)', fontFamily: 'var(--font-mono)' }}
               >
                 <RefreshCw size={12} />
-                <span>RESET TAPISAN</span>
+                <span>RESET FILTERS</span>
               </button>
             )}
           </div>
@@ -196,9 +196,9 @@ export default function EntryList({
                 className="input-tech font-mono"
                 style={{ padding: '0.35rem 0.75rem', fontSize: '0.78rem', width: 'auto' }}
               >
-                <option value="newest">SUSUN: TERKINI</option>
-                <option value="oldest">SUSUN: TERAWAL</option>
-                <option value="title">SUSUN: TAJUK A-Z</option>
+                <option value="newest">SORT: NEWEST</option>
+                <option value="oldest">SORT: OLDEST</option>
+                <option value="title">SORT: TITLE A-Z</option>
               </select>
             </div>
 
@@ -221,7 +221,7 @@ export default function EntryList({
                   cursor: 'pointer',
                   color: viewMode === 'grid' ? 'var(--rose-accent)' : 'var(--text-muted)'
                 }}
-                title="Paparan Kad Grid"
+                title="Grid Card View"
               >
                 <LayoutGrid size={15} />
               </button>
@@ -235,7 +235,7 @@ export default function EntryList({
                   cursor: 'pointer',
                   color: viewMode === 'list' ? 'var(--rose-accent)' : 'var(--text-muted)'
                 }}
-                title="Paparan Senarai Ringkas"
+                title="Compact List View"
               >
                 <List size={15} />
               </button>
@@ -293,24 +293,24 @@ export default function EntryList({
 
           <div>
             <h3 className="font-heading" style={{ fontSize: '1.6rem', marginBottom: '0.5rem', color: 'var(--text-bright)' }}>
-              {hasActiveFilters ? 'TIADA DIARI DITEMUI' : 'DIARI ANDA MASIH KOSONG'}
+              {hasActiveFilters ? 'NO ENTRIES FOUND' : 'YOUR DIARY IS EMPTY'}
             </h3>
             <p className="font-mono" style={{ maxWidth: '420px', margin: '0 auto', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
               {hasActiveFilters 
-                ? 'Sila tukar carian atau tekan butang reset untuk lihat semula tulisan anda.' 
-                : 'Tekan butang di bawah untuk mula menulis kenangan pertama anda hari ini!'}
+                ? 'Adjust filter criteria or reset filters to view your entries.' 
+                : 'Click below to write your very first memory today!'}
             </p>
           </div>
 
           {hasActiveFilters ? (
             <button onClick={resetFilters} className="btn-secondary-tech">
               <RefreshCw size={15} />
-              <span>RESET TAPISAN</span>
+              <span>RESET FILTERS</span>
             </button>
           ) : (
             <button onClick={onOpenNewForm} className="btn-primary-tech">
               <Plus size={18} />
-              <span>TULIS KENANGAN PERTAMA</span>
+              <span>WRITE FIRST MEMORY</span>
             </button>
           )}
         </div>

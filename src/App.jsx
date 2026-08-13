@@ -49,7 +49,7 @@ export default function App() {
   const handleToggleDarkMode = () => {
     const nextTheme = isDarkMode ? 'cream-rose' : 'midnight-rose';
     setTheme(nextTheme);
-    showToast(nextTheme === 'midnight-rose' ? 'Mod Gelap Midnight Diaktifkan 🌙' : 'Mod Terang Cream Diaktifkan ☀️');
+    showToast(nextTheme === 'midnight-rose' ? 'Midnight Dark Mode Activated 🌙' : 'Cream Light Mode Activated ☀️');
   };
 
   const showToast = (msg) => {
@@ -73,14 +73,14 @@ export default function App() {
 
     setShowFormModal(false);
     setEditingEntry(null);
-    showToast('Diari tersimpan dengan selamat! 🌸✨');
+    showToast('Diary saved safely! 🌸✨');
   };
 
   const handleDeleteEntry = (entryId) => {
-    if (window.confirm('Adakah anda pasti mahu memadamkan diari ini? Perkara ini tidak boleh diundur.')) {
+    if (window.confirm('Are you sure you want to delete this diary entry? This action cannot be undone.')) {
       setEntries(prev => prev.filter(e => e.id !== entryId));
       if (viewingEntry?.id === entryId) setViewingEntry(null);
-      showToast('Tulisan diari dipadam 🗑️');
+      showToast('Diary entry deleted 🗑️');
     }
   };
 
@@ -88,7 +88,7 @@ export default function App() {
     setEntries(prev => prev.map(e => {
       if (e.id === entryId) {
         const nextPinned = !e.isPinned;
-        showToast(nextPinned ? 'Diari dipin di bahagian atas ⭐️' : 'Pin diari dibatalkan');
+        showToast(nextPinned ? 'Entry pinned to top ⭐️' : 'Entry unpinned');
         return { ...e, isPinned: nextPinned };
       }
       return e;
@@ -103,7 +103,7 @@ export default function App() {
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
-    showToast('Backup fail diari berjaya dimuat turun! 💾');
+    showToast('Diary backup file downloaded! 💾');
   };
 
   return (

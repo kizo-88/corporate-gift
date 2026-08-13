@@ -82,44 +82,45 @@ export default function StatsHeader({ entries, onOpenNewForm }) {
       </div>
 
       {/* Right Tech Metrics & Telemetry Card */}
-      <div style={{
-        backgroundColor: 'rgba(0, 0, 0, 0.25)',
-        border: '1px solid var(--border-tech)',
+      <div className="glass-panel" style={{
+        backgroundColor: 'var(--bg-cyber-card-hover)',
+        border: '1.5px solid var(--border-tech-glow)',
         borderRadius: 'var(--radius-md)',
         padding: '1.1rem 1.25rem',
         display: 'flex',
         flexDirection: 'column',
         gap: '0.85rem',
         position: 'relative',
-        zIndex: 1
+        zIndex: 1,
+        boxShadow: 'var(--shadow-tech-md)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Database size={16} color="var(--neon-cyan)" />
-            <span className="font-mono" style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-bright)' }}>
-              {totalEntries} LOGS RECORDED
+            <Database size={18} color="var(--rose-accent)" />
+            <span className="font-mono" style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--text-bright)' }}>
+              {totalEntries} {totalEntries === 1 ? 'LOG RECORDED' : 'LOGS RECORDED'}
             </span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--neon-amber)' }}>
-            <Flame size={14} color="var(--neon-amber)" />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--amber-accent)' }}>
+            <Flame size={15} color="var(--amber-accent)" />
             <span className="font-mono">ONLINE STREAK</span>
           </div>
         </div>
 
         {/* Top Mood Telemetry Pills */}
         <div>
-          <div className="font-mono" style={{ fontSize: '0.725rem', color: 'var(--text-muted)', fontWeight: 600, marginBottom: '0.35rem' }}>
-            NEURAL MOOD TELEMETRY:
+          <div className="font-mono" style={{ fontSize: '0.75rem', color: 'var(--text-bright)', fontWeight: 700, marginBottom: '0.35rem' }}>
+            MOOD TELEMETRY:
           </div>
           <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
             {topMoods.length > 0 ? topMoods.map(([moodStr, count]) => (
-              <span key={moodStr} className="hud-badge purple" style={{ fontSize: '0.75rem' }}>
+              <span key={moodStr} className="hud-badge rose" style={{ fontSize: '0.78rem', fontWeight: 700 }}>
                 {moodStr} [{count}]
               </span>
             )) : (
-              <span className="font-mono" style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                Create your first log to initialize telemetry!
+              <span className="font-mono" style={{ fontSize: '0.78rem', color: 'var(--text-main)' }}>
+                Write your first entry to see mood analytics!
               </span>
             )}
           </div>
