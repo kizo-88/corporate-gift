@@ -65,6 +65,27 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
       padding: '1.75rem',
       position: 'relative'
     }}>
+      {/* Top Right Close "X" Button */}
+      {onCancel && (
+        <button
+          type="button"
+          onClick={onCancel}
+          className="btn-ghost-tech"
+          style={{
+            position: 'absolute',
+            right: '1.25rem',
+            top: '1.25rem',
+            zIndex: 10,
+            padding: '0.4rem',
+            borderRadius: '50%',
+            backgroundColor: 'var(--bg-cyber-subtle)'
+          }}
+          title="Close"
+        >
+          <X size={20} color="var(--rose-accent)" />
+        </button>
+      )}
+
       {/* Header Bar */}
       <div style={{
         display: 'flex',
@@ -72,7 +93,8 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
         justifyContent: 'space-between',
         marginBottom: '1.25rem',
         borderBottom: '1px solid var(--border-tech)',
-        paddingBottom: '0.85rem'
+        paddingBottom: '0.85rem',
+        paddingRight: onCancel ? '2.5rem' : '0'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
           <span style={{ fontSize: '1.6rem' }}>{sticker}</span>
@@ -81,7 +103,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
               {initialData ? 'UPDATE DIARY LOG' : 'WRITE TODAY\'S DIARY'}
             </h2>
             
-            {/* Automatic Date Stamp Display */}
+            {/* Automatic Date Stamp Display (Without AUTO STAMP badge) */}
             <div style={{
               display: 'flex',
               alignItems: 'center',
@@ -93,9 +115,6 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
             }}>
               <Clock size={12} color="var(--rose-accent)" />
               <span>{formatDateStamp(useCustomDate ? createdAt : (initialData?.createdAt || nowIso))}</span>
-              <span className="hud-badge rose" style={{ padding: '0.05rem 0.35rem', fontSize: '0.65rem' }}>
-                AUTO STAMP
-              </span>
             </div>
           </div>
         </div>
@@ -129,17 +148,6 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
             <Sparkles size={13} color="var(--amber-accent)" />
             <span>AI PROMPT</span>
           </button>
-
-          {isModal && onCancel && (
-            <button
-              type="button"
-              onClick={onCancel}
-              className="btn-ghost-tech"
-              style={{ padding: '0.35rem' }}
-            >
-              <X size={20} />
-            </button>
-          )}
         </div>
       </div>
 
