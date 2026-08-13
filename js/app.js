@@ -1,1306 +1,1538 @@
 const { useState, useEffect, useRef, useMemo } = React;
 
-// --- Mock Database & Products ---
-const PRODUCTS = [
+// --- Initial Financial Data Models ---
+const INITIAL_BANKS = [
   {
-    id: 'prod-1',
-    name: 'The Sovereign Executive Box',
-    category: 'VIP Luxury',
-    price: 185,
-    minQty: 25,
-    leadTime: '3-5 Business Days',
-    rating: 4.9,
-    reviewsCount: 128,
-    image: './assets/images/executive_walnut_box.png',
-    description: 'An handcrafted solid walnut wood gift chest featuring a smart temperature-control thermal mug, Italian full-grain leather notebook, heavy weighted brass gel pen, and gold foil embossed custom greeting card.',
-    tags: ['Best Seller', 'Handcrafted', 'C-Suite Ready'],
-    specs: ['Solid American Walnut Chest', 'Smart Ember Thermal Mug (14 oz)', 'Italian Leather Journal (192 Pages)', 'Solid Brass Executive Pen']
+    id: 'maybank-1',
+    bankName: 'Maybank',
+    cardName: 'MAE / Maybank2u Visa',
+    cardNumber: '4532 •••• •••• 9812',
+    accountNumber: '1642 8829 9812',
+    balance: 14250.50,
+    cardType: 'maybank',
+    cardHolder: 'AMIRUL ASHRAF',
+    expiry: '08/28',
+    colorClass: 'card-maybank',
+    brandColor: '#F7C900',
+    icon: 'credit-card',
+    isDefault: true,
   },
   {
-    id: 'prod-2',
-    name: 'Neptune Tech Onboarding Kit',
-    category: 'Executive Tech',
-    price: 145,
-    minQty: 10,
-    leadTime: '2-4 Business Days',
-    rating: 4.8,
-    reviewsCount: 94,
-    image: './assets/images/luxury_tech_kit.png',
-    description: 'High-performance workspace essentials including active noise-canceling wireless headphones, 10,000mAh magnetic power bank, vacuum insulated smart bottle, and desk organizer.',
-    tags: ['Tech Favorite', 'Remote Onboarding'],
-    specs: ['ANC Wireless Headphones (30h battery)', 'MagSafe Fast Power Bank', 'Insulated Smart Bottle with Temp LED', 'Vegan Leather Extended Desk Mat']
+    id: 'cimb-1',
+    bankName: 'CIMB Bank',
+    cardName: 'CIMB OCTO Mastercard',
+    cardNumber: '5412 •••• •••• 3410',
+    accountNumber: '7051 4412 3410',
+    balance: 8840.00,
+    cardType: 'cimb',
+    cardHolder: 'AMIRUL ASHRAF',
+    expiry: '11/27',
+    colorClass: 'card-cimb',
+    brandColor: '#ED1C24',
+    icon: 'landmark',
   },
   {
-    id: 'prod-3',
-    name: 'Artisan Gourmet Reserve Hamper',
-    category: 'Gourmet Foods',
-    price: 120,
-    minQty: 20,
-    leadTime: '2-3 Business Days',
-    rating: 5.0,
-    reviewsCount: 156,
-    image: './assets/images/gourmet_treats_box.png',
-    description: 'Curated taste of luxury featuring hand-dipped Belgian pralines, single-origin Ethiopian roasted coffee beans, wild organic raw honeycomb jar, and dry roasted macadamia nuts.',
-    tags: ['Gluten-Free Option', 'Holiday Top Pick'],
-    specs: ['Hand-crafted Pralines Box (16pc)', 'Ethiopian Yirgacheffe Beans (250g)', 'Organic Honeycomb Glass Jar (200g)', 'Macadamia & Truffle Nuts Trio']
+    id: 'bankislam-1',
+    bankName: 'Bank Islam',
+    cardName: 'Visa Debit-i Platinum',
+    cardNumber: '4219 •••• •••• 4421',
+    accountNumber: '1209 8812 4421',
+    balance: 5310.20,
+    cardType: 'bankislam',
+    cardHolder: 'AMIRUL ASHRAF',
+    expiry: '05/29',
+    colorClass: 'card-bankislam',
+    brandColor: '#008080',
+    icon: 'shield-check',
   },
   {
-    id: 'prod-4',
-    name: 'Verdant Eco-Conscious Wellness Set',
-    category: 'Eco-Conscious',
-    price: 95,
-    minQty: 30,
-    leadTime: '3-5 Business Days',
-    rating: 4.7,
-    reviewsCount: 82,
-    image: './assets/images/eco_wellness_kit.png',
-    description: 'Sustainable corporate care package crafted with FSC-certified natural bamboo thermal bottle, hand-poured soy wax candle, recycled hemp journal, and desk ceramic succulent plant.',
-    tags: ['100% Recyclable', 'Carbon Neutral Shipping'],
-    specs: ['Bamboo & Steel Tumbler (500ml)', 'French Lavender Soy Candle (8 oz)', 'Recycled Hemp Fiber Journal', 'Mini Ceramic Succulent Pot']
-  },
-  {
-    id: 'prod-5',
-    name: 'The Monogram Leather Portfolio',
-    category: 'VIP Luxury',
-    price: 160,
-    minQty: 15,
-    leadTime: '4-6 Business Days',
-    rating: 4.9,
-    reviewsCount: 64,
-    image: './assets/images/executive_walnut_box.png',
-    description: 'Full-grain Horween leather document sleeve with built-in 15W wireless charging pad, tablet sleeve, and customized foil debossed initials.',
-    tags: ['Custom Debossing', 'Leather Craft'],
-    specs: ['Horween Genuine Leather', 'Qi 15W Wireless Charging Flap', 'Fits 14" MacBook / iPad Pro', 'Solid Stainless Zipper']
-  },
-  {
-    id: 'prod-6',
-    name: 'Aether Wireless Fast Charging Dock',
-    category: 'Executive Tech',
-    price: 75,
-    minQty: 50,
-    leadTime: '2-3 Business Days',
-    rating: 4.6,
-    reviewsCount: 110,
-    image: './assets/images/luxury_tech_kit.png',
-    description: 'Precision machined anodized aluminum 3-in-1 charging stand for smartphone, smartwatch, and earbuds with laser-etched corporate branding.',
-    tags: ['Laser Engraved', 'Compact'],
-    specs: ['Anodized Space Gray Aluminum', 'Fast Charge 3-in-1 Array', 'Includes Braided 6ft USB-C Cable', 'Custom Laser Logo Placement']
+    id: 'tng-1',
+    bankName: "Touch 'n Go",
+    cardName: 'TNG eWallet & RFID',
+    cardNumber: '012 •••• •••• 8819',
+    accountNumber: 'TNG-8819-2026',
+    balance: 485.60,
+    cardType: 'tng',
+    cardHolder: 'AMIRUL ASHRAF',
+    expiry: 'N/A',
+    colorClass: 'card-tng',
+    brandColor: '#0084E3',
+    icon: 'smartphone',
   }
 ];
 
-const PACKAGING_OPTIONS = [
-  { id: 'pack-walnut', name: 'Handcrafted Walnut Chest', price: 35, image: './assets/images/executive_walnut_box.png' },
-  { id: 'pack-black', name: 'Matte Obsidian Eco-Box', price: 18, image: './assets/images/luxury_tech_kit.png' },
-  { id: 'pack-gold', name: 'Gold Magnetic Rigid Box', price: 24, image: './assets/images/gourmet_treats_box.png' },
-  { id: 'pack-linen', name: 'Natural Organic Linen Tote', price: 12, image: './assets/images/eco_wellness_kit.png' }
+const INITIAL_TRANSACTIONS = [
+  {
+    id: 'tx-1',
+    title: 'Gaji Bulanan (GloverTech Ltd)',
+    category: 'Gaji & Pendapatan',
+    amount: 6500.00,
+    type: 'income',
+    bankId: 'maybank-1',
+    bankName: 'Maybank',
+    date: '2026-08-01',
+    icon: 'arrow-down-left'
+  },
+  {
+    id: 'tx-2',
+    title: 'Village Grocer KLCC',
+    category: 'Barang Dapur',
+    amount: 245.80,
+    type: 'expense',
+    bankId: 'cimb-1',
+    bankName: 'CIMB Bank',
+    date: '2026-08-03',
+    icon: 'shopping-cart'
+  },
+  {
+    id: 'tx-3',
+    title: 'Shell Petrol Bangsar South',
+    category: 'Pengangkutan',
+    amount: 80.00,
+    type: 'expense',
+    bankId: 'tng-1',
+    bankName: "Touch 'n Go",
+    date: '2026-08-05',
+    icon: 'fuel'
+  },
+  {
+    id: 'tx-4',
+    title: 'Bil Elektrik Tenaga Nasional (TNB)',
+    category: 'Utiliti & Bil',
+    amount: 168.40,
+    type: 'expense',
+    bankId: 'bankislam-1',
+    bankName: 'Bank Islam',
+    date: '2026-08-07',
+    icon: 'zap'
+  },
+  {
+    id: 'tx-5',
+    title: 'Zus Coffee Mid Valley',
+    category: 'Makanan & Minuman',
+    amount: 15.50,
+    type: 'expense',
+    bankId: 'tng-1',
+    bankName: "Touch 'n Go",
+    date: '2026-08-09',
+    icon: 'coffee'
+  },
+  {
+    id: 'tx-6',
+    title: 'Pindahan ke Tabung Umrah',
+    category: 'Simpanan',
+    amount: 500.00,
+    type: 'expense',
+    bankId: 'maybank-1',
+    bankName: 'Maybank',
+    date: '2026-08-10',
+    icon: 'piggy-bank'
+  },
+  {
+    id: 'tx-7',
+    title: 'Dividen Pelaburan ASB',
+    category: 'Pelaburan',
+    amount: 850.00,
+    type: 'income',
+    bankId: 'bankislam-1',
+    bankName: 'Bank Islam',
+    date: '2026-08-11',
+    icon: 'trending-up'
+  },
+  {
+    id: 'tx-8',
+    title: 'Shopee Online Shopping',
+    category: 'Beli-belah',
+    amount: 120.00,
+    type: 'expense',
+    bankId: 'cimb-1',
+    bankName: 'CIMB Bank',
+    date: '2026-08-12',
+    icon: 'shopping-bag'
+  }
 ];
 
-const GIFT_ITEMS_CATALOG = [
-  { id: 'item-mug', name: 'Ember Smart Thermal Mug', category: 'Tech', price: 65, icon: 'coffee' },
-  { id: 'item-journal', name: 'Full-Grain Leather Journal', category: 'Stationery', price: 32, icon: 'book-open' },
-  { id: 'item-powerbank', name: 'Magnetic 10K Power Bank', category: 'Tech', price: 42, icon: 'battery-charging' },
-  { id: 'item-chocolates', name: 'Belgian Truffle Box (12pc)', category: 'Gourmet', price: 28, icon: 'gift' },
-  { id: 'item-pen', name: 'Weighted Brass Rollerball Pen', category: 'Stationery', price: 25, icon: 'pen-tool' },
-  { id: 'item-candle', name: 'French Soy Wax Candle', category: 'Wellness', price: 24, icon: 'sparkles' },
-  { id: 'item-thermos', name: 'Vacuum Insulated Tumbler', category: 'Drinkware', price: 30, icon: 'glass-water' },
-  { id: 'item-coffee', name: 'Artisan Coffee Beans (250g)', category: 'Gourmet', price: 18, icon: 'bean' }
+const INITIAL_SAVINGS_GOALS = [
+  {
+    id: 'goal-1',
+    title: 'Tabung Umrah & Haji',
+    targetAmount: 12000,
+    currentAmount: 7500,
+    category: 'Ibadah',
+    color: 'from-emerald-500 to-teal-700',
+    icon: 'moon'
+  },
+  {
+    id: 'goal-2',
+    title: 'Tabung Kecemasan (6 Bulan)',
+    targetAmount: 20000,
+    currentAmount: 15200,
+    category: 'Keselamatan',
+    color: 'from-cyan-500 to-blue-700',
+    icon: 'shield-alert'
+  },
+  {
+    id: 'goal-3',
+    title: 'Deposit Rumah Pertama',
+    targetAmount: 35000,
+    currentAmount: 21000,
+    category: 'Hartanah',
+    color: 'from-amber-500 to-orange-600',
+    icon: 'home'
+  },
+  {
+    id: 'goal-4',
+    title: 'Percutian Pulau Redang',
+    targetAmount: 3000,
+    currentAmount: 2400,
+    category: 'Gaya Hidup',
+    color: 'from-pink-500 to-rose-600',
+    icon: 'palmtree'
+  }
 ];
 
-const CLIENT_LOGOS = ['GOOGLE', 'STRIPE', 'MICROSOFT', 'META', 'SEQUOIA', 'SNOWFLAKE'];
+const AVAILABLE_BANKS_TO_CONNECT = [
+  { id: 'maybank', name: 'Maybank (Maybank2u / MAE)', logo: 'M2U', color: '#F7C900', textColor: '#000000', type: 'maybank' },
+  { id: 'cimb', name: 'CIMB Bank (OCTO / CIMB Clicks)', logo: 'CIMB', color: '#ED1C24', textColor: '#FFFFFF', type: 'cimb' },
+  { id: 'bankislam', name: 'Bank Islam Malaysia', logo: 'BIMB', color: '#008080', textColor: '#FFFFFF', type: 'bankislam' },
+  { id: 'tng', name: "Touch 'n Go eWallet", logo: 'TNG', color: '#0084E3', textColor: '#FFFFFF', type: 'tng' },
+  { id: 'rhb', name: 'RHB Bank (RHB Now)', logo: 'RHB', color: '#0066B3', textColor: '#FFFFFF', type: 'generic' },
+  { id: 'publicbank', name: 'Public Bank (PBEbank)', logo: 'PBB', color: '#D9251D', textColor: '#FFFFFF', type: 'generic' },
+  { id: 'hongleong', name: 'Hong Leong Bank (HLB Connect)', logo: 'HLB', color: '#0A2540', textColor: '#FFFFFF', type: 'generic' }
+];
 
-// --- Helper Functions ---
-const formatCurrency = (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
+// Helper Formatter
+const formatRM = (val) => {
+  return new Intl.NumberFormat('ms-MY', {
+    style: 'currency',
+    currency: 'MYR',
+    minimumFractionDigits: 2
+  }).format(val).replace('MYR', 'RM');
+};
 
 // --- Main App Component ---
 function App() {
-  // Application State
+  // Theme & App State
   const [theme, setTheme] = useState('dark');
-  const [quoteItems, setQuoteItems] = useState([]);
-  const [isQuoteDrawerOpen, setIsQuoteDrawerOpen] = useState(false);
-  const [quickViewProduct, setQuickViewProduct] = useState(null);
-  const [activeCatalogTab, setActiveCatalogTab] = useState('All');
+  const [showBalance, setShowBalance] = useState(true);
+  const [walletViewMode, setWalletViewMode] = useState('holder'); // 'holder' or 'grid'
+  const [activeCardId, setActiveCardId] = useState(INITIAL_BANKS[0].id);
+
+  const [banks, setBanks] = useState(INITIAL_BANKS);
+  const [transactions, setTransactions] = useState(INITIAL_TRANSACTIONS);
+  const [goals, setGoals] = useState(INITIAL_SAVINGS_GOALS);
+  const [selectedBankFilter, setSelectedBankFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [toast, setToast] = useState(null);
 
-  // Gift Box Builder State
-  const [builderPackaging, setBuilderPackaging] = useState(PACKAGING_OPTIONS[0]);
-  const [builderSelectedItems, setBuilderSelectedItems] = useState([GIFT_ITEMS_CATALOG[0], GIFT_ITEMS_CATALOG[1]]);
-  const [builderQuantity, setBuilderQuantity] = useState(50);
-  const [builderSleeveColor, setBuilderSleeveColor] = useState('Gold Foil');
-  const [builderCardText, setBuilderCardText] = useState('Welcome to the Team! We are thrilled to shape the future with you.');
-  const [builderCompanyName, setBuilderCompanyName] = useState('ACME CORP');
+  // Modals state
+  const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
+  const [isAddTxModalOpen, setIsAddTxModalOpen] = useState(false);
+  const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
+  const [selectedGoalForDeposit, setSelectedGoalForDeposit] = useState(null);
 
-  // Logo Customizer State
-  const [customizerText, setCustomizerText] = useState('ACME CORP');
-  const [customizerFinish, setCustomizerFinish] = useState('gold');
+  // Bank Connection Wizard state
+  const [connectStep, setConnectStep] = useState(1);
+  const [selectedBankToConnect, setSelectedBankToConnect] = useState(AVAILABLE_BANKS_TO_CONNECT[0]);
+  const [connectForm, setConnectForm] = useState({ username: '', password: '', accountNo: '', cardHolder: '' });
+  const [otpCode, setOtpCode] = useState('');
+  const [isSyncing, setIsSyncing] = useState(false);
 
-  // Bulk Estimator State
-  const [estQuantity, setEstQuantity] = useState(100);
-  const [estShipping, setEstShipping] = useState('multi'); // 'single' or 'multi'
-  const [estSleeve, setEstSleeve] = useState(true);
-  const [estEngraving, setEstEngraving] = useState(true);
+  // New Transaction Form State
+  const [txForm, setTxForm] = useState({
+    title: '',
+    category: 'Makanan & Minuman',
+    amount: '',
+    type: 'expense',
+    bankId: INITIAL_BANKS[0].id
+  });
 
-  // Handle Theme Toggle
+  // Deposit Goal Form State
+  const [depositAmount, setDepositAmount] = useState('');
+  const [depositFromBankId, setDepositFromBankId] = useState(INITIAL_BANKS[0].id);
+
+  // Budget Category Limits
+  const [budgetLimits, setBudgetLimits] = useState({
+    'Barang Dapur': { limit: 1000, spent: 245.80 },
+    'Utiliti & Bil': { limit: 500, spent: 168.40 },
+    'Pengangkutan': { limit: 400, spent: 80.00 },
+    'Makanan & Minuman': { limit: 600, spent: 15.50 }
+  });
+
+  // Toast Helper
+  const triggerToast = (message, title = 'Berjaya') => {
+    setToast({ title, message, id: Date.now() });
+    setTimeout(() => setToast(null), 3800);
+  };
+
+  // Toggle Theme
   const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-    if (newTheme === 'dark') {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+    if (nextTheme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
   };
 
-  // Toast Notification Helper
-  const showToast = (message, title = 'Success') => {
-    setToast({ title, message, id: Date.now() });
-    setTimeout(() => setToast(null), 3500);
-  };
+  // Calculations
+  const totalNetWorth = useMemo(() => {
+    return banks.reduce((acc, bank) => acc + bank.balance, 0);
+  }, [banks]);
 
-  // Add Item to Quote Drawer
-  const addToQuote = (item, qty = 1, customConfig = null) => {
-    const newItem = {
-      id: `${item.id}-${Date.now()}`,
-      product: item,
-      quantity: qty,
-      customConfig: customConfig,
-      unitPrice: customConfig ? customConfig.calculatedUnitPrice : item.price
-    };
-    setQuoteItems(prev => [...prev, newItem]);
-    showToast(`Added "${item.name}" (${qty} units) to your corporate quote.`, 'Added to Quote');
-    setIsQuoteDrawerOpen(true);
-  };
+  const totalMonthlyIncome = useMemo(() => {
+    return transactions
+      .filter(t => t.type === 'income')
+      .reduce((acc, t) => acc + t.amount, 0);
+  }, [transactions]);
 
-  // Remove Item from Quote
-  const removeFromQuote = (quoteId) => {
-    setQuoteItems(prev => prev.filter(i => i.id !== quoteId));
-  };
+  const totalMonthlyExpense = useMemo(() => {
+    return transactions
+      .filter(t => t.type === 'expense')
+      .reduce((acc, t) => acc + t.amount, 0);
+  }, [transactions]);
 
-  // Calculate Builder Price
-  const builderTotals = useMemo(() => {
-    const itemsSum = builderSelectedItems.reduce((acc, curr) => acc + curr.price, 0);
-    const boxBase = builderPackaging.price;
-    const sleeveCost = builderSleeveColor !== 'None' ? 4 : 0;
-    const rawPerBox = boxBase + itemsSum + sleeveCost;
+  // Financial Health Score
+  const healthScore = useMemo(() => {
+    if (totalMonthlyIncome === 0) return 85;
+    const savingsRatio = ((totalMonthlyIncome - totalMonthlyExpense) / totalMonthlyIncome) * 100;
+    let score = 70 + Math.round(savingsRatio * 0.3);
+    return Math.min(Math.max(score, 50), 98);
+  }, [totalMonthlyIncome, totalMonthlyExpense]);
 
-    // Quantity Tier Discount
-    let discountPct = 0;
-    if (builderQuantity >= 500) discountPct = 0.25;
-    else if (builderQuantity >= 200) discountPct = 0.20;
-    else if (builderQuantity >= 50) discountPct = 0.10;
+  // Active Selected Card Object
+  const activeBankCard = useMemo(() => {
+    return banks.find(b => b.id === activeCardId) || banks[0];
+  }, [banks, activeCardId]);
 
-    const unitPrice = rawPerBox * (1 - discountPct);
-    const totalPrice = unitPrice * builderQuantity;
-
-    return { rawPerBox, discountPct, unitPrice, totalPrice };
-  }, [builderPackaging, builderSelectedItems, builderQuantity, builderSleeveColor]);
+  // Filtered Transactions
+  const filteredTransactions = useMemo(() => {
+    return transactions.filter(tx => {
+      const matchesBank = selectedBankFilter === 'all' || tx.bankId === selectedBankFilter;
+      const matchesSearch = tx.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tx.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tx.bankName.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesBank && matchesSearch;
+    });
+  }, [transactions, selectedBankFilter, searchQuery]);
 
   // GSAP Animations Initialization
   useEffect(() => {
-    // Re-initialize Lucide Icons
     if (window.lucide) window.lucide.createIcons();
 
-    // GSAP Scroll Animations
-    if (window.gsap && window.ScrollTrigger) {
-      gsap.registerPlugin(ScrollTrigger);
+    if (window.gsap) {
+      gsap.fromTo('.gsap-hero-networth',
+        { opacity: 0, y: 25, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'power3.out' }
+      );
 
-      // Hero Entrance Timeline
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1 } });
-      tl.fromTo('.gsap-hero-title', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1.2 })
-        .fromTo('.gsap-hero-sub', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 }, '-=0.8')
-        .fromTo('.gsap-hero-cta', { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.8 }, '-=0.6')
-        .fromTo('.gsap-hero-card', { opacity: 0, y: 50, rotateX: 15 }, { opacity: 1, y: 0, rotateX: 0, duration: 1, stagger: 0.2 }, '-=0.6');
-
-      // Reveal Sections on Scroll
-      gsap.utils.toArray('.gsap-reveal-section').forEach((section) => {
-        gsap.fromTo(section, 
-          { opacity: 0, y: 50 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 85%',
-              toggleActions: 'play none none none'
-            }
-          }
-        );
-      });
+      gsap.fromTo('.gsap-section',
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8, stagger: 0.2, ease: 'power2.out' }
+      );
     }
   }, []);
 
-  // Filtered Products
-  const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter(prod => {
-      const matchesCategory = activeCatalogTab === 'All' || prod.category === activeCatalogTab;
-      const matchesSearch = prod.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            prod.description.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesCategory && matchesSearch;
-    });
-  }, [activeCatalogTab, searchQuery]);
+  // Re-trigger lucide icons when state modal or cards change
+  useEffect(() => {
+    if (window.lucide) window.lucide.createIcons();
+  }, [isConnectModalOpen, isAddTxModalOpen, isDepositModalOpen, connectStep, banks, transactions, walletViewMode, activeCardId]);
+
+  // Copy Card Details to Clipboard
+  const handleCopyCard = (cardNum) => {
+    navigator.clipboard?.writeText(cardNum.replace(/•/g, '0'));
+    triggerToast(`Nombor kad ${cardNum} telah disalin ke papan klip!`, 'Nombor Kad Disalin');
+  };
+
+  // Handle Bank Connection Submit
+  const handleConnectBank = (e) => {
+    e.preventDefault();
+    if (connectStep === 1) {
+      setConnectStep(2);
+    } else if (connectStep === 2) {
+      if (!connectForm.username) {
+        alert('Sila masukkan Nama Pengguna / No. Kad!');
+        return;
+      }
+      setIsSyncing(true);
+      setTimeout(() => {
+        setIsSyncing(false);
+        setConnectStep(3); // OTP Verification
+      }, 1500);
+    } else if (connectStep === 3) {
+      if (!otpCode || otpCode.length < 4) {
+        alert('Sila masukkan kod TAC / OTP 6-digit yang sah!');
+        return;
+      }
+      setIsSyncing(true);
+      setTimeout(() => {
+        setIsSyncing(false);
+
+        // Generate New Bank Card
+        const randomDigits = Math.floor(1000 + Math.random() * 9000);
+        const randomAccount = Math.floor(1000000000 + Math.random() * 9000000000);
+        const randomBalance = Math.floor(1500 + Math.random() * 8500);
+
+        const newBank = {
+          id: `${selectedBankToConnect.type}-${Date.now()}`,
+          bankName: selectedBankToConnect.name.split(' (')[0],
+          cardName: `${selectedBankToConnect.name.split(' (')[0]} Platinum Card`,
+          cardNumber: `4${Math.floor(100 + Math.random() * 900)} •••• •••• ${randomDigits}`,
+          accountNumber: `${randomAccount}`,
+          balance: randomBalance,
+          cardType: selectedBankToConnect.type,
+          cardHolder: connectForm.cardHolder.toUpperCase() || 'AMIRUL ASHRAF',
+          expiry: '12/30',
+          colorClass: selectedBankToConnect.type === 'maybank' ? 'card-maybank'
+            : selectedBankToConnect.type === 'cimb' ? 'card-cimb'
+              : selectedBankToConnect.type === 'bankislam' ? 'card-bankislam'
+                : selectedBankToConnect.type === 'tng' ? 'card-tng' : 'card-generic',
+          brandColor: selectedBankToConnect.color,
+          icon: 'credit-card'
+        };
+
+        setBanks(prev => [...prev, newBank]);
+        setActiveCardId(newBank.id);
+        triggerToast(`Akaun ${newBank.bankName} berjaya dimasukkan ke dalam Pemegang Kad! Saldo awal: ${formatRM(newBank.balance)}`, 'Kad Dimasukkan ke Card Holder');
+        setIsConnectModalOpen(false);
+        setConnectStep(1);
+        setConnectForm({ username: '', password: '', accountNo: '', cardHolder: '' });
+        setOtpCode('');
+      }, 1800);
+    }
+  };
+
+  // Handle Add Manual Transaction
+  const handleAddTransaction = (e) => {
+    e.preventDefault();
+    if (!txForm.title || !txForm.amount || parseFloat(txForm.amount) <= 0) {
+      alert('Sila isi maklumat transaksi dengan betul!');
+      return;
+    }
+
+    const targetBank = banks.find(b => b.id === txForm.bankId) || banks[0];
+    const amountVal = parseFloat(txForm.amount);
+
+    const newTx = {
+      id: `tx-${Date.now()}`,
+      title: txForm.title,
+      category: txForm.category,
+      amount: amountVal,
+      type: txForm.type,
+      bankId: targetBank.id,
+      bankName: targetBank.bankName,
+      date: new Date().toISOString().split('T')[0],
+      icon: txForm.type === 'income' ? 'arrow-down-left' : 'arrow-up-right'
+    };
+
+    // Update bank balance
+    setBanks(prev => prev.map(b => {
+      if (b.id === targetBank.id) {
+        const updatedBal = txForm.type === 'income' ? b.balance + amountVal : b.balance - amountVal;
+        return { ...b, balance: Math.max(updatedBal, 0) };
+      }
+      return b;
+    }));
+
+    // Update budget category spent if expense
+    if (txForm.type === 'expense' && budgetLimits[txForm.category]) {
+      setBudgetLimits(prev => ({
+        ...prev,
+        [txForm.category]: {
+          ...prev[txForm.category],
+          spent: prev[txForm.category].spent + amountVal
+        }
+      }));
+    }
+
+    setTransactions(prev => [newTx, ...prev]);
+    triggerToast(`Transaksi "${txForm.title}" (${formatRM(amountVal)}) telah direkodkan.`, 'Transaksi Baru');
+    setIsAddTxModalOpen(false);
+    setTxForm({ title: '', category: 'Makanan & Minuman', amount: '', type: 'expense', bankId: banks[0].id });
+  };
+
+  // Handle Deposit to Savings Goal
+  const handleDepositToGoal = (e) => {
+    e.preventDefault();
+    if (!depositAmount || parseFloat(depositAmount) <= 0) {
+      alert('Sila masukkan jumlah simpanan!');
+      return;
+    }
+
+    const amountVal = parseFloat(depositAmount);
+    const sourceBank = banks.find(b => b.id === depositFromBankId) || banks[0];
+
+    if (sourceBank.balance < amountVal) {
+      alert(`Baki akaun ${sourceBank.bankName} tidak mencukupi! (Baki: ${formatRM(sourceBank.balance)})`);
+      return;
+    }
+
+    // Deduct from bank
+    setBanks(prev => prev.map(b => {
+      if (b.id === sourceBank.id) {
+        return { ...b, balance: b.balance - amountVal };
+      }
+      return b;
+    }));
+
+    // Add to Goal
+    setGoals(prev => prev.map(g => {
+      if (g.id === selectedGoalForDeposit.id) {
+        return { ...g, currentAmount: g.currentAmount + amountVal };
+      }
+      return g;
+    }));
+
+    // Record as transaction
+    const newTx = {
+      id: `tx-${Date.now()}`,
+      title: `Deposit: ${selectedGoalForDeposit.title}`,
+      category: 'Simpanan',
+      amount: amountVal,
+      type: 'expense',
+      bankId: sourceBank.id,
+      bankName: sourceBank.bankName,
+      date: new Date().toISOString().split('T')[0],
+      icon: 'piggy-bank'
+    };
+
+    setTransactions(prev => [newTx, ...prev]);
+    triggerToast(`Deposit ${formatRM(amountVal)} dari ${sourceBank.bankName} ke "${selectedGoalForDeposit.title}" berjaya!`, 'Tabung Diperkemas');
+    setIsDepositModalOpen(false);
+    setDepositAmount('');
+  };
 
   return (
-    <div className="min-h-screen flex flex-col selection:bg-amber-400 selection:text-slate-950">
+    <div className="min-h-screen flex flex-col selection:bg-emerald-400 selection:text-slate-950">
+
       {/* Toast Alert */}
       {toast && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center space-x-3 bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 px-5 py-4 rounded-xl shadow-2xl border border-amber-500/40 animate-bounce">
-          <i data-lucide="check-circle" className="w-6 h-6 text-amber-400 dark:text-amber-600"></i>
+        <div className="fixed bottom-6 right-6 z-50 flex items-center space-x-3 bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 px-5 py-4 rounded-2xl shadow-2xl border border-emerald-500/40 animate-bounce">
+          <div className="w-8 h-8 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 dark:text-emerald-600">
+            <i data-lucide="check-circle" className="w-5 h-5"></i>
+          </div>
           <div>
-            <p className="font-semibold text-sm">{toast.title}</p>
+            <p className="font-display font-bold text-sm">{toast.title}</p>
             <p className="text-xs opacity-80">{toast.message}</p>
           </div>
         </div>
       )}
 
-      {/* Navigation Header */}
+      {/* Header Navigation */}
       <header className="sticky top-0 z-40 w-full glass-panel border-b border-slate-200/80 dark:border-slate-800/80 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          
+
           {/* Logo */}
-          <a href="#" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 rounded-xl gold-gradient-bg flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
-              <span className="font-serif text-slate-950 font-extrabold text-xl tracking-tighter">A</span>
+          <div className="flex items-center space-x-3">
+            <div className="w-11 h-11 rounded-2xl emerald-gradient-bg flex items-center justify-center shadow-lg shadow-emerald-500/25 pulse-emerald">
+              <i data-lucide="credit-card" className="w-6 h-6 text-slate-950"></i>
             </div>
             <div>
-              <span className="font-serif text-2xl font-bold tracking-tight text-slate-900 dark:text-white">AURA & CO.</span>
-              <span className="block text-[10px] tracking-widest uppercase font-semibold text-amber-600 dark:text-amber-400">Executive Gifting</span>
+              <span className="font-display text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-1">
+                Kawal <span className="emerald-gradient-text">Money</span>
+              </span>
+              <span className="block text-[10px] font-bold tracking-widest uppercase text-emerald-600 dark:text-emerald-400">
+                Pemegang Kad Bank Peribadi
+              </span>
             </div>
-          </a>
+          </div>
 
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center space-x-8 font-medium text-sm text-slate-700 dark:text-slate-300">
-            <a href="#catalog" className="hover:text-amber-500 transition-colors">Catalog</a>
-            <a href="#builder" className="hover:text-amber-500 transition-colors flex items-center gap-1.5">
-              <span>Gift Builder</span>
-              <span className="px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/30">Interactive</span>
-            </a>
-            <a href="#customizer" className="hover:text-amber-500 transition-colors">Logo Preview</a>
-            <a href="#estimator" className="hover:text-amber-500 transition-colors">Bulk Estimator</a>
-            <a href="#testimonials" className="hover:text-amber-500 transition-colors">Clients</a>
-          </nav>
+          {/* Quick Stats Nav Badge */}
+          <div className="hidden md:flex items-center space-x-6 px-4 py-2 rounded-2xl bg-slate-100/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800">
+            <div className="flex items-center space-x-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+              <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">Dalam Card Holder:</span>
+              <span className="font-mono font-bold text-xs text-slate-900 dark:text-white">{banks.length} Kad</span>
+            </div>
+            <div className="h-4 w-[1px] bg-slate-300 dark:bg-slate-700"></div>
+            <div className="flex items-center space-x-2">
+              <i data-lucide="shield-check" className="w-4 h-4 text-emerald-500"></i>
+              <span className="text-xs font-bold text-emerald-500">Enkripsi 256-bit</span>
+            </div>
+          </div>
 
-          {/* Right Actions */}
-          <div className="flex items-center space-x-4">
+          {/* Action Buttons */}
+          <div className="flex items-center space-x-3">
+            {/* Show/Hide Balance Toggle */}
+            <button
+              onClick={() => setShowBalance(!showBalance)}
+              title={showBalance ? "Sembunyikan Baki" : "Paparkan Baki"}
+              className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 transition-colors"
+            >
+              {showBalance ? <i data-lucide="eye" className="w-5 h-5"></i> : <i data-lucide="eye-off" className="w-5 h-5 text-emerald-500"></i>}
+            </button>
+
             {/* Theme Toggle */}
-            <button 
+            <button
               onClick={toggleTheme}
-              aria-label="Toggle dark mode"
-              className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-500 transition-colors"
+              title="Tukar Tema Dark/Light"
+              className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 transition-colors"
             >
               {theme === 'dark' ? <i data-lucide="sun" className="w-5 h-5 text-amber-400"></i> : <i data-lucide="moon" className="w-5 h-5"></i>}
             </button>
 
-            {/* Quote Drawer Button */}
+            {/* Connect Bank CTA */}
             <button
-              onClick={() => setIsQuoteDrawerOpen(true)}
-              className="relative p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-500 transition-colors"
+              onClick={() => {
+                setConnectStep(1);
+                setIsConnectModalOpen(true);
+              }}
+              className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl emerald-gradient-bg text-slate-950 font-display font-bold text-xs shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 hover:scale-105 transition-all"
             >
-              <i data-lucide="shopping-bag" className="w-5 h-5"></i>
-              {quoteItems.length > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full gold-gradient-bg text-slate-950 font-bold text-xs flex items-center justify-center shadow-md">
-                  {quoteItems.length}
-                </span>
-              )}
+              <i data-lucide="plus-circle" className="w-4 h-4"></i>
+              <span>Hubung Kad Bank</span>
             </button>
-
-            {/* Primary CTA */}
-            <a
-              href="#builder"
-              className="hidden lg:inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl gold-gradient-bg text-slate-950 font-semibold text-sm shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 hover:scale-105 transition-all"
-            >
-              <span>Build Custom Box</span>
-              <i data-lucide="arrow-right" className="w-4 h-4"></i>
-            </a>
           </div>
+
         </div>
       </header>
 
-      {/* Main Content Sections */}
-      <main className="flex-1">
+      {/* Main Content Area */}
+      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-10">
 
-        {/* HERO SECTION */}
-        <section className="relative pt-12 pb-24 lg:pt-20 lg:pb-32 overflow-hidden">
+        {/* HERO SECTION: Financial Overview & Net Worth */}
+        <section className="gsap-hero-networth rounded-3xl glass-panel p-6 sm:p-8 border border-emerald-500/30 shadow-2xl relative overflow-hidden">
           {/* Background Ambient Glow */}
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/10 dark:bg-amber-500/15 rounded-full blur-[140px] pointer-events-none"></div>
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              
-              {/* Left Column Text */}
-              <div className="lg:col-span-7 space-y-8">
-                <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-semibold uppercase tracking-widest">
-                  <i data-lucide="sparkles" className="w-4 h-4 text-amber-500"></i>
-                  <span>2026 Executive Corporate Collection</span>
-                </div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
 
-                <h1 className="gsap-hero-title font-serif text-4xl sm:text-6xl xl:text-7xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-[1.1]">
-                  Elevate Enterprise Relations With <span className="gold-gradient-text">Unrivaled Gifts.</span>
+            {/* Net Worth Main Numbers */}
+            <div className="lg:col-span-7 space-y-4">
+              <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-semibold uppercase tracking-wider">
+                <i data-lucide="sparkles" className="w-4 h-4"></i>
+                <span>Jumlah Harta Bersih Dalam Card Holder</span>
+              </div>
+
+              <div className="space-y-1">
+                <p className="text-xs uppercase font-bold tracking-widest text-slate-400">Ringgit Malaysia (MYR)</p>
+                <h1 className="font-mono text-4xl sm:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                  {showBalance ? formatRM(totalNetWorth) : 'RM •••••••••'}
                 </h1>
-
-                <p className="gsap-hero-sub text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl font-normal leading-relaxed">
-                  Bespoke corporate gifting engineered for enterprise impact. Custom logo foil stamping, curated artisanal items, automated bulk logistics, and automated home drop-shipping worldwide.
-                </p>
-
-                <div className="gsap-hero-cta flex flex-col sm:flex-row gap-4 pt-2">
-                  <a
-                    href="#builder"
-                    className="inline-flex items-center justify-center space-x-3 px-8 py-4 rounded-xl gold-gradient-bg text-slate-950 font-bold text-base shadow-xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-[1.02] transition-all"
-                  >
-                    <span>Launch 3D Gift Box Builder</span>
-                    <i data-lucide="box" className="w-5 h-5"></i>
-                  </a>
-                  <a
-                    href="#catalog"
-                    className="inline-flex items-center justify-center space-x-3 px-8 py-4 rounded-xl border border-slate-300 dark:border-slate-800 text-slate-900 dark:text-white font-semibold text-base hover:border-amber-500 transition-colors"
-                  >
-                    <span>Browse 2026 Catalog</span>
-                    <i data-lucide="grid" className="w-5 h-5"></i>
-                  </a>
-                </div>
-
-                {/* Key Metrics Row */}
-                <div className="pt-8 border-t border-slate-200 dark:border-slate-800/80 grid grid-cols-3 gap-6">
-                  <div>
-                    <span className="block font-serif text-3xl font-extrabold text-slate-900 dark:text-white">150K+</span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Gifts Delivered</span>
-                  </div>
-                  <div>
-                    <span className="block font-serif text-3xl font-extrabold text-amber-500">99.8%</span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">On-Time Logistics</span>
-                  </div>
-                  <div>
-                    <span className="block font-serif text-3xl font-extrabold text-slate-900 dark:text-white">4.95 / 5</span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Enterprise Rating</span>
-                  </div>
-                </div>
               </div>
 
-              {/* Right Visual Card (Floating 3D Box Preview) */}
-              <div className="lg:col-span-5 relative">
-                <div className="gsap-hero-card relative rounded-3xl overflow-hidden glass-panel p-4 border border-amber-500/30 shadow-2xl">
-                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden group">
-                    <img 
-                      src="./assets/images/executive_walnut_box.png" 
-                      alt="The Sovereign Executive Box" 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
-                    
-                    {/* Floating Product Badge */}
-                    <div className="absolute top-4 right-4 glass-panel px-3 py-1.5 rounded-full text-xs font-bold text-amber-400 border border-amber-500/40">
-                      ★ VIP Flagship Box
-                    </div>
-
-                    <div className="absolute bottom-6 left-6 right-6 text-white space-y-2">
-                      <p className="text-xs font-bold uppercase tracking-wider text-amber-400">Featured Executive Set</p>
-                      <h3 className="font-serif text-2xl font-bold">The Sovereign Walnut Box</h3>
-                      <div className="flex items-center justify-between text-xs text-slate-300">
-                        <span>Includes Ember Mug, Leather Journal & Brass Pen</span>
-                        <span className="font-bold text-amber-400 text-sm">$185 / box</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Micro Interaction Floating Badge */}
-                  <div className="mt-4 flex items-center justify-between px-3 py-2 bg-slate-100 dark:bg-slate-900/80 rounded-xl text-xs">
-                    <div className="flex items-center space-x-2">
-                      <i data-lucide="shield-check" className="w-4 h-4 text-emerald-500"></i>
-                      <span className="text-slate-700 dark:text-slate-300 font-medium">Free Custom Logo Foil Stamping Included</span>
-                    </div>
-                    <span className="text-amber-500 font-semibold">Min Qty: 25</span>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        {/* TRUST LOGOS MARQUEE */}
-        <section className="py-10 border-y border-slate-200/80 dark:border-slate-800/80 bg-slate-100/50 dark:bg-slate-900/40">
-          <div className="max-w-7xl mx-auto px-4 text-center">
-            <p className="text-xs uppercase tracking-widest font-bold text-slate-400 dark:text-slate-500 mb-6">
-              Trusted By HR Executives & People Operations Teams Worldwide
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-75 grayscale hover:grayscale-0 transition-all">
-              {CLIENT_LOGOS.map(logo => (
-                <span key={logo} className="font-serif text-xl sm:text-2xl font-extrabold tracking-wider text-slate-800 dark:text-slate-200">
-                  {logo}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* INTERACTIVE 3D GIFT BOX BUILDER */}
-        <section id="builder" className="gsap-reveal-section py-24 bg-slate-50 dark:bg-slate-950 relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            {/* Section Header */}
-            <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-500 text-xs font-semibold uppercase tracking-wider">
-                <i data-lucide="sliders" className="w-4 h-4"></i>
-                <span>Custom Configurator</span>
-              </div>
-              <h2 className="font-serif text-3xl sm:text-5xl font-bold text-slate-900 dark:text-white">
-                Interactive <span className="gold-gradient-text">Gift Box Builder</span>
-              </h2>
-              <p className="text-slate-600 dark:text-slate-400 text-base">
-                Curate bespoke corporate boxes in real time. Choose packaging, select high-end executive gifts, add custom logo embossing, and see instant volume discounts.
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Jumlah keseluruhan dari <span className="font-bold text-slate-900 dark:text-white">{banks.length} kad bank</span> tersusun kemas dalam Card Holder.
               </p>
+
+              {/* Action Buttons Row */}
+              <div className="flex flex-wrap gap-3 pt-2">
+                <button
+                  onClick={() => setIsAddTxModalOpen(true)}
+                  className="inline-flex items-center space-x-2 px-5 py-3 rounded-xl emerald-gradient-bg text-slate-950 font-display font-bold text-xs shadow-md hover:scale-105 transition-all"
+                >
+                  <i data-lucide="plus" className="w-4 h-4"></i>
+                  <span>Rekod Transaksi Baru</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    setConnectStep(1);
+                    setIsConnectModalOpen(true);
+                  }}
+                  className="inline-flex items-center space-x-2 px-5 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 text-slate-900 dark:text-white font-display font-semibold text-xs hover:border-emerald-500 transition-colors"
+                >
+                  <i data-lucide="link-2" className="w-4 h-4 text-emerald-500"></i>
+                  <span>Tambah Kad Dalam Slot</span>
+                </button>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              
-              {/* Left Column: Builder Controls (8 Cols) */}
-              <div className="lg:col-span-8 space-y-8">
-                
-                {/* Step 1: Packaging Style */}
-                <div className="p-6 rounded-2xl glass-panel border border-slate-200 dark:border-slate-800 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
-                      <span className="w-7 h-7 rounded-full gold-gradient-bg text-slate-950 flex items-center justify-center font-bold text-xs">1</span>
-                      <span>Select Packaging Box Style</span>
-                    </h3>
-                    <span className="text-xs text-amber-500 font-semibold">{builderPackaging.name} (+${builderPackaging.price})</span>
-                  </div>
+            {/* Income / Expense & Health Metric Cards */}
+            <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    {PACKAGING_OPTIONS.map(pack => (
-                      <button
-                        key={pack.id}
-                        onClick={() => setBuilderPackaging(pack)}
-                        className={`p-3 rounded-xl border text-left transition-all relative overflow-hidden ${
-                          builderPackaging.id === pack.id
-                            ? 'border-amber-500 ring-2 ring-amber-500/30 bg-amber-500/5'
-                            : 'border-slate-200 dark:border-slate-800 hover:border-slate-400'
-                        }`}
-                      >
-                        <div className="aspect-video rounded-lg overflow-hidden mb-2 bg-slate-200 dark:bg-slate-800">
-                          <img src={pack.image} alt={pack.name} className="w-full h-full object-cover" />
-                        </div>
-                        <p className="font-semibold text-xs text-slate-900 dark:text-white line-clamp-1">{pack.name}</p>
-                        <p className="text-[11px] text-slate-500 dark:text-slate-400">${pack.price} / box</p>
-                      </button>
-                    ))}
+              {/* Monthly Income Card */}
+              <div className="p-5 rounded-2xl bg-slate-100/80 dark:bg-slate-900/90 border border-emerald-500/20 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Penerimaan Bulan Ini</span>
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                    <i data-lucide="arrow-down-left" className="w-4 h-4"></i>
                   </div>
                 </div>
+                <p className="font-mono text-xl font-bold text-emerald-500">
+                  {showBalance ? formatRM(totalMonthlyIncome) : 'RM ••••••'}
+                </p>
+                <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                  <i data-lucide="trending-up" className="w-3 h-3"></i> +12.4% berbanding bulan lepas
+                </span>
+              </div>
 
-                {/* Step 2: Gift Item Selection */}
-                <div className="p-6 rounded-2xl glass-panel border border-slate-200 dark:border-slate-800 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
-                      <span className="w-7 h-7 rounded-full gold-gradient-bg text-slate-950 flex items-center justify-center font-bold text-xs">2</span>
-                      <span>Choose Gift Items ({builderSelectedItems.length} selected)</span>
-                    </h3>
-                    <span className="text-xs text-slate-500">Pick 1 to 5 items</span>
+              {/* Monthly Expense Card */}
+              <div className="p-5 rounded-2xl bg-slate-100/80 dark:bg-slate-900/90 border border-rose-500/20 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Perbelanjaan Bulan Ini</span>
+                  <div className="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-500 flex items-center justify-center">
+                    <i data-lucide="arrow-up-right" className="w-4 h-4"></i>
+                  </div>
+                </div>
+                <p className="font-mono text-xl font-bold text-rose-500">
+                  {showBalance ? formatRM(totalMonthlyExpense) : 'RM ••••••'}
+                </p>
+                <span className="text-[11px] text-slate-400 font-medium">
+                  {transactions.filter(t => t.type === 'expense').length} Transaksi Direkodkan
+                </span>
+              </div>
+
+              {/* Financial Health Score Gauge */}
+              <div className="sm:col-span-2 p-5 rounded-2xl bg-slate-900 text-white border border-slate-800 flex items-center justify-between">
+                <div className="space-y-1">
+                  <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-400">Pengurusan Kad Bank</span>
+                  <h4 className="font-display font-bold text-sm">Skor Kesihatan Kewangan</h4>
+                  <p className="text-xs text-slate-400">Status: <span className="text-emerald-400 font-semibold">Sangat Baik & Teratur</span></p>
+                </div>
+                <div className="relative flex items-center justify-center w-16 h-16 rounded-full border-4 border-emerald-500 bg-emerald-500/10 font-mono text-xl font-extrabold text-emerald-400 shadow-lg shadow-emerald-500/20">
+                  {healthScore}
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        {/* PHYSICAL CARD HOLDER SECTION (CARDS STACKED FROM BOTTOM TO TOP IN 1 HOLDER) */}
+        <section className="gsap-section space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center space-x-2">
+                <span className="text-xs font-bold uppercase tracking-widest text-emerald-500">Physical Card Holder UI</span>
+                <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/30">
+                  Susun Dari Bawah Ke Atas
+                </span>
+              </div>
+              <h2 className="font-display text-2xl font-bold text-slate-900 dark:text-white">
+                Pemegang Kad Bank <span className="emerald-gradient-text">(Card Holder)</span>
+              </h2>
+            </div>
+
+            {/* View Mode Toggle: Card Holder vs Grid View */}
+            <div className="flex items-center bg-slate-200 dark:bg-slate-900 p-1 rounded-2xl border border-slate-300 dark:border-slate-800">
+              <button
+                onClick={() => setWalletViewMode('holder')}
+                className={`flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                  walletViewMode === 'holder'
+                    ? 'emerald-gradient-bg text-slate-950 shadow-md'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-white'
+                }`}
+              >
+                <i data-lucide="credit-card" className="w-4 h-4"></i>
+                <span>1 Pemegang Kad (Bottom-to-Top)</span>
+              </button>
+              <button
+                onClick={() => setWalletViewMode('grid')}
+                className={`flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                  walletViewMode === 'grid'
+                    ? 'emerald-gradient-bg text-slate-950 shadow-md'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-white'
+                }`}
+              >
+                <i data-lucide="layout-grid" className="w-4 h-4"></i>
+                <span>Grid Bersisian</span>
+              </button>
+            </div>
+          </div>
+
+          {/* VIEW MODE 1: PHYSICAL CARD HOLDER (STACKED FROM BOTTOM TO TOP) */}
+          {walletViewMode === 'holder' ? (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              
+              {/* Left Column: Physical Card Holder Pocket (7 Cols) */}
+              <div className="lg:col-span-7 card-holder-container space-y-4">
+                
+                {/* Holder Header Bar */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 gap-3">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                      <i data-lucide="wallet-cards" className="w-5 h-5"></i>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-base font-bold text-white">Pemegang Kad (Card Holder)</h3>
+                      <p className="text-[11px] text-slate-400">Pilih mana-mana kad dalam slot di bawah:</p>
+                    </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {GIFT_ITEMS_CATALOG.map(item => {
-                      const isSelected = builderSelectedItems.some(i => i.id === item.id);
+                  {/* Quick One-Touch Bank Selector Tabs */}
+                  <div className="flex flex-wrap gap-1.5">
+                    {banks.map(bank => {
+                      const isActive = bank.id === activeCardId;
                       return (
-                        <div
-                          key={item.id}
-                          onClick={() => {
-                            if (isSelected) {
-                              setBuilderSelectedItems(prev => prev.filter(i => i.id !== item.id));
-                            } else {
-                              if (builderSelectedItems.length < 5) {
-                                setBuilderSelectedItems(prev => [...prev, item]);
-                              } else {
-                                showToast('Maximum 5 items allowed per custom box.', 'Item Limit');
-                              }
-                            }
-                          }}
-                          className={`p-3.5 rounded-xl border flex items-center justify-between cursor-pointer transition-all ${
-                            isSelected
-                              ? 'border-amber-500 bg-amber-500/10 dark:bg-amber-500/15'
-                              : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                        <button
+                          key={bank.id}
+                          onClick={() => setActiveCardId(bank.id)}
+                          className={`px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all flex items-center space-x-1 ${
+                            isActive
+                              ? 'bg-emerald-500 text-slate-950 shadow-md scale-105'
+                              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
                           }`}
                         >
-                          <div className="flex items-center space-x-3">
-                            <div className="p-2 rounded-lg bg-slate-200/80 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
-                              <i data-lucide={item.icon || 'gift'} className="w-4 h-4"></i>
-                            </div>
-                            <div>
-                              <p className="font-semibold text-xs text-slate-900 dark:text-white">{item.name}</p>
-                              <span className="text-[10px] text-slate-500 dark:text-slate-400">{item.category}</span>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <span className="text-xs font-bold text-slate-900 dark:text-white">+${item.price}</span>
-                            <div className={`w-5 h-5 rounded-md flex items-center justify-center border ${
-                              isSelected ? 'bg-amber-500 border-amber-500 text-slate-950' : 'border-slate-300 dark:border-slate-700'
-                            }`}>
-                              {isSelected && <i data-lucide="check" className="w-3.5 h-3.5 stroke-[3]"></i>}
-                            </div>
-                          </div>
-                        </div>
+                          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: bank.brandColor }}></span>
+                          <span>{bank.bankName}</span>
+                        </button>
                       );
                     })}
                   </div>
                 </div>
 
-                {/* Step 3: Brand Personalization */}
-                <div className="p-6 rounded-2xl glass-panel border border-slate-200 dark:border-slate-800 space-y-4">
-                  <h3 className="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
-                    <span className="w-7 h-7 rounded-full gold-gradient-bg text-slate-950 flex items-center justify-center font-bold text-xs">3</span>
-                    <span>Branding & Greeting Card</span>
-                  </h3>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Company Name for Embossing</label>
-                      <input
-                        type="text"
-                        value={builderCompanyName}
-                        onChange={(e) => setBuilderCompanyName(e.target.value)}
-                        placeholder="e.g. ACME CORP"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Box Sleeve Foil Finish</label>
-                      <select
-                        value={builderSleeveColor}
-                        onChange={(e) => setBuilderSleeveColor(e.target.value)}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 outline-none"
-                      >
-                        <option value="Gold Foil">Metallic Gold Foil (+ $4)</option>
-                        <option value="Silver Foil">Silver Foil (+ $4)</option>
-                        <option value="Blind Deboss">Blind Deboss (+ $4)</option>
-                        <option value="None">No Sleeve ($0)</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Custom Card Message</label>
-                    <textarea
-                      rows="2"
-                      value={builderCardText}
-                      onChange={(e) => setBuilderCardText(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 outline-none resize-none"
-                    ></textarea>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Right Column: Live Price & Order Summary Card (4 Cols) */}
-              <div className="lg:col-span-4">
-                <div className="sticky top-28 p-6 rounded-2xl glass-panel border border-amber-500/40 shadow-2xl space-y-6">
-                  
-                  <div className="border-b border-slate-200 dark:border-slate-800 pb-4">
-                    <span className="text-xs uppercase tracking-widest font-bold text-amber-500">Live Configuration Summary</span>
-                    <h3 className="font-serif text-xl font-bold text-slate-900 dark:text-white mt-1">Bespoke Custom Box</h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Logo: <span className="font-semibold text-slate-800 dark:text-slate-200">{builderCompanyName || 'ACME CORP'}</span></p>
-                  </div>
-
-                  {/* Quantity Slider */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-xs font-bold">
-                      <span className="text-slate-700 dark:text-slate-300">Order Quantity:</span>
-                      <span className="text-amber-500 text-sm">{builderQuantity} Boxes</span>
-                    </div>
-                    <input
-                      type="range"
-                      min="25"
-                      max="1000"
-                      step="25"
-                      value={builderQuantity}
-                      onChange={(e) => setBuilderQuantity(Number(e.target.value))}
-                      className="w-full accent-amber-500 cursor-pointer"
-                    />
-                    <div className="flex justify-between text-[10px] text-slate-400">
-                      <span>25 units (Min)</span>
-                      <span>200 (20% off)</span>
-                      <span>500+ (25% off)</span>
-                    </div>
-                  </div>
-
-                  {/* Included Items Preview Pill */}
-                  <div className="space-y-2">
-                    <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">Selected Items ({builderSelectedItems.length}):</span>
-                    <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
-                      <div className="text-xs flex justify-between text-slate-700 dark:text-slate-300">
-                        <span>• {builderPackaging.name}</span>
-                        <span className="text-slate-400">${builderPackaging.price}</span>
-                      </div>
-                      {builderSelectedItems.map(item => (
-                        <div key={item.id} className="text-xs flex justify-between text-slate-700 dark:text-slate-300">
-                          <span className="truncate pr-2">• {item.name}</span>
-                          <span className="text-slate-400">${item.price}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Discount Banner */}
-                  {builderTotals.discountPct > 0 && (
-                    <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-semibold flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <i data-lucide="tag" className="w-4 h-4"></i>
-                        <span>Tier Discount Unlocked:</span>
-                      </div>
-                      <span className="font-extrabold text-sm">{builderTotals.discountPct * 100}% OFF</span>
-                    </div>
-                  )}
-
-                  {/* Price Calculation Box */}
-                  <div className="space-y-2 border-t border-slate-200 dark:border-slate-800 pt-4">
-                    <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
-                      <span>Base Unit Price:</span>
-                      <span>${builderTotals.rawPerBox.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
-                      <span>Discounted Unit Cost:</span>
-                      <span className="font-bold text-emerald-500">${builderTotals.unitPrice.toFixed(2)} / box</span>
-                    </div>
-                    <div className="flex justify-between items-baseline pt-2">
-                      <span className="text-sm font-bold text-slate-900 dark:text-white">Estimated Total:</span>
-                      <span className="font-serif text-2xl font-extrabold text-slate-900 dark:text-white">
-                        {formatCurrency(builderTotals.totalPrice)}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Add to Quote Button */}
-                  <button
-                    onClick={() => {
-                      const customBoxItem = {
-                        id: `custom-box-${Date.now()}`,
-                        name: `Custom Box (${builderPackaging.name})`,
-                        category: 'Bespoke Box',
-                        price: builderTotals.unitPrice,
-                        image: builderPackaging.image,
-                        description: `Custom box with ${builderSelectedItems.length} items for ${builderCompanyName}`
-                      };
-                      addToQuote(customBoxItem, builderQuantity, {
-                        calculatedUnitPrice: builderTotals.unitPrice,
-                        itemsCount: builderSelectedItems.length,
-                        packaging: builderPackaging.name,
-                        companyName: builderCompanyName
-                      });
-                    }}
-                    className="w-full py-4 rounded-xl gold-gradient-bg text-slate-950 font-bold text-sm shadow-xl shadow-amber-500/20 hover:shadow-amber-500/40 hover:scale-[1.02] transition-all flex items-center justify-center space-x-2"
-                  >
-                    <i data-lucide="plus-circle" className="w-5 h-5"></i>
-                    <span>Add Custom Box to Quote</span>
-                  </button>
-
-                  <p className="text-[11px] text-center text-slate-400">
-                    No payment required now. Digital proof & formal quote sent within 2 hours.
-                  </p>
-
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-        </section>
-
-        {/* LOGO CUSTOMIZER PREVIEWER */}
-        <section id="customizer" className="gsap-reveal-section py-24 border-t border-slate-200/80 dark:border-slate-800/80 bg-slate-100/60 dark:bg-slate-900/60">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              
-              {/* Left Controls */}
-              <div className="lg:col-span-5 space-y-6">
-                <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-500 text-xs font-semibold uppercase tracking-wider">
-                  <i data-lucide="palette" className="w-4 h-4"></i>
-                  <span>Live Brand Preview</span>
-                </div>
-
-                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">
-                  Preview Your Logo On <span className="gold-gradient-text">Luxury Gifts</span>
-                </h2>
-
-                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                  Type your organization name below to see instant digital mockups of precision gold foil stamping, metallic silver etching, and deep blind debossing on high-end leather and metal products.
-                </p>
-
-                <div className="space-y-4 bg-white dark:bg-slate-950 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-lg">
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2">Company / Brand Name</label>
-                    <input
-                      type="text"
-                      value={customizerText}
-                      onChange={(e) => setCustomizerText(e.target.value)}
-                      placeholder="Type Brand Name..."
-                      className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-sm font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 outline-none tracking-wider"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2">Engraving Finish</label>
-                    <div className="grid grid-cols-3 gap-3">
-                      <button
-                        onClick={() => setCustomizerFinish('gold')}
-                        className={`p-3 rounded-xl border text-xs font-bold text-center transition-all ${
-                          customizerFinish === 'gold' ? 'border-amber-500 bg-amber-500/10 text-amber-500' : 'border-slate-200 dark:border-slate-800'
-                        }`}
-                      >
-                        Gold Foil
-                      </button>
-                      <button
-                        onClick={() => setCustomizerFinish('silver')}
-                        className={`p-3 rounded-xl border text-xs font-bold text-center transition-all ${
-                          customizerFinish === 'silver' ? 'border-slate-400 bg-slate-200 dark:bg-slate-800 text-slate-200' : 'border-slate-200 dark:border-slate-800'
-                        }`}
-                      >
-                        Silver Foil
-                      </button>
-                      <button
-                        onClick={() => setCustomizerFinish('deboss')}
-                        className={`p-3 rounded-xl border text-xs font-bold text-center transition-all ${
-                          customizerFinish === 'deboss' ? 'border-amber-700 bg-amber-900/20 text-slate-300' : 'border-slate-200 dark:border-slate-800'
-                        }`}
-                      >
-                        Blind Deboss
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Live Canvas Mockup */}
-              <div className="lg:col-span-7">
-                <div className="relative aspect-[16/10] rounded-3xl overflow-hidden glass-panel border border-slate-200 dark:border-slate-800 shadow-2xl p-8 flex flex-col items-center justify-center bg-slate-900 text-center group">
-                  <img
-                    src="./assets/images/executive_walnut_box.png"
-                    alt="Leather Engraving Surface"
-                    className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay"
-                  />
-                  
-                  {/* Digital Mockup Stamp */}
-                  <div className="relative z-10 p-8 rounded-2xl border border-white/10 glass-panel max-w-md w-full shadow-2xl space-y-4 transition-transform group-hover:scale-105">
-                    <div className="w-12 h-12 mx-auto rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center">
-                      <i data-lucide="crown" className="w-6 h-6 text-amber-400"></i>
-                    </div>
-
-                    {/* Logo Stamp Display */}
-                    <div className="py-4 border-y border-white/10">
-                      <span className={`font-serif text-3xl sm:text-4xl font-extrabold tracking-widest block uppercase ${
-                        customizerFinish === 'gold' ? 'foil-gold' : customizerFinish === 'silver' ? 'foil-silver' : 'blind-deboss'
-                      }`}>
-                        {customizerText || 'ACME CORP'}
-                      </span>
-                      <span className="text-[10px] tracking-widest uppercase text-amber-400/80 font-bold block mt-1">
-                        EST. 2026 • VIP CORPORATE EDITION
-                      </span>
-                    </div>
-
-                    <div className="flex items-center justify-center space-x-2 text-[11px] text-slate-300">
-                      <i data-lucide="check" className="w-3.5 h-3.5 text-amber-400"></i>
-                      <span>High-Precision Laser Engraving Simulated</span>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-        </section>
-
-        {/* SHADCN PRODUCT CATALOG WITH FILTER TABS */}
-        <section id="catalog" className="gsap-reveal-section py-24">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            {/* Header & Search */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-              <div>
-                <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-500 text-xs font-semibold uppercase tracking-wider mb-3">
-                  <i data-lucide="package" className="w-4 h-4"></i>
-                  <span>Curated Sets</span>
-                </div>
-                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">
-                  Corporate Gift <span className="gold-gradient-text">Catalog</span>
-                </h2>
-              </div>
-
-              {/* Search Bar */}
-              <div className="relative w-full md:w-80">
-                <i data-lucide="search" className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search gifts, tech, leather..."
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 outline-none"
-                />
-              </div>
-            </div>
-
-            {/* Filter Tabs */}
-            <div className="flex items-center space-x-2 overflow-x-auto pb-4 mb-8 border-b border-slate-200 dark:border-slate-800 scrollbar-none">
-              {['All', 'VIP Luxury', 'Executive Tech', 'Gourmet Foods', 'Eco-Conscious'].map(category => (
-                <button
-                  key={category}
-                  onClick={() => setActiveCatalogTab(category)}
-                  className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
-                    activeCatalogTab === category
-                      ? 'gold-gradient-bg text-slate-950 font-bold shadow-md shadow-amber-500/20'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-
-            {/* Product Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredProducts.map(prod => (
-                <div key={prod.id} className="glass-panel rounded-2xl border border-slate-200 dark:border-slate-800/80 overflow-hidden card-hover-lift flex flex-col group">
-                  
-                  {/* Image Container */}
-                  <div className="relative aspect-[4/3] bg-slate-200 dark:bg-slate-900 overflow-hidden">
-                    <img
-                      src={prod.image}
-                      alt={prod.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                      {prod.tags.map(t => (
-                        <span key={t} className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-950/80 text-amber-400 border border-amber-500/30 backdrop-blur-md">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Body Content */}
-                  <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-                        <span>{prod.category}</span>
-                        <div className="flex items-center space-x-1 text-amber-500">
-                          <i data-lucide="star" className="w-3.5 h-3.5 fill-current"></i>
-                          <span className="font-bold">{prod.rating}</span>
-                          <span className="text-slate-400">({prod.reviewsCount})</span>
-                        </div>
-                      </div>
-
-                      <h3 className="font-serif text-xl font-bold text-slate-900 dark:text-white line-clamp-1">
-                        {prod.name}
-                      </h3>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
-                        {prod.description}
-                      </p>
-                    </div>
-
-                    {/* Price & Actions Footer */}
-                    <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                      <div>
-                        <span className="text-[10px] text-slate-400 block uppercase font-bold">Min Qty: {prod.minQty}</span>
-                        <span className="font-serif text-xl font-extrabold text-slate-900 dark:text-white">
-                          ${prod.price} <span className="text-xs font-normal text-slate-400">/ box</span>
-                        </span>
-                      </div>
-
-                      <div className="flex items-center space-x-2">
-                        <button
-                          onClick={() => setQuickViewProduct(prod)}
-                          className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-500 transition-colors"
-                          title="Quick View Specs"
-                        >
-                          <i data-lucide="eye" className="w-4 h-4"></i>
-                        </button>
-                        <button
-                          onClick={() => addToQuote(prod, prod.minQty)}
-                          className="px-4 py-2.5 rounded-xl gold-gradient-bg text-slate-950 font-bold text-xs shadow-md shadow-amber-500/20 hover:shadow-amber-500/40 transition-all flex items-center space-x-1.5"
-                        >
-                          <i data-lucide="plus" className="w-4 h-4"></i>
-                          <span>Add to Quote</span>
-                        </button>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              ))}
-            </div>
-
-          </div>
-        </section>
-
-        {/* BULK QUOTE LOGISTICS ESTIMATOR */}
-        <section id="estimator" className="gsap-reveal-section py-24 bg-slate-900 text-white relative overflow-hidden">
-          {/* Subtle Ambient Background */}
-          <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[160px] pointer-events-none"></div>
-
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              
-              {/* Left Column Controls */}
-              <div className="lg:col-span-7 space-y-8">
-                <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 text-xs font-semibold uppercase tracking-wider">
-                  <i data-lucide="calculator" className="w-4 h-4"></i>
-                  <span>Instant Pricing & Logistics</span>
-                </div>
-
-                <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white">
-                  Bulk Enterprise <span className="gold-gradient-text">Logistics Estimator</span>
-                </h2>
-
-                <p className="text-slate-300 text-base leading-relaxed max-w-2xl">
-                  Calculate instant multi-address employee home drop-shipping, volume pricing tiers, and estimated production turnaround times for international orders.
-                </p>
-
-                <div className="space-y-6 bg-slate-950/80 p-8 rounded-3xl border border-white/10 shadow-2xl">
-                  
-                  {/* Quantity Slider */}
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="font-bold text-slate-300">Recipient Volume:</span>
-                      <span className="font-extrabold text-amber-400 text-lg">{estQuantity} Employees / Clients</span>
-                    </div>
-                    <input
-                      type="range"
-                      min="25"
-                      max="1500"
-                      step="25"
-                      value={estQuantity}
-                      onChange={(e) => setEstQuantity(Number(e.target.value))}
-                      className="w-full accent-amber-500 cursor-pointer"
-                    />
-                  </div>
-
-                  {/* Shipping Mode */}
-                  <div className="space-y-2">
-                    <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider">Fulfillment & Shipping Mode</label>
-                    <div className="grid grid-cols-2 gap-4">
-                      <button
-                        onClick={() => setEstShipping('single')}
-                        className={`p-4 rounded-xl border text-left transition-all ${
-                          estShipping === 'single' ? 'border-amber-500 bg-amber-500/10 text-white' : 'border-white/10 text-slate-400'
-                        }`}
-                      >
-                        <p className="font-bold text-sm">Single Bulk Address</p>
-                        <p className="text-xs opacity-75">Delivered to main office HQ ($0 shipping surcharge)</p>
-                      </button>
-
-                      <button
-                        onClick={() => setEstShipping('multi')}
-                        className={`p-4 rounded-xl border text-left transition-all ${
-                          estShipping === 'multi' ? 'border-amber-500 bg-amber-500/10 text-white' : 'border-white/10 text-slate-400'
-                        }`}
-                      >
-                        <p className="font-bold text-sm">Individual Drop-Shipping</p>
-                        <p className="text-xs opacity-75">Shipped direct to employee homes (+$8.50/box)</p>
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Checkbox Options */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                    <label className="flex items-center space-x-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={estSleeve}
-                        onChange={(e) => setEstSleeve(e.target.checked)}
-                        className="w-4 h-4 accent-amber-500 rounded"
-                      />
-                      <span className="text-xs font-semibold text-slate-300">Custom Branded Outer Sleeve (+$4.00)</span>
-                    </label>
-
-                    <label className="flex items-center space-x-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={estEngraving}
-                        onChange={(e) => setEstEngraving(e.target.checked)}
-                        className="w-4 h-4 accent-amber-500 rounded"
-                      />
-                      <span className="text-xs font-semibold text-slate-300">Laser Logo Engraving (Included Free)</span>
-                    </label>
-                  </div>
-
-                </div>
-              </div>
-
-              {/* Right Estimated Output Breakdown Card */}
-              <div className="lg:col-span-5">
-                <div className="p-8 rounded-3xl glass-panel border border-amber-500/40 shadow-2xl space-y-6 bg-slate-950/90">
-                  <span className="text-xs font-bold uppercase tracking-widest text-amber-400">Estimated Logistics Breakdown</span>
-
-                  {(() => {
-                    const baseItemPrice = 110;
-                    const shippingCost = estShipping === 'multi' ? 8.5 : 0;
-                    const sleeveCost = estSleeve ? 4 : 0;
-                    const perUnit = (baseItemPrice + shippingCost + sleeveCost) * (estQuantity >= 500 ? 0.75 : estQuantity >= 200 ? 0.8 : 0.9);
-                    const totalEst = perUnit * estQuantity;
+                {/* Staggered Vertical Card Holder Slots (Arranged Bottom to Top) */}
+                <div className="space-y-[-100px] pt-4 pb-12">
+                  {banks.map((bank, index) => {
+                    const isSelected = bank.id === activeCardId;
 
                     return (
-                      <div className="space-y-4">
-                        <div className="py-4 border-y border-white/10 space-y-3">
-                          <div className="flex justify-between text-xs text-slate-300">
-                            <span>Per-Box Cost:</span>
-                            <span className="font-bold text-white">${perUnit.toFixed(2)}</span>
+                      <div
+                        key={bank.id}
+                        onClick={() => setActiveCardId(bank.id)}
+                        className={`holder-card-item rounded-3xl p-6 text-white shadow-2xl relative cursor-pointer transition-all duration-300 border ${bank.colorClass} ${
+                          isSelected
+                            ? 'translate-y-[-12px] z-40 ring-4 ring-emerald-400 shadow-emerald-500/40'
+                            : 'hover:translate-y-[-18px] hover:z-30 opacity-95'
+                        }`}
+                        style={{ zIndex: isSelected ? 40 : 10 + index }}
+                      >
+                        {/* Card Slot Header Bar (Always Visible at Top of Slot) */}
+                        <div className="flex items-center justify-between relative z-10 pb-2">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-8 h-8 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
+                              <i data-lucide={bank.icon || 'credit-card'} className="w-4 h-4"></i>
+                            </div>
+                            <div>
+                              <span className="text-[10px] uppercase font-extrabold tracking-widest text-amber-300">{bank.bankName}</span>
+                              <h4 className="font-display text-sm font-extrabold">{bank.cardName}</h4>
+                            </div>
                           </div>
-                          <div className="flex justify-between text-xs text-slate-300">
-                            <span>Fulfillment SLA:</span>
-                            <span className="font-bold text-emerald-400">3-5 Business Days</span>
-                          </div>
-                          <div className="flex justify-between text-xs text-slate-300">
-                            <span>Domestic & Intl Customs:</span>
-                            <span className="font-bold text-emerald-400">Pre-Cleared</span>
+
+                          <div className="flex items-center space-x-3">
+                            <span className="font-mono text-xs font-extrabold px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-emerald-400">
+                              {showBalance ? formatRM(bank.balance) : 'RM •••••'}
+                            </span>
+                            {isSelected && (
+                              <span className="hidden sm:inline-flex px-2.5 py-1 rounded-full bg-emerald-400 text-slate-950 font-bold text-[10px] uppercase tracking-wider">
+                                Kad Dipilih ★
+                              </span>
+                            )}
                           </div>
                         </div>
 
-                        <div>
-                          <span className="text-xs text-slate-400 block">Total Budget Estimate:</span>
-                          <span className="font-serif text-4xl font-extrabold gold-gradient-text block mt-1">
-                            {formatCurrency(totalEst)}
-                          </span>
+                        {/* Card Details Body */}
+                        <div className="my-3 flex items-center justify-between relative z-10">
+                          <p className="font-mono text-sm tracking-wider font-semibold opacity-90">
+                            {bank.cardNumber}
+                          </p>
+                          <span className="text-[10px] font-mono opacity-80">TAMAT: {bank.expiry}</span>
                         </div>
 
-                        <button
-                          onClick={() => showToast('Logistics proposal PDF generated successfully!', 'PDF Downloaded')}
-                          className="w-full py-4 rounded-xl gold-gradient-bg text-slate-950 font-bold text-sm shadow-xl shadow-amber-500/20 hover:scale-[1.02] transition-all flex items-center justify-center space-x-2"
-                        >
-                          <i data-lucide="download" className="w-5 h-5"></i>
-                          <span>Download PDF Proposal & Quote</span>
-                        </button>
+                        {/* Card Footer Holder Info */}
+                        <div className="flex items-center justify-between border-t border-white/15 pt-2 text-[11px] relative z-10">
+                          <span className="font-display font-bold">{bank.cardHolder}</span>
+                          <span className="text-[10px] text-white/70 italic">Klik untuk aktifkan kad</span>
+                        </div>
+
+                        {/* Glow Overlay */}
+                        <div className="absolute -bottom-8 -right-8 w-36 h-36 bg-white/5 rounded-full blur-xl pointer-events-none"></div>
                       </div>
                     );
-                  })()}
+                  })}
+                </div>
+
+                <div className="p-3 rounded-2xl bg-slate-900/80 border border-slate-800 text-center text-xs text-slate-400 font-medium">
+                  ✨ *Kad-kad disusun kemas dari bawah ke atas. Tajuk dan baki setiap kad sentiasa kelihatan untuk pemilihan mudah.*
+                </div>
+              </div>
+
+              {/* Right Column: Selected Active Card Spotlight & Quick Actions (5 Cols) */}
+              <div className="lg:col-span-5 space-y-5">
+                <div className="p-6 rounded-3xl glass-panel border border-emerald-500/40 shadow-2xl space-y-5">
+                  <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-500">Kad Aktif Dalam Pemegang</span>
+                    <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-bold">
+                      Tersambung & Aktif
+                    </span>
+                  </div>
+
+                  {/* Active Card Visual Preview */}
+                  <div className={`p-6 rounded-3xl text-white space-y-4 shadow-xl border ${activeBankCard.colorClass}`}>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs uppercase font-extrabold tracking-widest opacity-90">{activeBankCard.bankName}</span>
+                      <div className="w-8 h-8 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center">
+                        <i data-lucide={activeBankCard.icon || 'credit-card'} className="w-4 h-4"></i>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-xl font-extrabold">{activeBankCard.cardName}</h3>
+                      <p className="font-mono text-sm opacity-90">{activeBankCard.cardNumber}</p>
+                    </div>
+                    <div className="flex justify-between items-end border-t border-white/20 pt-3">
+                      <div>
+                        <span className="text-[9px] uppercase block text-white/70">Pemegang Kad</span>
+                        <span className="font-bold text-xs">{activeBankCard.cardHolder}</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-[9px] uppercase block text-white/70">Baki Akaun</span>
+                        <span className="font-mono text-lg font-extrabold text-emerald-300">
+                          {showBalance ? formatRM(activeBankCard.balance) : 'RM ••••••'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card Action Buttons */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      onClick={() => handleCopyCard(activeBankCard.cardNumber)}
+                      className="p-3 rounded-xl border border-slate-300 dark:border-slate-800 hover:border-emerald-500 bg-white/50 dark:bg-slate-900 text-xs font-bold flex items-center justify-center space-x-2 transition-all"
+                    >
+                      <i data-lucide="copy" className="w-4 h-4 text-emerald-500"></i>
+                      <span>Salin No. Kad</span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setTxForm(prev => ({ ...prev, bankId: activeBankCard.id }));
+                        setIsAddTxModalOpen(true);
+                      }}
+                      className="p-3 rounded-xl emerald-gradient-bg text-slate-950 text-xs font-bold flex items-center justify-center space-x-2 shadow-md hover:scale-105 transition-all"
+                    >
+                      <i data-lucide="plus" className="w-4 h-4"></i>
+                      <span>Guna Kad Ini</span>
+                    </button>
+                  </div>
+
+                  {/* Transactions Ledger Preview for Active Card */}
+                  <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Transaksi Kad Ini:</span>
+                      <span className="text-[10px] text-slate-400 font-mono">{activeBankCard.accountNumber}</span>
+                    </div>
+
+                    <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
+                      {transactions.filter(t => t.bankId === activeBankCard.id).length === 0 ? (
+                        <p className="text-xs text-slate-500 py-2">Tiada transaksi direkodkan untuk kad ini lagi.</p>
+                      ) : (
+                        transactions.filter(t => t.bankId === activeBankCard.id).slice(0, 4).map(tx => (
+                          <div key={tx.id} className="flex justify-between items-center text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-slate-950">
+                            <span className="font-semibold text-slate-900 dark:text-white truncate">{tx.title}</span>
+                            <span className={`font-mono font-bold ${tx.type === 'income' ? 'text-emerald-500' : 'text-rose-500'}`}>
+                              {tx.type === 'income' ? '+' : '-'}{formatRM(tx.amount)}
+                            </span>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+
                 </div>
               </div>
 
             </div>
-          </div>
-        </section>
-
-        {/* TESTIMONIALS */}
-        <section id="testimonials" className="gsap-reveal-section py-24 bg-slate-50 dark:bg-slate-950">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-              <span className="text-xs uppercase tracking-widest font-bold text-amber-500">Executive Endorsements</span>
-              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">
-                What Fortune 500 <span className="gold-gradient-text">Leaders Say</span>
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                {
-                  quote: "AURA & CO. transformed our annual executive summit gifting. The custom walnut boxes with laser foil stamping left our board members stunned.",
-                  author: "Sarah Jenkins",
-                  role: "VP of People Operations",
-                  company: "Stripe"
-                },
-                {
-                  quote: "The multi-address drop shipping calculator made onboarding 400 remote engineers effortless. 100% on-time delivery across 14 countries.",
-                  author: "Marcus Vance",
-                  role: "Chief People Officer",
-                  company: "Snowflake"
-                },
-                {
-                  quote: "Unmatched quality. From the smart ember mugs to the horween leather portfolios, every item feels premium and deeply personal.",
-                  author: "Elena Rostova",
-                  role: "Head of Executive Events",
-                  company: "Sequoia Capital"
-                }
-              ].map((t, idx) => (
-                <div key={idx} className="p-8 rounded-2xl glass-panel border border-slate-200 dark:border-slate-800 space-y-6 flex flex-col justify-between">
-                  <div className="space-y-4">
-                    <div className="flex text-amber-500 space-x-1">
-                      {[...Array(5)].map((_, i) => <i key={i} data-lucide="star" className="w-4 h-4 fill-current"></i>)}
+          ) : (
+            /* VIEW MODE 2: GRID VIEW (SIDE BY SIDE) */
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {banks.map(bank => (
+                <div
+                  key={bank.id}
+                  onClick={() => setActiveCardId(bank.id)}
+                  className={`gsap-card-item rounded-3xl p-6 text-white shadow-xl flex flex-col justify-between relative overflow-hidden bank-card-hover min-h-[220px] cursor-pointer ${bank.colorClass} ${
+                    bank.id === activeCardId ? 'ring-4 ring-emerald-400 shadow-emerald-500/40' : ''
+                  }`}
+                >
+                  <div className="flex items-center justify-between relative z-10">
+                    <div>
+                      <span className="text-[10px] uppercase font-bold tracking-widest opacity-80">{bank.bankName}</span>
+                      <h3 className="font-display text-base font-extrabold tracking-wide">{bank.cardName}</h3>
                     </div>
-                    <p className="text-sm text-slate-700 dark:text-slate-300 italic leading-relaxed">
-                      "{t.quote}"
+                    <div className="w-9 h-9 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
+                      <i data-lucide={bank.icon || 'credit-card'} className="w-5 h-5"></i>
+                    </div>
+                  </div>
+
+                  <div className="my-4 space-y-2 relative z-10">
+                    <div className="w-8 h-6 rounded bg-amber-400/80 border border-amber-200/50 flex items-center justify-center opacity-90">
+                      <div className="w-5 h-4 border-y border-slate-950/40"></div>
+                    </div>
+                    <p className="font-mono text-sm tracking-wider font-semibold opacity-90">
+                      {bank.cardNumber}
                     </p>
                   </div>
-                  <div className="border-t border-slate-200 dark:border-slate-800/80 pt-4">
-                    <p className="font-bold text-sm text-slate-900 dark:text-white">{t.author}</p>
-                    <p className="text-xs text-amber-500 font-semibold">{t.role} — {t.company}</p>
+
+                  <div className="flex items-end justify-between border-t border-white/15 pt-3 relative z-10">
+                    <div>
+                      <span className="text-[9px] uppercase font-semibold text-white/70 block">Pemegang Akaun</span>
+                      <span className="font-display text-xs font-bold tracking-wider">{bank.cardHolder}</span>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-[9px] uppercase font-semibold text-white/70 block">Baki Akaun</span>
+                      <span className="font-mono text-base font-extrabold text-white">
+                        {showBalance ? formatRM(bank.balance) : 'RM •••••'}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+        </section>
+
+        {/* BUDGETING & SAVINGS GOALS (TABUNG) */}
+        <section className="gsap-section grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+          {/* Left: Tabung Simpanan (7 Cols) */}
+          <div className="lg:col-span-7 space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-widest text-emerald-500">Perancangan Masa Depan</span>
+                <h3 className="font-display text-xl font-bold text-slate-900 dark:text-white">
+                  Tabung Simpanan & Matlamat
+                </h3>
+              </div>
+              <span className="text-xs font-semibold text-slate-500">{goals.length} Tabung Aktif</span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {goals.map(goal => {
+                const progressPct = Math.min(Math.round((goal.currentAmount / goal.targetAmount) * 100), 100);
+                return (
+                  <div
+                    key={goal.id}
+                    className="p-5 rounded-2xl glass-panel border border-slate-200 dark:border-slate-800 space-y-4 hover:border-emerald-500/50 transition-all"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-500">
+                          <i data-lucide={goal.icon || 'target'} className="w-5 h-5"></i>
+                        </div>
+                        <div>
+                          <h4 className="font-display font-bold text-sm text-slate-900 dark:text-white">{goal.title}</h4>
+                          <span className="text-[10px] text-slate-500">{goal.category}</span>
+                        </div>
+                      </div>
+                      <span className="font-mono text-xs font-bold text-emerald-500 bg-emerald-500/10 px-2.5 py-1 rounded-full">
+                        {progressPct}%
+                      </span>
+                    </div>
+
+                    {/* Progress Bar */}
+                    <div className="space-y-1">
+                      <div className="w-full h-2.5 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                        <div
+                          className={`h-full bg-gradient-to-r ${goal.color} transition-all duration-700`}
+                          style={{ width: `${progressPct}%` }}
+                        ></div>
+                      </div>
+                      <div className="flex justify-between text-[11px] font-mono text-slate-500 pt-1">
+                        <span>{showBalance ? formatRM(goal.currentAmount) : 'RM •••'}</span>
+                        <span>Sasaran: {formatRM(goal.targetAmount)}</span>
+                      </div>
+                    </div>
+
+                    {/* Deposit CTA */}
+                    <button
+                      onClick={() => {
+                        setSelectedGoalForDeposit(goal);
+                        setIsDepositModalOpen(true);
+                      }}
+                      className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-emerald-500 hover:text-slate-950 dark:bg-slate-900 dark:hover:bg-emerald-500 font-display text-xs font-bold transition-all flex items-center justify-center space-x-1.5"
+                    >
+                      <i data-lucide="arrow-up-right-circle" className="w-4 h-4"></i>
+                      <span>Tambah Simpanan</span>
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right: Category Spending Limits (5 Cols) */}
+          <div className="lg:col-span-5 space-y-6">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest text-emerald-500">Kawalan Perbelanjaan</span>
+              <h3 className="font-display text-xl font-bold text-slate-900 dark:text-white">
+                Had Bajet Bulanan
+              </h3>
+            </div>
+
+            <div className="p-6 rounded-2xl glass-panel border border-slate-200 dark:border-slate-800 space-y-5">
+              {Object.entries(budgetLimits).map(([catName, data]) => {
+                const pct = Math.min(Math.round((data.spent / data.limit) * 100), 100);
+                const isWarning = pct >= 80;
+
+                return (
+                  <div key={catName} className="space-y-2">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-bold text-slate-900 dark:text-white">{catName}</span>
+                      <span className="font-mono text-slate-500">
+                        <strong className={isWarning ? "text-rose-500" : "text-slate-900 dark:text-white"}>{formatRM(data.spent)}</strong> / {formatRM(data.limit)}
+                      </span>
+                    </div>
+
+                    <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all duration-500 ${isWarning ? 'bg-rose-500' : 'emerald-gradient-bg'}`}
+                        style={{ width: `${pct}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                );
+              })}
+
+              <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500">
+                <span>Status Bajet Keseluruhan:</span>
+                <span className="font-bold text-emerald-500 flex items-center gap-1">
+                  <i data-lucide="check-circle-2" className="w-4 h-4"></i> Terkawal (Terus Kekalkan)
+                </span>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        {/* RECENT TRANSACTIONS LEDGER */}
+        <section className="gsap-section space-y-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest text-emerald-500">Sejarah Kewangan</span>
+              <h3 className="font-display text-2xl font-bold text-slate-900 dark:text-white">
+                Transaksi Terkini
+              </h3>
+            </div>
+
+            {/* Filters Bar */}
+            <div className="flex flex-wrap items-center gap-3">
+              {/* Search Box */}
+              <div className="relative">
+                <i data-lucide="search" className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input
+                  type="text"
+                  placeholder="Cari transaksi..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-4 py-2 rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none w-48 sm:w-60"
+                />
+              </div>
+
+              {/* Bank Filter Select */}
+              <select
+                value={selectedBankFilter}
+                onChange={(e) => setSelectedBankFilter(e.target.value)}
+                className="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none"
+              >
+                <option value="all">Semua Akaun Bank</option>
+                {banks.map(b => (
+                  <option key={b.id} value={b.id}>{b.bankName}</option>
+                ))}
+              </select>
+
+              {/* Add Transaction Button */}
+              <button
+                onClick={() => setIsAddTxModalOpen(true)}
+                className="px-4 py-2 rounded-xl emerald-gradient-bg text-slate-950 font-display font-bold text-xs shadow-md hover:scale-105 transition-all flex items-center space-x-1"
+              >
+                <i data-lucide="plus" className="w-4 h-4"></i>
+                <span>Tambah</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Transactions List Table */}
+          <div className="rounded-3xl glass-panel border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xl">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-100/50 dark:bg-slate-900/50 text-[11px] uppercase tracking-wider font-bold text-slate-500">
+                    <th className="py-4 px-6">Butiran Transaksi</th>
+                    <th className="py-4 px-6">Kad Bank</th>
+                    <th className="py-4 px-6">Kategori</th>
+                    <th className="py-4 px-6">Tarikh</th>
+                    <th className="py-4 px-6 text-right">Jumlah (RM)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200/60 dark:divide-slate-800/60 text-xs font-medium">
+                  {filteredTransactions.length === 0 ? (
+                    <tr>
+                      <td colSpan="5" className="text-center py-10 text-slate-400">
+                        Tiada transaksi dijumpai mengikut carian anda.
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredTransactions.map(tx => (
+                      <tr key={tx.id} className="hover:bg-slate-100/50 dark:hover:bg-slate-900/50 transition-colors">
+                        <td className="py-4 px-6">
+                          <div className="flex items-center space-x-3">
+                            <div className={`p-2.5 rounded-xl ${tx.type === 'income' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-rose-500/10 text-rose-500'}`}>
+                              <i data-lucide={tx.icon || 'dollar-sign'} className="w-4 h-4"></i>
+                            </div>
+                            <span className="font-bold text-slate-900 dark:text-white text-sm">{tx.title}</span>
+                          </div>
+                        </td>
+                        <td className="py-4 px-6">
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-slate-200/70 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-semibold text-[11px]">
+                            {tx.bankName}
+                          </span>
+                        </td>
+                        <td className="py-4 px-6 text-slate-500">{tx.category}</td>
+                        <td className="py-4 px-6 text-slate-400 font-mono">{tx.date}</td>
+                        <td className={`py-4 px-6 text-right font-mono font-bold text-sm ${tx.type === 'income' ? 'text-emerald-500' : 'text-slate-900 dark:text-white'}`}>
+                          {tx.type === 'income' ? '+' : '-'}{showBalance ? formatRM(tx.amount) : 'RM •••'}
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
         </section>
 
       </main>
 
-      {/* QUICK VIEW PRODUCT MODAL */}
-      {quickViewProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-          <div className="glass-panel max-w-2xl w-full rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto relative">
-            <button
-              onClick={() => setQuickViewProduct(null)}
-              className="absolute top-4 right-4 p-2 rounded-full border border-slate-200 dark:border-slate-800 hover:border-amber-500 text-slate-500"
-            >
-              <i data-lucide="x" className="w-5 h-5"></i>
-            </button>
+      {/* FOOTER */}
+      <footer className="mt-16 border-t border-slate-200/80 dark:border-slate-800/80 py-10 bg-slate-100/50 dark:bg-slate-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+          <div className="flex items-center justify-center space-x-2">
+            <div className="w-8 h-8 rounded-xl emerald-gradient-bg flex items-center justify-center">
+              <i data-lucide="credit-card" className="w-4 h-4 text-slate-950"></i>
+            </div>
+            <span className="font-display font-extrabold text-lg text-slate-900 dark:text-white">Kawal Money</span>
+          </div>
+          <p className="text-xs text-slate-500 max-w-xl mx-auto">
+            Sistem pengurusan kewangan peribadi termaju Malaysia. Hak Cipta Terpelihara © 2026 Kawal Money Inc. Data dienkripsi dengan piawaian keselamatan perbankan 256-bit SSL.
+          </p>
+        </div>
+      </footer>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
-              <div className="aspect-square rounded-2xl overflow-hidden bg-slate-200 dark:bg-slate-900">
-                <img src={quickViewProduct.image} alt={quickViewProduct.name} className="w-full h-full object-cover" />
+      {/* MODAL 1: CONNECT BANK WIZARD */}
+      {isConnectModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-6 space-y-6 shadow-2xl relative overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-xl emerald-gradient-bg flex items-center justify-center">
+                  <i data-lucide="link-2" className="w-5 h-5 text-slate-950"></i>
+                </div>
+                <div>
+                  <h3 className="font-display font-bold text-lg text-slate-900 dark:text-white">Tambah Kad Ke Card Holder</h3>
+                  <p className="text-xs text-slate-500">Langkah {connectStep} daripada 3</p>
+                </div>
               </div>
+              <button
+                onClick={() => setIsConnectModalOpen(false)}
+                className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              >
+                <i data-lucide="x" className="w-5 h-5"></i>
+              </button>
+            </div>
+
+            {/* STEP 1: SELECT BANK */}
+            {connectStep === 1 && (
               <div className="space-y-4">
-                <span className="text-xs font-bold text-amber-500 uppercase tracking-wider">{quickViewProduct.category}</span>
-                <h3 className="font-serif text-2xl font-bold text-slate-900 dark:text-white">{quickViewProduct.name}</h3>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{quickViewProduct.description}</p>
-                <div className="space-y-1">
-                  <span className="text-xs font-bold text-slate-400 block">Package Specifications:</span>
-                  {quickViewProduct.specs.map((s, i) => (
-                    <div key={i} className="text-xs text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                      <i data-lucide="check" className="w-3.5 h-3.5 text-amber-500"></i>
-                      <span>{s}</span>
-                    </div>
+                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400">Pilih Institusi Perbankan atau eWallet Malaysia:</p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-64 overflow-y-auto pr-1">
+                  {AVAILABLE_BANKS_TO_CONNECT.map(bankItem => (
+                    <button
+                      key={bankItem.id}
+                      onClick={() => setSelectedBankToConnect(bankItem)}
+                      className={`p-3.5 rounded-2xl border text-left flex items-center space-x-3 transition-all ${
+                        selectedBankToConnect.id === bankItem.id
+                          ? 'border-emerald-500 ring-2 ring-emerald-500/20 bg-emerald-500/10'
+                          : 'border-slate-200 dark:border-slate-800 hover:border-slate-400'
+                      }`}
+                    >
+                      <div
+                        className="w-10 h-10 rounded-xl font-display font-extrabold text-xs flex items-center justify-center shadow-md"
+                        style={{ backgroundColor: bankItem.color, color: bankItem.textColor }}
+                      >
+                        {bankItem.logo}
+                      </div>
+                      <div>
+                        <p className="font-display font-bold text-xs text-slate-900 dark:text-white">{bankItem.name}</p>
+                        <span className="text-[10px] text-emerald-500 font-semibold">Integrasi API Selamat</span>
+                      </div>
+                    </button>
                   ))}
                 </div>
-                <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                  <span className="font-serif text-2xl font-extrabold text-slate-900 dark:text-white">${quickViewProduct.price}</span>
+
+                <button
+                  onClick={() => setConnectStep(2)}
+                  className="w-full py-3.5 rounded-xl emerald-gradient-bg text-slate-950 font-display font-bold text-xs shadow-lg hover:scale-[1.02] transition-all flex items-center justify-center space-x-2"
+                >
+                  <span>Teruskan Kebenarannya</span>
+                  <i data-lucide="arrow-right" className="w-4 h-4"></i>
+                </button>
+              </div>
+            )}
+
+            {/* STEP 2: CREDENTIALS INPUT */}
+            {connectStep === 2 && (
+              <form onSubmit={handleConnectBank} className="space-y-4">
+                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-500 flex items-center space-x-2">
+                  <i data-lucide="lock" className="w-4 h-4 flex-shrink-0"></i>
+                  <span>Log masuk portal {selectedBankToConnect.name} (Simulasi Keselamatan Encrypted).</span>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Nama Pengguna / No. Telefon eWallet</label>
+                  <input
+                    type="text"
+                    required
+                    value={connectForm.username}
+                    onChange={(e) => setConnectForm({ ...connectForm, username: e.target.value })}
+                    placeholder="Contoh: amirul_maybank"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Nama Pemegang Kad (Seperti di Kad)</label>
+                  <input
+                    type="text"
+                    required
+                    value={connectForm.cardHolder}
+                    onChange={(e) => setConnectForm({ ...connectForm, cardHolder: e.target.value })}
+                    placeholder="AMIRUL ASHRAF"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none uppercase"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Kata Laluan Perbankan</label>
+                  <input
+                    type="password"
+                    required
+                    value={connectForm.password}
+                    onChange={(e) => setConnectForm({ ...connectForm, password: e.target.value })}
+                    placeholder="••••••••••••"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none"
+                  />
+                </div>
+
+                <div className="flex gap-3 pt-2">
                   <button
-                    onClick={() => {
-                      addToQuote(quickViewProduct, quickViewProduct.minQty);
-                      setQuickViewProduct(null);
-                    }}
-                    className="px-5 py-3 rounded-xl gold-gradient-bg text-slate-950 font-bold text-xs shadow-lg"
+                    type="button"
+                    onClick={() => setConnectStep(1)}
+                    className="w-1/3 py-3 rounded-xl border border-slate-300 dark:border-slate-800 font-display text-xs font-bold hover:bg-slate-800 transition-colors"
                   >
-                    Add to Corporate Quote
+                    Kembali
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSyncing}
+                    className="w-2/3 py-3 rounded-xl emerald-gradient-bg text-slate-950 font-display font-bold text-xs shadow-lg hover:scale-[1.02] transition-all flex items-center justify-center space-x-2"
+                  >
+                    {isSyncing ? <span>Pengesahan API...</span> : <span>Minta Kod TAC / OTP</span>}
                   </button>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+              </form>
+            )}
 
-      {/* SHADCN SLIDE-OVER QUOTE DRAWER */}
-      {isQuoteDrawerOpen && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/80 backdrop-blur-sm animate-fadeIn">
-          <div className="w-full max-w-md bg-white dark:bg-slate-950 h-full p-6 flex flex-col justify-between border-l border-slate-200 dark:border-slate-800 shadow-2xl overflow-y-auto">
-            
-            {/* Header */}
-            <div>
-              <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4 mb-6">
-                <div className="flex items-center space-x-2">
-                  <i data-lucide="file-text" className="w-5 h-5 text-amber-500"></i>
-                  <h3 className="font-serif text-xl font-bold text-slate-900 dark:text-white">Corporate Quote</h3>
+            {/* STEP 3: OTP VERIFICATION */}
+            {connectStep === 3 && (
+              <form onSubmit={handleConnectBank} className="space-y-5 text-center">
+                <div className="w-12 h-12 mx-auto rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
+                  <i data-lucide="key-round" className="w-6 h-6"></i>
                 </div>
-                <button
-                  onClick={() => setIsQuoteDrawerOpen(false)}
-                  className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-400 hover:text-white"
-                >
-                  <i data-lucide="x" className="w-5 h-5"></i>
-                </button>
-              </div>
 
-              {/* Quote Items List */}
-              {quoteItems.length === 0 ? (
-                <div className="text-center py-16 space-y-4 text-slate-400">
-                  <i data-lucide="package-open" className="w-12 h-12 mx-auto stroke-1 text-slate-500"></i>
-                  <p className="text-sm font-medium">Your corporate quote drawer is empty.</p>
-                  <a href="#builder" onClick={() => setIsQuoteDrawerOpen(false)} className="text-xs text-amber-500 font-bold hover:underline">
-                    Build a custom gift box &rarr;
-                  </a>
+                <div className="space-y-1">
+                  <h4 className="font-display font-bold text-base text-slate-900 dark:text-white">Pengesahan Keselamatan TAC / OTP</h4>
+                  <p className="text-xs text-slate-500">Kod 6-digit telah dihantar ke telefon pintar anda (+6012-***8819).</p>
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  {quoteItems.map(item => (
-                    <div key={item.id} className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <img src={item.product.image} className="w-12 h-12 rounded-lg object-cover" />
-                        <div>
-                          <p className="font-bold text-xs text-slate-900 dark:text-white line-clamp-1">{item.product.name}</p>
-                          <p className="text-[11px] text-slate-500">{item.quantity} units @ ${item.unitPrice.toFixed(2)}</p>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => removeFromQuote(item.id)}
-                        className="text-red-400 p-1 hover:bg-red-500/10 rounded-lg"
-                      >
-                        <i data-lucide="trash-2" className="w-4 h-4"></i>
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
 
-            {/* Submit Quote Section */}
-            {quoteItems.length > 0 && (
-              <div className="border-t border-slate-200 dark:border-slate-800 pt-4 space-y-4">
-                <div className="flex justify-between items-baseline">
-                  <span className="text-sm font-bold text-slate-900 dark:text-white">Estimated Quote Total:</span>
-                  <span className="font-serif text-2xl font-extrabold text-amber-500">
-                    {formatCurrency(quoteItems.reduce((acc, curr) => acc + (curr.unitPrice * curr.quantity), 0))}
-                  </span>
+                <div>
+                  <input
+                    type="text"
+                    maxLength="6"
+                    required
+                    value={otpCode}
+                    onChange={(e) => setOtpCode(e.target.value)}
+                    placeholder="8 8 2 9 1 0"
+                    className="w-48 mx-auto text-center font-mono text-xl tracking-[0.5em] px-4 py-3 rounded-xl border border-emerald-500 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none font-extrabold"
+                  />
                 </div>
 
                 <button
-                  onClick={() => {
-                    showToast('Official quote request submitted! Dedicated Account Executive will contact you in 2 hrs.', 'Quote Request Submitted');
-                    setQuoteItems([]);
-                    setIsQuoteDrawerOpen(false);
-                  }}
-                  className="w-full py-4 rounded-xl gold-gradient-bg text-slate-950 font-bold text-sm shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center space-x-2"
+                  type="submit"
+                  disabled={isSyncing}
+                  className="w-full py-3.5 rounded-xl emerald-gradient-bg text-slate-950 font-display font-bold text-xs shadow-lg hover:scale-[1.02] transition-all flex items-center justify-center space-x-2"
                 >
-                  <i data-lucide="send" className="w-5 h-5"></i>
-                  <span>Submit Formal Corporate Quote</span>
+                  {isSyncing ? <span>Memasukkan Kad...</span> : <span>Sahkan & Masukkan Kad</span>}
                 </button>
-              </div>
+              </form>
             )}
 
           </div>
         </div>
       )}
 
-      {/* FOOTER */}
-      <footer className="border-t border-slate-200 dark:border-slate-800/80 bg-slate-900 text-slate-400 py-16 text-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="space-y-4">
-            <span className="font-serif text-2xl font-bold text-white">AURA & CO.</span>
-            <p className="leading-relaxed text-slate-400">The global benchmark in executive corporate gifting, custom branding, and automated employee drop-shipping.</p>
-          </div>
-          <div>
-            <h4 className="font-bold text-white text-sm mb-4">Gifting Solutions</h4>
-            <ul className="space-y-2">
-              <li><a href="#builder" className="hover:text-amber-400">Custom Gift Box Builder</a></li>
-              <li><a href="#catalog" className="hover:text-amber-400">Executive VIP Sets</a></li>
-              <li><a href="#customizer" className="hover:text-amber-400">Logo Embossing Preview</a></li>
-              <li><a href="#estimator" className="hover:text-amber-400">Bulk Logistics Calculator</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-bold text-white text-sm mb-4">Corporate Info</h4>
-            <ul className="space-y-2">
-              <li><a href="#" className="hover:text-amber-400">Enterprise Procurement</a></li>
-              <li><a href="#" className="hover:text-amber-400">Sustainability & ESG</a></li>
-              <li><a href="#" className="hover:text-amber-400">Custom Packaging Proofs</a></li>
-              <li><a href="#" className="hover:text-amber-400">Contact Account Specialist</a></li>
-            </ul>
-          </div>
-          <div className="space-y-4">
-            <h4 className="font-bold text-white text-sm">Enterprise Newsletter</h4>
-            <p>Subscribe for seasonal executive catalog releases.</p>
-            <div className="flex gap-2">
-              <input type="email" placeholder="corporate@company.com" className="px-3 py-2 rounded-lg bg-slate-800 text-white outline-none border border-slate-700 text-xs flex-1" />
-              <button className="px-3 py-2 rounded-lg gold-gradient-bg text-slate-950 font-bold">Join</button>
+      {/* MODAL 2: ADD TRANSACTION */}
+      {isAddTxModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
+
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
+              <h3 className="font-display font-bold text-lg text-slate-900 dark:text-white">Rekod Transaksi Baru</h3>
+              <button onClick={() => setIsAddTxModalOpen(false)} className="p-2 rounded-xl text-slate-400 hover:text-white">
+                <i data-lucide="x" className="w-5 h-5"></i>
+              </button>
             </div>
+
+            <form onSubmit={handleAddTransaction} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Tajuk / Nama Transaksi</label>
+                <input
+                  type="text"
+                  required
+                  value={txForm.title}
+                  onChange={(e) => setTxForm({ ...txForm, title: e.target.value })}
+                  placeholder="Contoh: Lotus Grocery / Zus Coffee"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Jenis Transaksi</label>
+                  <select
+                    value={txForm.type}
+                    onChange={(e) => setTxForm({ ...txForm, type: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none"
+                  >
+                    <option value="expense">Perbelanjaan (-)</option>
+                    <option value="income">Penerimaan (+)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Jumlah (RM)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    required
+                    value={txForm.amount}
+                    onChange={(e) => setTxForm({ ...txForm, amount: e.target.value })}
+                    placeholder="85.50"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-mono font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Kad Bank Terlibat</label>
+                <select
+                  value={txForm.bankId}
+                  onChange={(e) => setTxForm({ ...txForm, bankId: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none"
+                >
+                  {banks.map(b => (
+                    <option key={b.id} value={b.id}>{b.bankName} — ({b.cardName})</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Kategori</label>
+                <select
+                  value={txForm.category}
+                  onChange={(e) => setTxForm({ ...txForm, category: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none"
+                >
+                  <option value="Makanan & Minuman">Makanan & Minuman</option>
+                  <option value="Barang Dapur">Barang Dapur</option>
+                  <option value="Pengangkutan">Pengangkutan</option>
+                  <option value="Utiliti & Bil">Utiliti & Bil</option>
+                  <option value="Beli-belah">Beli-belah</option>
+                  <option value="Gaji & Pendapatan">Gaji & Pendapatan</option>
+                  <option value="Simpanan">Simpanan</option>
+                </select>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full py-3 rounded-xl emerald-gradient-bg text-slate-950 font-display font-bold text-xs shadow-lg hover:scale-[1.02] transition-all"
+              >
+                Simpan Transaksi
+              </button>
+            </form>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto px-4 mt-12 pt-6 border-t border-slate-800 flex justify-between text-[11px]">
-          <p>&copy; 2026 AURA & CO. Enterprise Gifting Inc. All rights reserved.</p>
-          <p>Privacy Policy • Terms of Procurement • Global Logistics SLA</p>
+      )}
+
+      {/* MODAL 3: DEPOSIT TO SAVINGS GOAL */}
+      {isDepositModalOpen && selectedGoalForDeposit && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
+
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
+              <div>
+                <h3 className="font-display font-bold text-lg text-slate-900 dark:text-white">Tambah Simpanan</h3>
+                <p className="text-xs text-emerald-500 font-semibold">{selectedGoalForDeposit.title}</p>
+              </div>
+              <button onClick={() => setIsDepositModalOpen(false)} className="p-2 rounded-xl text-slate-400 hover:text-white">
+                <i data-lucide="x" className="w-5 h-5"></i>
+              </button>
+            </div>
+
+            <form onSubmit={handleDepositToGoal} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Pindahkan dari Kad Dalam Card Holder</label>
+                <select
+                  value={depositFromBankId}
+                  onChange={(e) => setDepositFromBankId(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none"
+                >
+                  {banks.map(b => (
+                    <option key={b.id} value={b.id}>{b.bankName} (Baki: {formatRM(b.balance)})</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Jumlah Simpanan (RM)</label>
+                <input
+                  type="number"
+                  step="10"
+                  required
+                  value={depositAmount}
+                  onChange={(e) => setDepositAmount(e.target.value)}
+                  placeholder="Contoh: 250.00"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-base font-mono font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none"
+                />
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-500 space-y-1">
+                <div className="flex justify-between">
+                  <span>Terkini:</span>
+                  <span className="font-mono text-slate-900 dark:text-white font-bold">{formatRM(selectedGoalForDeposit.currentAmount)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Selepas Deposit:</span>
+                  <span className="font-mono text-emerald-500 font-bold">
+                    {formatRM(selectedGoalForDeposit.currentAmount + (parseFloat(depositAmount) || 0))}
+                  </span>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full py-3.5 rounded-xl emerald-gradient-bg text-slate-950 font-display font-bold text-xs shadow-lg hover:scale-[1.02] transition-all flex items-center justify-center space-x-2"
+              >
+                <i data-lucide="check" className="w-4 h-4"></i>
+                <span>Sahkan Pindahan Simpanan</span>
+              </button>
+            </form>
+
+          </div>
         </div>
-      </footer>
+      )}
+
     </div>
   );
 }
 
-// Render Application Root
+// Render React App
 const rootElement = document.getElementById('root');
-const root = ReactDOM.createRoot(rootElement);
-root.render(<App />);
+if (rootElement) {
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(<App />);
+}

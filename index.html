@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="ms" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AURA & CO. — Executive Corporate Gifting & Bespoke Kits</title>
-  <meta name="description" content="AURA & CO. is the premier corporate gifting platform for enterprise teams. Custom logo engraving, interactive gift box builder, luxury packaging, and automated multi-address drop shipping." />
+  <title>Kawal Money — Pengurusan Kewangan & Sambungan Bank Malaysia</title>
+  <meta name="description" content="Kawal Money adalah platform pengurusan kewangan peribadi moden di Malaysia. Sambungkan kad bank Maybank, CIMB, Bank Islam & Touch 'n Go eWallet anda dengan selamat." />
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -13,19 +13,38 @@
       darkMode: 'class',
       theme: {
         extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
           colors: {
             brand: {
-              50: '#fefce8',
-              100: '#fef9c3',
-              400: '#facc15',
-              500: '#eab308',
-              600: '#ca8a04',
-              900: '#713f12',
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+              900: '#064e3b',
             },
-            obsidian: {
-              800: '#0f172a',
-              900: '#090d16',
-              950: '#030712'
+            maybank: {
+              DEFAULT: '#F7C900',
+              dark: '#D6AE00',
+            },
+            cimb: {
+              DEFAULT: '#ED1C24',
+              dark: '#B80F15',
+            },
+            bankislam: {
+              DEFAULT: '#008080',
+              burgundy: '#7A0026',
+            },
+            tng: {
+              DEFAULT: '#005FA4',
+              accent: '#0084E3',
+            },
+            slate: {
+              950: '#090d16',
             }
           }
         }
@@ -33,31 +52,30 @@
     }
   </script>
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Plus Jakarta Sans (UI), Outfit (Headings), JetBrains Mono (Financial Numbers) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- Custom Design Tokens -->
+  <!-- Custom Design System Styles -->
   <link rel="stylesheet" href="./css/styles.css" />
 
   <!-- GSAP & Plugins -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
 
   <!-- React 18 & Babel Standalone -->
   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300 antialiased selection:bg-amber-400 selection:text-slate-950">
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300 antialiased selection:bg-emerald-400 selection:text-slate-950 font-sans">
   <div id="root"></div>
 
-  <!-- Main Application Logic (React + GSAP + Shadcn Components) -->
+  <!-- Kawal Money Main Application Logic (React + GSAP) -->
   <script type="text/babel" src="./js/app.js"></script>
 </body>
 </html>
