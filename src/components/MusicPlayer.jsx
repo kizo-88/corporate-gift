@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Music, Disc, ListMusic } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Disc, ListMusic, ExternalLink, Youtube } from 'lucide-react';
 
 export const PLAYLIST = [
   {
@@ -7,42 +7,47 @@ export const PLAYLIST = [
     title: 'Less Than A Lover',
     artist: 'Jennie',
     coverColor: '#E88D9E',
-    // High quality royalty-free chill pop/lo-fi audio stream fallback for browser compatibility
-    url: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3'
+    youtubeId: 'vR49dHUwMUA',
+    youtubeUrl: 'https://youtu.be/vR49dHUwMUA',
+    audioUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3'
   },
   {
     id: 2,
     title: 'Number One Girl',
     artist: 'Rosé',
     coverColor: '#A093E2',
-    url: 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=chill-abstract-intention-12099.mp3'
+    youtubeId: 'bnkgl2OxlD4',
+    youtubeUrl: 'https://youtu.be/bnkgl2OxlD4',
+    audioUrl: 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=chill-abstract-intention-12099.mp3'
   },
   {
     id: 3,
     title: 'Handlebars',
     artist: 'Jennie',
     coverColor: '#48C9B0',
-    url: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=cozy-vibes-132674.mp3'
+    youtubeId: 'zU29J_s12aA',
+    youtubeUrl: 'https://youtu.be/zU29J_s12aA',
+    audioUrl: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=cozy-vibes-132674.mp3'
   }
 ];
 
 export default function MusicPlayer() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.5);
+  const [volume, setVolume] = useState(0.6);
   const [isMuted, setIsMuted] = useState(false);
   const [showPlaylist, setShowPlaylist] = useState(false);
-  
+  const [showVideoModal, setShowVideoModal] = useState(false);
+
   const audioRef = useRef(null);
   const currentTrack = PLAYLIST[currentTrackIndex];
 
-  // Initialize & handle play/pause
+  // Handle Play/Pause and Audio setup
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume;
       if (isPlaying) {
-        audioRef.current.play().catch(err => {
-          console.log("Audio autoplay prevented or error:", err);
+        audioRef.current.play().catch(() => {
           setIsPlaying(false);
         });
       } else {
@@ -75,18 +80,18 @@ export default function MusicPlayer() {
       borderColor: 'var(--border-tech-glow)',
       boxShadow: 'var(--shadow-tech-md)'
     }}>
-      {/* Hidden Audio Element */}
+      {/* Hidden Audio Stream Element */}
       <audio
         ref={audioRef}
-        src={currentTrack.url}
+        src={currentTrack.audioUrl}
         onEnded={handleNext}
       />
 
-      {/* Left: Track Details & Album Cover */}
+      {/* Left: Cover & Track Info */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
         <div style={{
-          width: '40px',
-          height: '40px',
+          width: '42px',
+          height: '42px',
           borderRadius: '10px',
           backgroundColor: currentTrack.coverColor,
           display: 'flex',
@@ -101,7 +106,7 @@ export default function MusicPlayer() {
         </div>
 
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
             <span className="font-heading" style={{
               fontSize: '1.05rem',
               fontWeight: 700,
@@ -125,16 +130,31 @@ export default function MusicPlayer() {
             gap: '0.5rem'
           }}>
             <span>BACKGROUND MUSIC</span>
-            {isPlaying && (
-              <span style={{ color: 'var(--rose-accent)', fontWeight: 600 }}>● PLAYING</span>
-            )}
+            <a
+              href={currentTrack.youtubeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: '#FF0000',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.2rem',
+                textDecoration: 'none',
+                fontWeight: 600
+              }}
+              title="Open link on YouTube"
+            >
+              <Youtube size={12} />
+              <span>YouTube Link</span>
+              <ExternalLink size={10} />
+            </a>
           </div>
         </div>
       </div>
 
-      {/* Center: Equalizer Animation & Controls */}
+      {/* Center: Equalizer & Controls */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-        {/* Equalizer Visualizer Bars */}
+        {/* Animated Equalizer */}
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: '3px', height: '18px', width: '24px' }}>
           <span style={{ width: '4px', height: isPlaying ? '16px' : '4px', backgroundColor: 'var(--rose-accent)', borderRadius: '2px', transition: 'height 0.2s ease' }} />
           <span style={{ width: '4px', height: isPlaying ? '10px' : '4px', backgroundColor: 'var(--lavender-accent)', borderRadius: '2px', transition: 'height 0.25s ease' }} />
@@ -142,7 +162,7 @@ export default function MusicPlayer() {
           <span style={{ width: '4px', height: isPlaying ? '12px' : '4px', backgroundColor: 'var(--amber-accent)', borderRadius: '2px', transition: 'height 0.22s ease' }} />
         </div>
 
-        {/* Prev Button */}
+        {/* Prev */}
         <button
           onClick={handlePrev}
           className="btn-ghost-tech"
@@ -152,7 +172,7 @@ export default function MusicPlayer() {
           <SkipBack size={18} />
         </button>
 
-        {/* Play/Pause Button */}
+        {/* Play/Pause */}
         <button
           onClick={togglePlay}
           className="btn-primary-tech"
@@ -170,7 +190,7 @@ export default function MusicPlayer() {
           {isPlaying ? <Pause size={18} /> : <Play size={18} style={{ marginLeft: '2px' }} />}
         </button>
 
-        {/* Next Button */}
+        {/* Next */}
         <button
           onClick={handleNext}
           className="btn-ghost-tech"
@@ -181,9 +201,9 @@ export default function MusicPlayer() {
         </button>
       </div>
 
-      {/* Right: Volume & Playlist Selector */}
+      {/* Right: Volume & YouTube Video Player Drawer */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        {/* Mute / Volume */}
+        {/* Mute/Volume */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
           <button
             onClick={() => setIsMuted(!isMuted)}
@@ -212,7 +232,18 @@ export default function MusicPlayer() {
           />
         </div>
 
-        {/* Playlist Drawer Button */}
+        {/* Video Frame Toggle Button */}
+        <button
+          onClick={() => setShowVideoModal(!showVideoModal)}
+          className="btn-secondary-tech"
+          style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#FF0000' }}
+          title="View YouTube Video Player"
+        >
+          <Youtube size={14} />
+          <span>VIDEO</span>
+        </button>
+
+        {/* Playlist Selector */}
         <div style={{ position: 'relative' }}>
           <button
             onClick={() => setShowPlaylist(!showPlaylist)}
@@ -231,7 +262,7 @@ export default function MusicPlayer() {
               top: '120%',
               borderRadius: 'var(--radius-md)',
               padding: '0.6rem',
-              width: '230px',
+              width: '240px',
               zIndex: 60
             }}>
               <div className="font-mono" style={{ fontSize: '0.7rem', fontWeight: 700, padding: '0.25rem 0.5rem', color: 'var(--text-muted)' }}>
@@ -279,6 +310,65 @@ export default function MusicPlayer() {
           )}
         </div>
       </div>
+
+      {/* YouTube Video Player Embed Popup Frame */}
+      {showVideoModal && (
+        <div style={{
+          width: '100%',
+          marginTop: '0.75rem',
+          paddingTop: '0.75rem',
+          borderTop: '1px solid var(--border-tech)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '0.5rem'
+        }} className="animate-fade-in">
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+            fontSize: '0.8rem',
+            fontFamily: 'var(--font-mono)',
+            color: 'var(--text-bright)'
+          }}>
+            <span>🎬 YouTube Player: {currentTrack.title} — {currentTrack.artist}</span>
+            <a
+              href={currentTrack.youtubeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'var(--rose-accent)', textDecoration: 'underline' }}
+            >
+              Open directly on YouTube ↗
+            </a>
+          </div>
+
+          <div style={{
+            position: 'relative',
+            paddingBottom: '30%', // compact height
+            height: 0,
+            width: '100%',
+            borderRadius: 'var(--radius-md)',
+            overflow: 'hidden',
+            boxShadow: '0 0 15px rgba(0,0,0,0.5)'
+          }}>
+            <iframe
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                border: 0
+              }}
+              src={`https://www.youtube-nocookie.com/embed/${currentTrack.youtubeId}?autoplay=1&enablejsapi=1`}
+              title={`${currentTrack.title} - ${currentTrack.artist}`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
