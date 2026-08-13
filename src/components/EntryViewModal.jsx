@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Clock, Edit2, Trash2, Star, BookOpen, Share2, Calendar, FileText } from 'lucide-react';
+import { X, Clock, Edit2, Trash2, Star, Terminal, FileText, Cpu, ShieldCheck } from 'lucide-react';
 import { formatDateStamp, getStats } from '../utils/storage';
 
 export default function EntryViewModal({ entry, onClose, onEdit, onDelete, onTogglePin }) {
@@ -12,8 +12,8 @@ export default function EntryViewModal({ entry, onClose, onEdit, onDelete, onTog
     createdAt,
     mood,
     category,
-    color = 'sage',
-    sticker = '🌿',
+    color = 'cyan',
+    sticker = '⚡',
     isPinned = false
   } = entry;
 
@@ -23,8 +23,8 @@ export default function EntryViewModal({ entry, onClose, onEdit, onDelete, onTog
     <div style={{
       position: 'fixed',
       inset: 0,
-      backgroundColor: 'rgba(58, 50, 44, 0.45)',
-      backdropFilter: 'blur(4px)',
+      backgroundColor: 'rgba(5, 8, 15, 0.75)',
+      backdropFilter: 'blur(10px)',
       zIndex: 100,
       display: 'flex',
       alignItems: 'center',
@@ -33,14 +33,14 @@ export default function EntryViewModal({ entry, onClose, onEdit, onDelete, onTog
     }} className="animate-fade-in" onClick={onClose}>
       
       <div
-        className="tape-top paper-lines animate-pop-in"
+        className="glass-panel animate-pop-in"
         style={{
           width: '100%',
           maxWidth: '720px',
           maxHeight: '90vh',
           borderRadius: 'var(--radius-lg)',
-          border: '1.5px solid var(--border-soft)',
-          boxShadow: 'var(--shadow-lg)',
+          borderColor: 'var(--border-tech-glow)',
+          boxShadow: 'var(--shadow-tech-lg)',
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
@@ -48,31 +48,31 @@ export default function EntryViewModal({ entry, onClose, onEdit, onDelete, onTog
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Modal Top Navigation Header */}
+        {/* Modal Top Header */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '1.25rem 1.75rem',
-          borderBottom: '1px dashed var(--border-soft)',
-          backgroundColor: 'var(--bg-cream-paper)'
+          borderBottom: '1px solid var(--border-tech)',
+          backgroundColor: 'rgba(0, 0, 0, 0.2)'
         }}>
-          {/* Category & Mood Pill */}
+          {/* Category & Mood Pills */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <span className={`pastel-badge ${color}`}>
+            <span className={`hud-badge ${color}`}>
               <span>{sticker}</span>
-              <span>{category || 'Journal'}</span>
+              <span>{category || 'Log'}</span>
             </span>
 
             {mood && (
-              <span className="pastel-badge rose">
+              <span className="hud-badge purple">
                 {mood}
               </span>
             )}
 
-            <span className="pastel-badge butter" style={{ fontSize: '0.75rem' }}>
-              <FileText size={12} style={{ marginRight: '0.2rem' }} />
-              {stats.words} words • {stats.readTimeMinutes} min read
+            <span className="hud-badge emerald" style={{ fontSize: '0.7rem' }}>
+              <FileText size={11} style={{ marginRight: '0.2rem' }} />
+              {stats.words} WORDS // {stats.readTimeMinutes} MIN READ
             </span>
           </div>
 
@@ -80,24 +80,24 @@ export default function EntryViewModal({ entry, onClose, onEdit, onDelete, onTog
             {/* Pin Button */}
             <button
               onClick={() => onTogglePin(id)}
-              className="btn-ghost"
-              title={isPinned ? "Unpin entry" : "Pin entry"}
+              className="btn-ghost-tech"
+              title={isPinned ? "Unpin log" : "Pin log"}
             >
-              <Star size={18} fill={isPinned ? "#FEE440" : "none"} color={isPinned ? "#845B25" : "var(--text-medium)"} />
+              <Star size={18} fill={isPinned ? "var(--neon-amber)" : "none"} color={isPinned ? "var(--neon-amber)" : "var(--text-muted)"} />
             </button>
 
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="btn-ghost"
+              className="btn-ghost-tech"
               style={{ padding: '0.35rem' }}
             >
-              <X size={22} />
+              <X size={20} />
             </button>
           </div>
         </div>
 
-        {/* Modal Content Scroll Area */}
+        {/* Modal Scroll Body */}
         <div style={{
           padding: '1.75rem',
           overflowY: 'auto',
@@ -108,64 +108,67 @@ export default function EntryViewModal({ entry, onClose, onEdit, onDelete, onTog
             display: 'flex',
             alignItems: 'center',
             gap: '0.4rem',
-            color: 'var(--text-medium)',
-            fontSize: '0.875rem',
+            color: 'var(--text-muted)',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.8rem',
             marginBottom: '0.75rem'
           }}>
-            <Clock size={15} color="var(--primary-accent)" />
+            <Clock size={14} color="var(--primary-accent)" />
             <span style={{ fontWeight: 600 }}>{formatDateStamp(createdAt)}</span>
           </div>
 
-          {/* Title in Clean Font */}
+          {/* Title */}
           <h2 className="font-heading" style={{
             fontSize: '1.85rem',
             fontWeight: 800,
             letterSpacing: '-0.02em',
             lineHeight: 1.25,
             marginBottom: '1.25rem',
-            color: 'var(--text-dark)'
+            color: 'var(--text-bright)'
           }}>
             {title}
           </h2>
 
-          {/* Main Text Content */}
+          {/* Main Text Body */}
           <div className="font-body" style={{
-            fontSize: '1.05rem',
-            lineHeight: '2rem',
-            color: 'var(--text-dark)',
+            fontSize: '1rem',
+            lineHeight: 1.7,
+            color: 'var(--text-main)',
             whiteSpace: 'pre-wrap',
-            wordBreak: 'break-word'
+            wordBreak: 'break-word',
+            opacity: 0.95
           }}>
-            {content || 'This entry has no written text content yet.'}
+            {content || 'No detailed text recorded for this log entry.'}
           </div>
         </div>
 
-        {/* Modal Action Footer */}
+        {/* Modal Actions Footer */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '1rem 1.75rem',
-          borderTop: '1px dashed var(--border-soft)',
-          backgroundColor: 'var(--bg-cream-paper)'
+          borderTop: '1px solid var(--border-tech)',
+          backgroundColor: 'rgba(0, 0, 0, 0.2)'
         }}>
           <button
             onClick={() => {
               onDelete(id);
               onClose();
             }}
-            className="btn-danger-ghost"
+            className="btn-ghost-tech"
+            style={{ color: 'var(--neon-pink)' }}
           >
-            <Trash2 size={16} />
-            <span>Delete Entry</span>
+            <Trash2 size={15} />
+            <span>DELETE LOG</span>
           </button>
 
           <div style={{ display: 'flex', gap: '0.75rem' }}>
             <button
               onClick={onClose}
-              className="btn-secondary"
+              className="btn-secondary-tech"
             >
-              Close
+              CLOSE
             </button>
 
             <button
@@ -173,10 +176,10 @@ export default function EntryViewModal({ entry, onClose, onEdit, onDelete, onTog
                 onEdit(entry);
                 onClose();
               }}
-              className="btn-primary"
+              className="btn-primary-tech"
             >
-              <Edit2 size={16} />
-              <span>Edit Entry</span>
+              <Edit2 size={15} />
+              <span>EDIT LOG</span>
             </button>
           </div>
         </div>

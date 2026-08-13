@@ -1,87 +1,87 @@
 // Local Storage Key
-const STORAGE_KEY = 'pastel_sanctuary_diary_entries_v1';
-const THEME_KEY = 'pastel_sanctuary_theme';
-const LOCK_KEY = 'pastel_sanctuary_pin';
+const STORAGE_KEY = 'cipherlog_os_diary_entries_v2';
+const THEME_KEY = 'cipherlog_os_theme';
+const LOCK_KEY = 'cipherlog_os_pin';
 
-// Default Sample Entries for First-Time Users
+// High-Tech Default Sample Entries
 export const DEFAULT_ENTRIES = [
   {
-    id: 'default-entry-1',
-    title: 'Morning Matcha & New Beginnings 🍵',
-    content: `There is something so peaceful about the quiet morning hours before the world wakes up. Sunbeams trickling through the sheer linen curtains, a warm mug of matcha, and space to just breathe. 
+    id: 'tech-entry-1',
+    title: 'Quantum Coffee & Morning Neural Sync ⚡',
+    content: `System status nominal. Started the morning session with black espresso and zero digital distractions. 
 
-Today's intention: go slow, notice the small details, and speak gently to myself. I want to build a daily habit of jotting down my thoughts here every day.`,
-    createdAt: new Date(Date.now() - 3600000 * 3).toISOString(), // 3 hours ago
-    updatedAt: new Date(Date.now() - 3600000 * 3).toISOString(),
-    mood: '🧘 Serene',
-    category: 'Reflections',
-    color: 'sage',
-    sticker: '🌿',
+Today's core protocols:
+1. Deep work block on project architecture.
+2. Maintain high energy flow & focus integrity.
+3. Review evening retrospective log.
+
+Remember: Consistency beats intensity. Keep building step by step.`,
+    createdAt: new Date(Date.now() - 3600000 * 2).toISOString(), // 2 hours ago
+    updatedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+    mood: '⚡ Focused',
+    category: 'Protocols',
+    color: 'cyan',
+    sticker: '⚡',
     isPinned: true,
-    fontStyle: 'handwriting',
   },
   {
-    id: 'default-entry-2',
-    title: 'Raindrops on the Windowpane 🌧️',
-    content: `It rained all afternoon. I curled up in my cozy nook with a cup of chamomile tea and finally finished reading my favorite book. 
+    id: 'tech-entry-2',
+    title: 'Late Night Code & Cyber Solitude 🌌',
+    content: `There is immense clarity in late night sessions when ambient noise drops to zero. 
 
-I love the sound of rain tapping soft rhythms against the glass. It makes staying inside feel like a warm hug. Reminded me of childhood afternoons watching water droplets race down the pane.`,
+Calibrated the upcoming project roadmap and organized key thoughts into structured modules. Progress is steady, and local database sync is running smooth.`,
     createdAt: new Date(Date.now() - 86400000 * 1 - 3600000 * 4).toISOString(), // Yesterday
     updatedAt: new Date(Date.now() - 86400000 * 1 - 3600000 * 4).toISOString(),
-    mood: '☕ Cozy',
-    category: 'Memories',
-    color: 'lavender',
-    sticker: '📖',
+    mood: '🧠 Analytical',
+    category: 'Brain Dumps',
+    color: 'purple',
+    sticker: '🧠',
     isPinned: false,
-    fontStyle: 'handwriting',
   },
   {
-    id: 'default-entry-3',
-    title: 'Small Victories & Golden Sunset 🌅',
-    content: `Crossed off three main tasks on my goal list today! Took a 30-minute golden hour walk in the nearby park and saw the most vibrant pastel pink & lavender sky. 
+    id: 'tech-entry-3',
+    title: 'Daily Retrospective & Milestone Log 🛡️',
+    content: `Achieved 3 major milestone tasks ahead of schedule today! 
 
-Note to self: Celebrate the quiet daily progress instead of waiting for giant milestones. Every step forward counts.`,
+Took a 30-minute evening walk under neon city lights to clear my mind. Balance between high-speed execution and quiet recovery is essential for long-term momentum.`,
     createdAt: new Date(Date.now() - 86400000 * 3).toISOString(), // 3 days ago
     updatedAt: new Date(Date.now() - 86400000 * 3).toISOString(),
-    mood: '💖 Grateful',
-    category: 'Gratitude',
-    color: 'rose',
-    sticker: '✨',
+    mood: '🛡️ Secure',
+    category: 'Personal Logs',
+    color: 'emerald',
+    sticker: '🛡️',
     isPinned: false,
-    fontStyle: 'handwriting',
   }
 ];
 
-// Daily Writing Prompts for Inspiration
+// Tech Writing Prompts
 export const WRITING_PROMPTS = [
-  "What made you smile or feel at peace today?",
-  "Describe a quiet moment that brought you joy recently.",
-  "What is one thing you're looking forward to this week?",
-  "What is a lesson you learned or a mistake that taught you something valueable?",
-  "If today had a color or song, what would it be and why?",
-  "List 3 simple things you are genuinely grateful for right now.",
-  "What does your ideal peaceful morning look like?"
+  "System Audit: What was your biggest technical or personal win today?",
+  "Brain Dump: What complex problem is currently on your mind?",
+  "Protocol Check: What is one habit or workflow you want to optimize tomorrow?",
+  "Data Log: What inspired or energized you during today's work?",
+  "Retrospective: What mistake did you make today, and what is the patch/fix?",
+  "Future Vision: Where do you see your goals 90 days from now?"
 ];
 
-// Categories & Colors Available
+// Tech Categories
 export const CATEGORIES = [
-  { id: 'Personal', label: 'Personal', color: 'rose', icon: '🌸' },
-  { id: 'Reflections', label: 'Reflections', color: 'sage', icon: '🌿' },
-  { id: 'Gratitude', label: 'Gratitude', color: 'butter', icon: '💖' },
-  { id: 'Memories', label: 'Memories', color: 'lavender', icon: '📖' },
-  { id: 'Ideas', label: 'Ideas & Dreams', color: 'mint', icon: '💡' },
-  { id: 'Travel', label: 'Travel & Walks', color: 'sky', icon: '✈️' }
+  { id: 'Protocols', label: 'Protocols', color: 'cyan', icon: '⚡' },
+  { id: 'Brain Dumps', label: 'Brain Dumps', color: 'purple', icon: '🧠' },
+  { id: 'Personal Logs', label: 'Personal Logs', color: 'emerald', icon: '🛡️' },
+  { id: 'Ideas & Ops', label: 'Ideas & Ops', color: 'amber', icon: '🚀' },
+  { id: 'Cosmos', label: 'Cosmos & Dreams', color: 'pink', icon: '🌌' },
+  { id: 'Reflections', label: 'Reflections', color: 'cyan', icon: '🔮' }
 ];
 
-// Mood Options
+// Tech Mood Options
 export const MOODS = [
-  { emoji: '😊', label: 'Happy' },
-  { emoji: '🧘', label: 'Serene' },
-  { emoji: '💖', label: 'Grateful' },
-  { emoji: '☕', label: 'Cozy' },
-  { emoji: '💭', label: 'Thoughtful' },
-  { emoji: '⚡', label: 'Inspired' },
-  { emoji: '🌧️', label: 'Somber' }
+  { emoji: '⚡', label: 'Focused' },
+  { emoji: '🧠', label: 'Analytical' },
+  { emoji: '🛡️', label: 'Secure' },
+  { emoji: '🚀', label: 'Inspired' },
+  { emoji: '🧘', label: 'Calm' },
+  { emoji: '☕', label: 'Energized' }
 ];
 
 // Storage Helpers
@@ -94,7 +94,7 @@ export function loadEntries() {
     }
     return JSON.parse(data);
   } catch (error) {
-    console.error('Error loading diary entries from localStorage:', error);
+    console.error('Error loading entries from localStorage:', error);
     return DEFAULT_ENTRIES;
   }
 }
@@ -103,13 +103,13 @@ export function saveEntries(entries) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
   } catch (error) {
-    console.error('Error saving diary entries to localStorage:', error);
+    console.error('Error saving entries to localStorage:', error);
   }
 }
 
 // Theme storage
 export function loadSavedTheme() {
-  return localStorage.getItem(THEME_KEY) || 'cream';
+  return localStorage.getItem(THEME_KEY) || 'obsidian';
 }
 
 export function saveTheme(theme) {
@@ -134,18 +134,11 @@ export function formatDateStamp(dateInput) {
   if (!dateInput) return '';
   const date = new Date(dateInput);
   
-  // Format options: "Thursday, Aug 13, 2026 • 9:38 AM"
-  const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
-  const monthDayYear = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  const timeStr = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  // High-Tech Format: "2026-08-13 • 09:38:12 AM [UTC+8]"
+  const dateStr = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit', weekday: 'short' });
+  const timeStr = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 
-  return `${dayName}, ${monthDayYear} • ${timeStr}`;
-}
-
-export function formatShortDate(dateInput) {
-  if (!dateInput) return '';
-  const date = new Date(dateInput);
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  return `${dateStr} // ${timeStr}`;
 }
 
 export function formatRelativeTime(dateInput) {
@@ -154,22 +147,14 @@ export function formatRelativeTime(dateInput) {
   const now = new Date();
   const diffInSeconds = Math.floor((now - date) / 1000);
 
-  if (diffInSeconds < 60) return 'Just now';
+  if (diffInSeconds < 60) return 'NOW';
   if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
   if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
   
   const isToday = date.toDateString() === now.toDateString();
-  if (isToday) {
-    return `Today at ${date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
-  }
+  if (isToday) return 'TODAY';
   
-  const yesterday = new Date(now);
-  yesterday.setDate(now.getDate() - 1);
-  if (date.toDateString() === yesterday.toDateString()) {
-    return `Yesterday at ${date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
-  }
-
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
 }
 
 // Calculate Word & Character Count

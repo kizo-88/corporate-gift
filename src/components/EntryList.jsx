@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import EntryCard from './EntryCard';
 import { CATEGORIES, MOODS } from '../utils/storage';
-import { Search, Filter, ArrowUpDown, LayoutGrid, List, Sparkles, Plus, BookOpen, Star, RefreshCw } from 'lucide-react';
+import { Search, Filter, ArrowUpDown, LayoutGrid, List, Plus, RefreshCw, Terminal } from 'lucide-react';
 
 export default function EntryList({
   entries,
@@ -15,14 +15,12 @@ export default function EntryList({
 }) {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedMood, setSelectedMood] = useState('All');
-  const [sortBy, setSortBy] = useState('newest'); // newest, oldest, title, pinned
-  const [viewMode, setViewMode] = useState('grid'); // grid or list
+  const [sortBy, setSortBy] = useState('newest');
+  const [viewMode, setViewMode] = useState('grid');
 
-  // Filter & Sort Entries logic
   const filteredEntries = useMemo(() => {
     let result = [...entries];
 
-    // 1. Search Query Filter (Title or Content)
     if (searchTerm.trim()) {
       const q = searchTerm.toLowerCase().trim();
       result = result.filter(
@@ -30,30 +28,24 @@ export default function EntryList({
       );
     }
 
-    // 2. Category Filter
     if (selectedCategory !== 'All') {
       result = result.filter(item => item.category === selectedCategory);
     }
 
-    // 3. Mood Filter
     if (selectedMood !== 'All') {
       result = result.filter(item => item.mood && item.mood.includes(selectedMood));
     }
 
-    // 4. Sort
     result.sort((a, b) => {
-      // Pinned items always float to top if sorting by newest/default
       if (a.isPinned !== b.isPinned) {
         return a.isPinned ? -1 : 1;
       }
-
       if (sortBy === 'oldest') {
         return new Date(a.createdAt) - new Date(b.createdAt);
       }
       if (sortBy === 'title') {
         return a.title.localeCompare(b.title);
       }
-      // default 'newest'
       return new Date(b.createdAt) - new Date(a.createdAt);
     });
 
@@ -73,17 +65,14 @@ export default function EntryList({
     <section style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
       
       {/* Search & Filter Header Toolbar */}
-      <div style={{
-        backgroundColor: 'var(--bg-cream-paper)',
+      <div className="glass-panel" style={{
         borderRadius: 'var(--radius-lg)',
-        border: '1px solid var(--border-soft)',
         padding: '1.25rem',
-        boxShadow: 'var(--shadow-sm)',
         display: 'flex',
         flexDirection: 'column',
         gap: '1rem'
       }}>
-        {/* Category Pills Row */}
+        {/* Category HUD Pills Row */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -91,28 +80,27 @@ export default function EntryList({
           overflowX: 'auto',
           paddingBottom: '0.25rem'
         }}>
-          <span style={{
-            fontSize: '0.8rem',
+          <span className="font-mono" style={{
+            fontSize: '0.75rem',
             fontWeight: 700,
-            color: 'var(--text-medium)',
-            textTransform: 'uppercase',
+            color: 'var(--text-muted)',
             letterSpacing: '0.05em',
             marginRight: '0.25rem'
           }}>
-            Filter:
+            // FILTER:
           </span>
 
           <button
             onClick={() => setSelectedCategory('All')}
-            className={`pastel-badge ${selectedCategory === 'All' ? 'rose' : ''}`}
+            className="hud-badge cyan"
             style={{
               cursor: 'pointer',
-              border: selectedCategory === 'All' ? '2px solid var(--primary-accent)' : '1px solid var(--border-soft)',
-              backgroundColor: selectedCategory === 'All' ? 'var(--pastel-rose)' : 'var(--bg-cream-base)',
-              color: selectedCategory === 'All' ? '#8A4B4E' : 'var(--text-medium)'
+              border: selectedCategory === 'All' ? '1px solid var(--primary-accent)' : '1px solid var(--border-tech)',
+              backgroundColor: selectedCategory === 'All' ? 'var(--neon-cyan-glow)' : 'transparent',
+              color: selectedCategory === 'All' ? 'var(--neon-cyan)' : 'var(--text-muted)'
             }}
           >
-            ✨ All ({entries.length})
+            ⚡ ALL LOGS ({entries.length})
           </button>
 
           {CATEGORIES.map((cat) => {
@@ -122,21 +110,21 @@ export default function EntryList({
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`pastel-badge ${cat.color}`}
+                className={`hud-badge ${cat.color}`}
                 style={{
                   cursor: 'pointer',
-                  border: isSelected ? '2px solid var(--text-dark)' : '1px solid transparent',
-                  opacity: isSelected ? 1 : 0.75
+                  border: isSelected ? '1px solid var(--text-bright)' : '1px solid transparent',
+                  opacity: isSelected ? 1 : 0.7
                 }}
               >
                 <span>{cat.icon}</span>
-                <span>{cat.label} ({count})</span>
+                <span>{cat.label} [{count}]</span>
               </button>
             );
           })}
         </div>
 
-        {/* Secondary Filter Controls Row: Mood, Sort, View Toggle */}
+        {/* Controls Row: Mood, Sort, View Layout */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -144,19 +132,19 @@ export default function EntryList({
           flexWrap: 'wrap',
           gap: '0.75rem',
           paddingTop: '0.75rem',
-          borderTop: '1px dashed var(--border-soft)'
+          borderTop: '1px solid var(--border-tech)'
         }}>
-          {/* Left: Mood & Active filter clear */}
+          {/* Mood Filter */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem' }}>
-              <Filter size={15} color="var(--text-medium)" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem' }}>
+              <Filter size={14} color="var(--text-muted)" />
               <select
                 value={selectedMood}
                 onChange={(e) => setSelectedMood(e.target.value)}
-                className="input-pastel"
-                style={{ padding: '0.35rem 0.75rem', fontSize: '0.85rem', width: 'auto' }}
+                className="input-tech font-mono"
+                style={{ padding: '0.35rem 0.75rem', fontSize: '0.78rem', width: 'auto' }}
               >
-                <option value="All">All Moods</option>
+                <option value="All">ALL MOOD TELEMETRY</option>
                 {MOODS.map(m => (
                   <option key={m.label} value={m.label}>
                     {m.emoji} {m.label}
@@ -168,73 +156,74 @@ export default function EntryList({
             {hasActiveFilters && (
               <button
                 onClick={resetFilters}
-                className="btn-ghost"
-                style={{ fontSize: '0.8rem', color: 'var(--primary-accent)' }}
+                className="btn-ghost-tech"
+                style={{ fontSize: '0.78rem', color: 'var(--primary-accent)', fontFamily: 'var(--font-mono)' }}
               >
-                <RefreshCw size={13} />
-                <span>Reset Filters</span>
+                <RefreshCw size={12} />
+                <span>RESET FILTERS</span>
               </button>
             )}
           </div>
 
-          {/* Right: Sort options & View mode */}
+          {/* Sort & Layout toggle */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem' }}>
-              <ArrowUpDown size={15} color="var(--text-medium)" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem' }}>
+              <ArrowUpDown size={14} color="var(--text-muted)" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="input-pastel"
-                style={{ padding: '0.35rem 0.75rem', fontSize: '0.85rem', width: 'auto' }}
+                className="input-tech font-mono"
+                style={{ padding: '0.35rem 0.75rem', fontSize: '0.78rem', width: 'auto' }}
               >
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-                <option value="title">Title A-Z</option>
+                <option value="newest">NEWEST LOGS</option>
+                <option value="oldest">OLDEST LOGS</option>
+                <option value="title">TITLE A-Z</option>
               </select>
             </div>
 
-            {/* View layout toggle */}
+            {/* View Mode Toggle */}
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              backgroundColor: 'var(--bg-cream-subtle)',
+              backgroundColor: 'rgba(0,0,0,0.3)',
               padding: '0.2rem',
-              borderRadius: 'var(--radius-sm)'
+              borderRadius: 'var(--radius-sm)',
+              border: '1px solid var(--border-tech)'
             }}>
               <button
                 onClick={() => setViewMode('grid')}
                 style={{
                   border: 'none',
-                  background: viewMode === 'grid' ? 'var(--bg-cream-paper)' : 'transparent',
+                  background: viewMode === 'grid' ? 'var(--bg-cyber-subtle)' : 'transparent',
                   padding: '0.3rem',
                   borderRadius: '4px',
                   cursor: 'pointer',
-                  color: viewMode === 'grid' ? 'var(--primary-accent)' : 'var(--text-medium)'
+                  color: viewMode === 'grid' ? 'var(--primary-accent)' : 'var(--text-muted)'
                 }}
-                title="Grid Card View"
+                title="Grid Pod View"
               >
-                <LayoutGrid size={16} />
+                <LayoutGrid size={15} />
               </button>
               <button
                 onClick={() => setViewMode('list')}
                 style={{
                   border: 'none',
-                  background: viewMode === 'list' ? 'var(--bg-cream-paper)' : 'transparent',
+                  background: viewMode === 'list' ? 'var(--bg-cyber-subtle)' : 'transparent',
                   padding: '0.3rem',
                   borderRadius: '4px',
                   cursor: 'pointer',
-                  color: viewMode === 'list' ? 'var(--primary-accent)' : 'var(--text-medium)'
+                  color: viewMode === 'list' ? 'var(--primary-accent)' : 'var(--text-muted)'
                 }}
                 title="Compact List View"
               >
-                <List size={16} />
+                <List size={15} />
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Entries List / Grid */}
+      {/* Grid of Entry Cards */}
       {filteredEntries.length > 0 ? (
         <div style={{
           display: 'grid',
@@ -256,10 +245,8 @@ export default function EntryList({
         </div>
       ) : (
         /* Empty State */
-        <div className="tape-top animate-fade-in" style={{
-          backgroundColor: 'var(--bg-cream-paper)',
+        <div className="glass-panel animate-fade-in" style={{
           borderRadius: 'var(--radius-lg)',
-          border: '1.5px dashed var(--border-soft)',
           padding: '3.5rem 2rem',
           textAlign: 'center',
           display: 'flex',
@@ -269,39 +256,40 @@ export default function EntryList({
           gap: '1rem'
         }}>
           <div style={{
-            width: '64px',
-            height: '64px',
+            width: '60px',
+            height: '60px',
             borderRadius: '50%',
-            backgroundColor: 'var(--pastel-butter)',
+            backgroundColor: 'var(--neon-cyan-glow)',
+            color: 'var(--neon-cyan)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '2rem',
-            boxShadow: 'var(--shadow-sm)'
+            fontSize: '1.8rem',
+            boxShadow: '0 0 20px var(--neon-cyan-glow)'
           }}>
-            📖
+            <Terminal size={28} />
           </div>
 
           <div>
-            <h3 className="font-heading" style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-              {hasActiveFilters ? 'No Matching Entries Found' : 'Your Diary is Quiet & Peaceful'}
+            <h3 className="font-heading" style={{ fontSize: '1.6rem', marginBottom: '0.5rem', color: 'var(--text-bright)' }}>
+              {hasActiveFilters ? 'NO MATCHING LOGS FOUND' : 'NEURAL DATABASE READY'}
             </h3>
-            <p style={{ maxWidth: '420px', margin: '0 auto', fontSize: '0.95rem' }}>
+            <p className="font-mono" style={{ maxWidth: '420px', margin: '0 auto', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
               {hasActiveFilters 
-                ? 'Try adjusting your search keywords or clearing active filters to view your memories.' 
-                : 'Write your very first entry above to record your feelings, quiet thoughts, and special moments!'}
+                ? 'Adjust filter criteria or query keywords to scan local database.' 
+                : 'Click below to create your first encrypted diary log entry!'}
             </p>
           </div>
 
           {hasActiveFilters ? (
-            <button onClick={resetFilters} className="btn-secondary">
-              <RefreshCw size={16} />
-              <span>Clear All Filters</span>
+            <button onClick={resetFilters} className="btn-secondary-tech">
+              <RefreshCw size={15} />
+              <span>CLEAR FILTERS</span>
             </button>
           ) : (
-            <button onClick={onOpenNewForm} className="btn-primary">
+            <button onClick={onOpenNewForm} className="btn-primary-tech">
               <Plus size={18} />
-              <span>Write Your First Memory</span>
+              <span>CREATE FIRST LOG</span>
             </button>
           )}
         </div>

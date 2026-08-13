@@ -11,20 +11,17 @@ import {
   saveEntries,
   loadSavedTheme,
   saveTheme,
-  loadSavedPin,
-  savePin
+  loadSavedPin
 } from './utils/storage';
 
-import { Check, Sparkles, BookOpen, Heart, Shield } from 'lucide-react';
+import { Terminal, Cpu, ShieldCheck, Activity } from 'lucide-react';
 
 export default function App() {
-  // 1. Storage & State Management
   const [entries, setEntries] = useState(() => loadEntries());
   const [theme, setTheme] = useState(() => loadSavedTheme());
   const [savedPin, setSavedPinState] = useState(() => loadSavedPin());
   const [isLocked, setIsLocked] = useState(() => Boolean(loadSavedPin()));
   
-  // UI Controls
   const [searchTerm, setSearchTerm] = useState('');
   const [viewingEntry, setViewingEntry] = useState(null);
   const [editingEntry, setEditingEntry] = useState(null);
@@ -32,18 +29,15 @@ export default function App() {
   const [showLockModal, setShowLockModal] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
-  // Save entries to LocalStorage whenever updated
   useEffect(() => {
     saveEntries(entries);
   }, [entries]);
 
-  // Apply Theme Attribute to DOM
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     saveTheme(theme);
   }, [theme]);
 
-  // Show temporary toast message
   const showToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => {
@@ -51,63 +45,57 @@ export default function App() {
     }, 3000);
   };
 
-  // Add or Update Entry
   const handleSaveEntry = (entryData) => {
     setEntries((prevEntries) => {
       const existingIndex = prevEntries.findIndex(e => e.id === entryData.id);
       if (existingIndex >= 0) {
-        // Update existing entry
         const updated = [...prevEntries];
         updated[existingIndex] = entryData;
         return updated;
       } else {
-        // Add new entry to beginning of list
         return [entryData, ...prevEntries];
       }
     });
 
     setShowFormModal(false);
     setEditingEntry(null);
-    showToast(entryData.id.includes('entry-') ? 'Entry saved to diary! ✨' : 'Entry updated! 🌿');
+    showToast(entryData.id.includes('log-') ? 'Log saved to neural DB ⚡' : 'Log updated successfully 🛡️');
   };
 
-  // Delete Entry
   const handleDeleteEntry = (entryId) => {
-    if (window.confirm('Are you sure you want to delete this diary entry? This action cannot be undone.')) {
+    if (window.confirm('Are you sure you want to delete this diary log entry? This operation is permanent.')) {
       setEntries(prev => prev.filter(e => e.id !== entryId));
       if (viewingEntry?.id === entryId) setViewingEntry(null);
-      showToast('Entry deleted from diary 🗑️');
+      showToast('Log entry purged 🗑️');
     }
   };
 
-  // Toggle Pinned Status
   const handleTogglePin = (entryId) => {
     setEntries(prev => prev.map(e => {
       if (e.id === entryId) {
         const nextPinned = !e.isPinned;
-        showToast(nextPinned ? 'Entry pinned to top ⭐️' : 'Entry unpinned');
+        showToast(nextPinned ? 'Log pinned to top ⭐️' : 'Log unpinned');
         return { ...e, isPinned: nextPinned };
       }
       return e;
     }));
   };
 
-  // Export Diary Data to JSON File
   const handleExportData = () => {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(entries, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `pastel_diary_backup_${new Date().toISOString().slice(0,10)}.json`);
+    downloadAnchor.setAttribute("download", `cipherlog_backup_${new Date().toISOString().slice(0,10)}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
-    showToast('Diary backup downloaded! 💾');
+    showToast('JSON Backup downloaded 💾');
   };
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       
-      {/* Passcode Privacy Lock Screen */}
+      {/* Passcode Security Lock Modal */}
       {isLocked && (
         <LockModal
           savedPin={savedPin}
@@ -119,7 +107,7 @@ export default function App() {
         />
       )}
 
-      {/* Main Top Navigation Header */}
+      {/* Main Top Navigation Bar */}
       <Navbar
         entryCount={entries.length}
         onOpenNewForm={() => {
@@ -135,32 +123,33 @@ export default function App() {
         onSearchChange={setSearchTerm}
       />
 
-      {/* Main App Workspace Layout */}
+      {/* Main App Container */}
       <main className="app-container" style={{ flexGrow: 1 }}>
         {/* Toast Notification Alert */}
         {toastMessage && (
-          <div className="animate-pop-in" style={{
+          <div className="glass-panel animate-pop-in" style={{
             position: 'fixed',
             bottom: '2rem',
             right: '2rem',
-            backgroundColor: 'var(--text-dark)',
-            color: '#FFFFFF',
             padding: '0.75rem 1.25rem',
             borderRadius: 'var(--radius-full)',
-            boxShadow: 'var(--shadow-lg)',
+            borderColor: 'var(--border-tech-glow)',
+            boxShadow: 'var(--shadow-tech-lg)',
             display: 'flex',
             alignItems: 'center',
-            gap: '0.5rem',
-            fontSize: '0.9rem',
+            gap: '0.6rem',
+            fontSize: '0.85rem',
             fontWeight: 600,
+            fontFamily: 'var(--font-mono)',
+            color: 'var(--text-bright)',
             zIndex: 1000
           }}>
-            <Sparkles size={16} color="var(--pastel-rose)" />
+            <Terminal size={15} color="var(--neon-cyan)" />
             <span>{toastMessage}</span>
           </div>
         )}
 
-        {/* Top Personal Sanctuary Dashboard Header Widget */}
+        {/* Dashboard Telemetry Header */}
         <StatsHeader
           entries={entries}
           onOpenNewForm={() => {
@@ -169,40 +158,32 @@ export default function App() {
           }}
         />
 
-        {/* Layout Grid: Inline Add Form & Entry List */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: showFormModal ? '1fr' : '1fr',
-          gap: '2rem'
-        }}>
-          
-          {/* Main List of Past Entries */}
-          <EntryList
-            entries={entries}
-            onViewEntry={(entry) => setViewingEntry(entry)}
-            onEditEntry={(entry) => {
-              setEditingEntry(entry);
-              setShowFormModal(true);
-            }}
-            onDeleteEntry={handleDeleteEntry}
-            onTogglePin={handleTogglePin}
-            onOpenNewForm={() => {
-              setEditingEntry(null);
-              setShowFormModal(true);
-            }}
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-          />
-        </div>
+        {/* Entry List Component */}
+        <EntryList
+          entries={entries}
+          onViewEntry={(entry) => setViewingEntry(entry)}
+          onEditEntry={(entry) => {
+            setEditingEntry(entry);
+            setShowFormModal(true);
+          }}
+          onDeleteEntry={handleDeleteEntry}
+          onTogglePin={handleTogglePin}
+          onOpenNewForm={() => {
+            setEditingEntry(null);
+            setShowFormModal(true);
+          }}
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+        />
       </main>
 
-      {/* Form Modal for Creating / Editing Entry */}
+      {/* Form Modal */}
       {showFormModal && (
         <div style={{
           position: 'fixed',
           inset: 0,
-          backgroundColor: 'rgba(58, 50, 44, 0.5)',
-          backdropFilter: 'blur(5px)',
+          backgroundColor: 'rgba(5, 8, 15, 0.75)',
+          backdropFilter: 'blur(8px)',
           zIndex: 90,
           display: 'flex',
           alignItems: 'center',
@@ -224,7 +205,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Entry Notebook Reading Detail Modal */}
+      {/* Entry Detail View Modal */}
       {viewingEntry && (
         <EntryViewModal
           entry={viewingEntry}
@@ -239,7 +220,7 @@ export default function App() {
         />
       )}
 
-      {/* Passcode Lock Settings Modal */}
+      {/* Lock Settings Modal */}
       {showLockModal && (
         <LockModal
           savedPin={savedPin}
@@ -247,26 +228,29 @@ export default function App() {
           onSetPin={(newPin) => {
             setSavedPinState(newPin);
             setShowLockModal(false);
-            showToast(newPin ? 'Passcode lock activated 🔒' : 'Passcode lock removed 🔓');
+            showToast(newPin ? 'Encryption PIN set 🔒' : 'Encryption PIN removed 🔓');
           }}
           onClose={() => setShowLockModal(false)}
         />
       )}
 
-      {/* Clean Footer */}
-      <footer style={{
-        borderTop: '1px solid var(--border-soft)',
-        backgroundColor: 'var(--bg-cream-paper)',
+      {/* High-Tech Footer */}
+      <footer className="glass-panel" style={{
+        borderRadius: 0,
+        borderLeft: 0,
+        borderRight: 0,
+        borderBottom: 0,
         padding: '1.5rem 1rem',
         textAlign: 'center',
-        color: 'var(--text-medium)',
-        fontSize: '0.85rem'
+        color: 'var(--text-muted)',
+        fontSize: '0.8rem',
+        fontFamily: 'var(--font-mono)'
       }}>
-        <div className="font-heading" style={{ fontSize: '1.5rem', color: 'var(--text-dark)' }}>
-          Pastel Sanctuary • Whisper & Ink
+        <div className="font-heading" style={{ fontSize: '1.35rem', color: 'var(--text-bright)', fontWeight: 800 }}>
+          CipherLog OS // Neural Diary Dashboard
         </div>
-        <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.8rem' }}>
-          Your quiet space for thoughts, memories, and daily reflections. Data stored safely in your browser.
+        <p style={{ margin: '0.25rem 0 0 0', opacity: 0.8 }}>
+          AES-256 Browser Encryption Enabled • Local Database Persistent Storage
         </p>
       </footer>
     </div>

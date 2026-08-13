@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, Key, ShieldCheck, X, Check } from 'lucide-react';
+import { Lock, ShieldCheck, X, Check, Key } from 'lucide-react';
 import { savePin } from '../utils/storage';
 
 export default function LockModal({ savedPin, onUnlock, onSetPin, onClose }) {
@@ -15,15 +15,13 @@ export default function LockModal({ savedPin, onUnlock, onSetPin, onClose }) {
     }
 
     if (isSettingNew) {
-      // Setting a new PIN
       savePin(pinInput);
       onSetPin(pinInput);
     } else {
-      // Unlocking with saved PIN
       if (pinInput === savedPin) {
         onUnlock();
       } else {
-        setErrorMsg('Incorrect PIN passcode. Please try again.');
+        setErrorMsg('ACCESS DENIED: Incorrect PIN passcode.');
         setPinInput('');
       }
     }
@@ -39,8 +37,8 @@ export default function LockModal({ savedPin, onUnlock, onSetPin, onClose }) {
     <div style={{
       position: 'fixed',
       inset: 0,
-      backgroundColor: 'rgba(58, 50, 44, 0.65)',
-      backdropFilter: 'blur(8px)',
+      backgroundColor: 'rgba(5, 8, 15, 0.85)',
+      backdropFilter: 'blur(12px)',
       zIndex: 1000,
       display: 'flex',
       alignItems: 'center',
@@ -48,11 +46,10 @@ export default function LockModal({ savedPin, onUnlock, onSetPin, onClose }) {
       padding: '1rem'
     }} className="animate-fade-in">
       
-      <div className="tape-top animate-pop-in" style={{
-        backgroundColor: 'var(--bg-cream-paper)',
+      <div className="glass-panel animate-pop-in" style={{
         borderRadius: 'var(--radius-lg)',
-        border: '1.5px solid var(--border-soft)',
-        boxShadow: 'var(--shadow-lg)',
+        borderColor: 'var(--border-tech-glow)',
+        boxShadow: 'var(--shadow-tech-lg)',
         padding: '2.25rem 2rem',
         maxWidth: '400px',
         width: '100%',
@@ -62,7 +59,7 @@ export default function LockModal({ savedPin, onUnlock, onSetPin, onClose }) {
         {onClose && (
           <button
             onClick={onClose}
-            className="btn-ghost"
+            className="btn-ghost-tech"
             style={{ position: 'absolute', right: '1rem', top: '1rem' }}
           >
             <X size={20} />
@@ -73,23 +70,24 @@ export default function LockModal({ savedPin, onUnlock, onSetPin, onClose }) {
           width: '56px',
           height: '56px',
           borderRadius: '50%',
-          backgroundColor: 'var(--pastel-rose)',
-          color: '#8A4B4E',
+          backgroundColor: 'var(--neon-cyan-glow)',
+          color: 'var(--neon-cyan)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          margin: '0 auto 1.25rem auto'
+          margin: '0 auto 1.25rem auto',
+          boxShadow: '0 0 20px var(--neon-cyan-glow)'
         }}>
-          <Lock size={28} />
+          <ShieldCheck size={28} />
         </div>
 
-        <h3 className="font-heading" style={{ fontSize: '2rem', marginBottom: '0.35rem' }}>
-          {isSettingNew ? 'Set Passcode Lock' : 'Diary Protected'}
+        <h3 className="font-heading" style={{ fontSize: '1.6rem', marginBottom: '0.35rem', color: 'var(--text-bright)' }}>
+          {isSettingNew ? 'ENCRYPT DIARY LOCK' : 'CYBER LOG ENCRYPTED'}
         </h3>
-        <p style={{ fontSize: '0.9rem', color: 'var(--text-medium)', marginBottom: '1.5rem' }}>
+        <p className="font-mono" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
           {isSettingNew 
-            ? 'Create a 4-digit PIN code to secure your secret diary entries.' 
-            : 'Enter your 4-digit PIN to access your personal thoughts.'}
+            ? 'Set a 4-digit PIN code to secure your personal diary log.' 
+            : 'AUTHENTICATION REQUIRED: Enter 4-digit PIN passcode.'}
         </p>
 
         <form onSubmit={handleVerifyOrSet} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -102,7 +100,7 @@ export default function LockModal({ savedPin, onUnlock, onSetPin, onClose }) {
               setErrorMsg('');
               setPinInput(e.target.value.replace(/\D/g, ''));
             }}
-            className="input-pastel"
+            className="input-tech font-mono"
             style={{
               fontSize: '2rem',
               textAlign: 'center',
@@ -114,29 +112,29 @@ export default function LockModal({ savedPin, onUnlock, onSetPin, onClose }) {
           />
 
           {errorMsg && (
-            <div style={{ fontSize: '0.825rem', color: '#D9534F', fontWeight: 600 }}>
+            <div className="font-mono" style={{ fontSize: '0.78rem', color: 'var(--neon-pink)', fontWeight: 600 }}>
               {errorMsg}
             </div>
           )}
 
           <button
             type="submit"
-            className="btn-primary"
+            className="btn-primary-tech"
             disabled={pinInput.length < 4}
             style={{ opacity: pinInput.length < 4 ? 0.6 : 1 }}
           >
             <Check size={18} />
-            <span>{isSettingNew ? 'Save PIN Lock' : 'Unlock Diary'}</span>
+            <span>{isSettingNew ? 'ENABLE ENCRYPTION' : 'AUTHENTICATE LOG'}</span>
           </button>
 
           {!isSettingNew && savedPin && (
             <button
               type="button"
               onClick={handleRemovePin}
-              className="btn-danger-ghost"
-              style={{ fontSize: '0.8rem', alignSelf: 'center', marginTop: '0.5rem' }}
+              className="btn-ghost-tech font-mono"
+              style={{ fontSize: '0.75rem', alignSelf: 'center', marginTop: '0.5rem', color: 'var(--neon-pink)' }}
             >
-              Remove Passcode Lock
+              DISABLE PIN SECURITY
             </button>
           )}
         </form>

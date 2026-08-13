@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, Plus, Sparkles, Lock, Unlock, Download, Palette, Search } from 'lucide-react';
+import { Terminal, Plus, Shield, Lock, Unlock, Download, Cpu, Search, Activity } from 'lucide-react';
 
 export default function Navbar({
   entryCount,
@@ -15,20 +15,18 @@ export default function Navbar({
   const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
 
   const themes = [
-    { id: 'cream', name: 'Vanilla Cream', color: '#FBF8F3', accent: '#DDA7A5' },
-    { id: 'lavender', name: 'Lavender Mist', color: '#F7F5FC', accent: '#B3A0D6' },
-    { id: 'matcha', name: 'Matcha Tea', color: '#F4F7F4', accent: '#8DAA91' },
-    { id: 'warm-candle', name: 'Cozy Parchment', color: '#F3EBDD', accent: '#C98A5B' }
+    { id: 'obsidian', name: 'Cyber Obsidian', color: '#0B0E17', accent: '#00F2FE' },
+    { id: 'matrix', name: 'Matrix Terminal', color: '#05130B', accent: '#10B981' },
+    { id: 'quantum-light', name: 'Quantum Glass', color: '#F8FAFC', accent: '#2563EB' },
+    { id: 'solar-flare', name: 'Solar Flare', color: '#140D07', accent: '#F97316' }
   ];
 
   return (
-    <header style={{
-      backgroundColor: 'var(--bg-cream-paper)',
-      borderBottom: '1px solid var(--border-soft)',
+    <header className="glass-panel" style={{
       position: 'sticky',
       top: 0,
       zIndex: 40,
-      boxShadow: 'var(--shadow-sm)'
+      borderBottom: '1px solid var(--border-tech)'
     }}>
       <div className="app-container" style={{ padding: '0.85rem 1.25rem' }}>
         <div style={{
@@ -44,38 +42,44 @@ export default function Navbar({
               width: '42px',
               height: '42px',
               borderRadius: '12px',
-              backgroundColor: 'var(--pastel-rose)',
+              background: 'linear-gradient(135deg, var(--primary-accent), var(--neon-purple))',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#8A4B4E',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+              color: '#FFFFFF',
+              boxShadow: '0 0 15px var(--primary-glow)'
             }}>
-              <BookOpen size={22} />
+              <Terminal size={22} />
             </div>
 
             <div>
-              <h1 className="font-heading" style={{
-                fontSize: '1.75rem',
-                fontWeight: 800,
-                letterSpacing: '-0.02em',
-                margin: 0,
-                lineHeight: 1.1,
-                color: 'var(--text-dark)'
-              }}>
-                Pastel Sanctuary
-              </h1>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <h1 className="font-heading" style={{
+                  fontSize: '1.5rem',
+                  fontWeight: 800,
+                  letterSpacing: '-0.02em',
+                  margin: 0,
+                  lineHeight: 1.1,
+                  color: 'var(--text-bright)'
+                }}>
+                  CipherLog OS
+                </h1>
+                <span className="pulse-dot" title="Local DB Active" />
+              </div>
+
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                fontSize: '0.8rem',
-                color: 'var(--text-medium)'
+                fontSize: '0.75rem',
+                color: 'var(--text-muted)',
+                fontFamily: 'var(--font-mono)',
+                marginTop: '0.15rem'
               }}>
-                <span>Personal Diary & Journal</span>
+                <span>NEURAL DIARY</span>
                 <span>•</span>
-                <span className="pastel-badge rose" style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem' }}>
-                  {entryCount} {entryCount === 1 ? 'Entry' : 'Entries'}
+                <span className="hud-badge cyan" style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem' }}>
+                  {entryCount} {entryCount === 1 ? 'LOG' : 'LOGS'}
                 </span>
               </div>
             </div>
@@ -88,58 +92,55 @@ export default function Navbar({
             gap: '0.6rem',
             flexWrap: 'wrap'
           }}>
-            {/* Search Input Bar (Header Quick Search) */}
-            <div style={{ position: 'relative', minWidth: '180px' }}>
-              <Search size={15} style={{
+            {/* High-Tech Search Bar */}
+            <div style={{ position: 'relative', minWidth: '200px' }}>
+              <Search size={14} style={{
                 position: 'absolute',
-                left: '10px',
+                left: '12px',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                color: 'var(--text-light)'
+                color: 'var(--text-muted)'
               }} />
               <input
                 type="text"
-                placeholder="Search entries..."
+                placeholder="Search logs & keywords..."
                 value={searchTerm}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="input-pastel"
+                className="input-tech font-mono"
                 style={{
-                  paddingLeft: '2rem',
+                  paddingLeft: '2.2rem',
                   paddingTop: '0.45rem',
                   paddingBottom: '0.45rem',
-                  fontSize: '0.85rem',
+                  fontSize: '0.8rem',
                   borderRadius: 'var(--radius-full)'
                 }}
               />
             </div>
 
-            {/* Theme Selector Toggle */}
+            {/* Tech Theme Selector */}
             <div style={{ position: 'relative' }}>
               <button
                 onClick={() => setIsThemeMenuOpen(!isThemeMenuOpen)}
-                className="btn-secondary"
-                title="Change Color Theme"
+                className="btn-secondary-tech"
+                title="Switch Cyber Theme"
                 style={{ padding: '0.45rem 0.85rem', fontSize: '0.85rem' }}
               >
-                <Palette size={16} />
-                <span style={{ display: 'none', minWidth: '700px' }}>Theme</span>
+                <Cpu size={16} />
+                <span style={{ display: 'none' }}>Theme</span>
               </button>
 
               {isThemeMenuOpen && (
-                <div style={{
+                <div className="glass-panel animate-pop-in" style={{
                   position: 'absolute',
                   right: 0,
                   top: '120%',
-                  backgroundColor: 'var(--bg-cream-paper)',
-                  border: '1px solid var(--border-soft)',
                   borderRadius: 'var(--radius-md)',
-                  boxShadow: 'var(--shadow-md)',
                   padding: '0.5rem',
-                  width: '180px',
+                  width: '190px',
                   zIndex: 50
-                }} className="animate-pop-in">
-                  <div style={{ fontSize: '0.75rem', fontWeight: 700, padding: '0.25rem 0.5rem', color: 'var(--text-light)' }}>
-                    COLOR THEMES
+                }}>
+                  <div style={{ fontSize: '0.7rem', fontWeight: 700, padding: '0.25rem 0.5rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                    THEME ENGINE
                   </div>
                   {themes.map((t) => (
                     <button
@@ -155,21 +156,21 @@ export default function Navbar({
                         gap: '0.6rem',
                         padding: '0.45rem 0.6rem',
                         border: 'none',
-                        background: currentTheme === t.id ? 'var(--bg-cream-subtle)' : 'transparent',
+                        background: currentTheme === t.id ? 'rgba(255,255,255,0.08)' : 'transparent',
                         borderRadius: 'var(--radius-sm)',
                         cursor: 'pointer',
                         textAlign: 'left',
-                        fontSize: '0.85rem',
-                        color: 'var(--text-dark)',
+                        fontSize: '0.825rem',
+                        color: 'var(--text-bright)',
                         fontWeight: currentTheme === t.id ? 700 : 500
                       }}
                     >
                       <span style={{
-                        width: '14px',
-                        height: '14px',
+                        width: '12px',
+                        height: '12px',
                         borderRadius: '50%',
                         backgroundColor: t.accent,
-                        border: '1px solid rgba(0,0,0,0.1)'
+                        boxShadow: `0 0 8px ${t.accent}`
                       }} />
                       {t.name}
                     </button>
@@ -181,8 +182,8 @@ export default function Navbar({
             {/* Export Backup */}
             <button
               onClick={onExportData}
-              className="btn-secondary"
-              title="Backup Diary to JSON file"
+              className="btn-secondary-tech"
+              title="Backup JSON Data"
               style={{ padding: '0.45rem 0.75rem', fontSize: '0.85rem' }}
             >
               <Download size={16} />
@@ -191,21 +192,21 @@ export default function Navbar({
             {/* Lock Security Toggle */}
             <button
               onClick={onToggleLock}
-              className="btn-secondary"
-              title={isLocked ? "Diary Protected" : "Set Passcode Lock"}
+              className="btn-secondary-tech"
+              title={isLocked ? "Diary Encrypted & Protected" : "Set Passcode Lock"}
               style={{ padding: '0.45rem 0.75rem', fontSize: '0.85rem' }}
             >
-              {isLocked ? <Lock size={16} color="var(--primary-accent)" /> : <Unlock size={16} />}
+              {isLocked ? <Lock size={16} color="var(--neon-cyan)" /> : <Unlock size={16} />}
             </button>
 
             {/* New Entry Primary CTA Button */}
             <button
               onClick={onOpenNewForm}
-              className="btn-primary"
-              style={{ padding: '0.5rem 1.1rem', fontSize: '0.9rem' }}
+              className="btn-primary-tech"
+              style={{ padding: '0.5rem 1.1rem', fontSize: '0.85rem' }}
             >
               <Plus size={18} />
-              <span>New Entry</span>
+              <span>Create Log</span>
             </button>
           </div>
         </div>
