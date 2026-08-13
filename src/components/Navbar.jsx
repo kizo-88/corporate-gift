@@ -1,150 +1,214 @@
 import React, { useState } from 'react';
+import { BookOpen, Plus, Sparkles, Lock, Unlock, Download, Palette, Search } from 'lucide-react';
 
-export default function Navbar({ 
-  cartCount, 
-  onOpenCart, 
-  onOpenInquiry, 
-  theme, 
-  onToggleTheme,
+export default function Navbar({
+  entryCount,
+  onOpenNewForm,
+  currentTheme,
+  onSelectTheme,
+  isLocked,
+  onToggleLock,
+  onExportData,
   searchTerm,
   onSearchChange
 }) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
+
+  const themes = [
+    { id: 'cream', name: 'Vanilla Cream', color: '#FBF8F3', accent: '#DDA7A5' },
+    { id: 'lavender', name: 'Lavender Mist', color: '#F7F5FC', accent: '#B3A0D6' },
+    { id: 'matcha', name: 'Matcha Tea', color: '#F4F7F4', accent: '#8DAA91' },
+    { id: 'warm-candle', name: 'Cozy Parchment', color: '#F3EBDD', accent: '#C98A5B' }
+  ];
 
   return (
-    <header className="sticky top-0 z-50 transition-all duration-300" style={{ background: 'var(--bg-glass)', backdropFilter: 'blur(16px)', borderBottom: '1px solid var(--border-subtle)' }}>
-      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '80px' }}>
-        
-        {/* Brand Emblem */}
-        <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
-          <div style={{
-            width: '42px',
-            height: '42px',
-            borderRadius: '12px',
-            background: 'var(--gold-gradient)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: 'var(--shadow-gold)',
-            color: '#000',
-            fontWeight: '800',
-            fontSize: '1.25rem',
-            fontFamily: 'var(--font-serif)'
-          }}>
-            G
-          </div>
-          <div>
-            <span className="font-serif" style={{ fontSize: '1.4rem', fontWeight: '800', letterSpacing: '-0.02em', color: 'var(--text-primary)' }}>
-              GIFTORA
-            </span>
-            <span style={{ display: 'block', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--gold-primary)', fontWeight: '700' }}>
-              Corporate Luxury
-            </span>
-          </div>
-        </a>
+    <header style={{
+      backgroundColor: 'var(--bg-cream-paper)',
+      borderBottom: '1px solid var(--border-soft)',
+      position: 'sticky',
+      top: 0,
+      zIndex: 40,
+      boxShadow: 'var(--shadow-sm)'
+    }}>
+      <div className="app-container" style={{ padding: '0.85rem 1.25rem' }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '1rem'
+        }}>
+          {/* Logo & Title */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '12px',
+              backgroundColor: 'var(--pastel-rose)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#8A4B4E',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+            }}>
+              <BookOpen size={22} />
+            </div>
 
-        {/* Desktop Nav Links */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '2rem' }} className="desktop-nav">
-          <a href="#catalog" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontWeight: '600', fontSize: '0.95rem', transition: 'var(--transition-fast)' }}>
-            Catalog
-          </a>
-          <a href="#builder" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontWeight: '600', fontSize: '0.95rem', transition: 'var(--transition-fast)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-            <span className="badge badge-gold" style={{ fontSize: '0.65rem', padding: '0.15rem 0.5rem' }}>Studio</span>
-            Kitting Builder
-          </a>
-          <a href="#calculator" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontWeight: '600', fontSize: '0.95rem', transition: 'var(--transition-fast)' }}>
-            Bulk Calculator
-          </a>
-          <a href="#clients" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontWeight: '600', fontSize: '0.95rem', transition: 'var(--transition-fast)' }}>
-            Clients & Proof
-          </a>
-        </nav>
-
-        {/* Right Action Utilities */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          
-          {/* Quick Search Input */}
-          <div style={{ position: 'relative' }}>
-            <input 
-              type="text"
-              placeholder="Search gifts..."
-              value={searchTerm}
-              onChange={(e) => onSearchChange(e.target.value)}
-              style={{
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border-subtle)',
-                borderRadius: 'var(--radius-full)',
-                padding: '0.5rem 1rem 0.5rem 2.2rem',
-                fontSize: '0.85rem',
-                color: 'var(--text-primary)',
-                outline: 'none',
-                width: '170px',
-                transition: 'var(--transition-fast)'
-              }}
-              onFocus={(e) => e.target.style.width = '230px'}
-              onBlur={(e) => e.target.style.width = '170px'}
-            />
-            <svg style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', width: '15px', height: '15px', color: 'var(--text-muted)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
-          </div>
-
-          {/* Theme Switcher Button */}
-          <button 
-            onClick={onToggleTheme}
-            className="btn-secondary"
-            title="Toggle Light/Dark Theme"
-            style={{ width: '40px', height: '40px', padding: 0, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-          >
-            {theme === 'dark' ? (
-              <svg width="18" height="18" fill="none" stroke="var(--gold-primary)" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
-            ) : (
-              <svg width="18" height="18" fill="none" stroke="var(--text-primary)" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-              </svg>
-            )}
-          </button>
-
-          {/* Cart Drawer Trigger Button */}
-          <button 
-            onClick={onOpenCart}
-            className="btn-secondary"
-            style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-          >
-            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-            </svg>
-            <span style={{ fontSize: '0.85rem' }}>Sample Quote</span>
-            {cartCount > 0 && (
-              <span style={{
-                position: 'absolute',
-                top: '-6px',
-                right: '-6px',
-                background: 'var(--gold-gradient)',
-                color: '#000',
-                fontSize: '0.75rem',
-                fontWeight: '800',
-                width: '20px',
-                height: '20px',
-                borderRadius: '50%',
+            <div>
+              <h1 className="font-heading" style={{
+                fontSize: '1.75rem',
+                fontWeight: 800,
+                letterSpacing: '-0.02em',
+                margin: 0,
+                lineHeight: 1.1,
+                color: 'var(--text-dark)'
+              }}>
+                Pastel Sanctuary
+              </h1>
+              <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: 'var(--shadow-gold)'
+                gap: '0.5rem',
+                fontSize: '0.8rem',
+                color: 'var(--text-medium)'
               }}>
-                {cartCount}
-              </span>
-            )}
-          </button>
+                <span>Personal Diary & Journal</span>
+                <span>•</span>
+                <span className="pastel-badge rose" style={{ padding: '0.1rem 0.5rem', fontSize: '0.75rem' }}>
+                  {entryCount} {entryCount === 1 ? 'Entry' : 'Entries'}
+                </span>
+              </div>
+            </div>
+          </div>
 
-          {/* Primary RFP Button */}
-          <button onClick={onOpenInquiry} className="btn btn-gold btn-sm">
-            Request Proposal
-          </button>
+          {/* Quick Actions & Search */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.6rem',
+            flexWrap: 'wrap'
+          }}>
+            {/* Search Input Bar (Header Quick Search) */}
+            <div style={{ position: 'relative', minWidth: '180px' }}>
+              <Search size={15} style={{
+                position: 'absolute',
+                left: '10px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                color: 'var(--text-light)'
+              }} />
+              <input
+                type="text"
+                placeholder="Search entries..."
+                value={searchTerm}
+                onChange={(e) => onSearchChange(e.target.value)}
+                className="input-pastel"
+                style={{
+                  paddingLeft: '2rem',
+                  paddingTop: '0.45rem',
+                  paddingBottom: '0.45rem',
+                  fontSize: '0.85rem',
+                  borderRadius: 'var(--radius-full)'
+                }}
+              />
+            </div>
+
+            {/* Theme Selector Toggle */}
+            <div style={{ position: 'relative' }}>
+              <button
+                onClick={() => setIsThemeMenuOpen(!isThemeMenuOpen)}
+                className="btn-secondary"
+                title="Change Color Theme"
+                style={{ padding: '0.45rem 0.85rem', fontSize: '0.85rem' }}
+              >
+                <Palette size={16} />
+                <span style={{ display: 'none', minWidth: '700px' }}>Theme</span>
+              </button>
+
+              {isThemeMenuOpen && (
+                <div style={{
+                  position: 'absolute',
+                  right: 0,
+                  top: '120%',
+                  backgroundColor: 'var(--bg-cream-paper)',
+                  border: '1px solid var(--border-soft)',
+                  borderRadius: 'var(--radius-md)',
+                  boxShadow: 'var(--shadow-md)',
+                  padding: '0.5rem',
+                  width: '180px',
+                  zIndex: 50
+                }} className="animate-pop-in">
+                  <div style={{ fontSize: '0.75rem', fontWeight: 700, padding: '0.25rem 0.5rem', color: 'var(--text-light)' }}>
+                    COLOR THEMES
+                  </div>
+                  {themes.map((t) => (
+                    <button
+                      key={t.id}
+                      onClick={() => {
+                        onSelectTheme(t.id);
+                        setIsThemeMenuOpen(false);
+                      }}
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.6rem',
+                        padding: '0.45rem 0.6rem',
+                        border: 'none',
+                        background: currentTheme === t.id ? 'var(--bg-cream-subtle)' : 'transparent',
+                        borderRadius: 'var(--radius-sm)',
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                        fontSize: '0.85rem',
+                        color: 'var(--text-dark)',
+                        fontWeight: currentTheme === t.id ? 700 : 500
+                      }}
+                    >
+                      <span style={{
+                        width: '14px',
+                        height: '14px',
+                        borderRadius: '50%',
+                        backgroundColor: t.accent,
+                        border: '1px solid rgba(0,0,0,0.1)'
+                      }} />
+                      {t.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Export Backup */}
+            <button
+              onClick={onExportData}
+              className="btn-secondary"
+              title="Backup Diary to JSON file"
+              style={{ padding: '0.45rem 0.75rem', fontSize: '0.85rem' }}
+            >
+              <Download size={16} />
+            </button>
+
+            {/* Lock Security Toggle */}
+            <button
+              onClick={onToggleLock}
+              className="btn-secondary"
+              title={isLocked ? "Diary Protected" : "Set Passcode Lock"}
+              style={{ padding: '0.45rem 0.75rem', fontSize: '0.85rem' }}
+            >
+              {isLocked ? <Lock size={16} color="var(--primary-accent)" /> : <Unlock size={16} />}
+            </button>
+
+            {/* New Entry Primary CTA Button */}
+            <button
+              onClick={onOpenNewForm}
+              className="btn-primary"
+              style={{ padding: '0.5rem 1.1rem', fontSize: '0.9rem' }}
+            >
+              <Plus size={18} />
+              <span>New Entry</span>
+            </button>
+          </div>
         </div>
-
       </div>
     </header>
   );
