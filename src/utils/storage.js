@@ -1,5 +1,5 @@
 // Local Storage Key
-const STORAGE_KEY = 'mmorkleyyy_journal_entries_v5';
+const STORAGE_KEY = 'mmorkleyyy_journal_entries_v6';
 const THEME_KEY = 'mmorkleyyy_journal_theme';
 const LOCK_KEY = 'mmorkleyyy_journal_pin';
 
@@ -64,8 +64,8 @@ export const CATEGORIES = [
   { id: 'Gratitude', label: 'Gratitude', color: 'amber' },
   { id: 'Growth', label: 'Growth', color: 'emerald' },
   { id: 'Work & Career', label: 'Work & Career', color: 'cyan' },
-  { id: 'Relationships', label: 'Relationships', color: 'pink' },
-  { id: 'Travel & Memories', label: 'Travel & Memories', color: 'sky' },
+  { id: 'Relationships', label: 'Relationships', color: 'amber' }, // Same as Grateful (amber)
+  { id: 'Travel & Memories', label: 'Travel & Memories', color: 'rose' }, // Same as Personal (rose)
   { id: 'Goals & Dreams', label: 'Goals & Dreams', color: 'purple' }
 ];
 
@@ -74,7 +74,7 @@ export const MOODS = [
   { label: 'Happy', color: 'rose' },
   { label: 'Calm', color: 'lavender' },
   { label: 'Grateful', color: 'amber' },
-  { label: 'Sad', color: 'sky' },
+  { label: 'Sad', color: 'amber' }, // Same as Grateful (amber)
   { label: 'Frustrated', color: 'rose' },
   { label: 'Tired', color: 'purple' },
   { label: 'Reflective', color: 'cyan' },
