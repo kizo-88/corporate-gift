@@ -62,40 +62,82 @@ export default function BulkEstimator() {
   };
 
   return (
-    <section className="py-12 bg-slate-950 min-h-screen">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-semibold mb-3">
-            <Calculator className="w-3.5 h-3.5" />
-            <span>Enterprise Budget Calculator</span>
-          </div>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-slate-100">
-            Instant Bulk Order <span className="emerald-gradient-text">RFQ Estimator</span>
-          </h2>
-          <p className="text-slate-400 mt-2 text-sm md:text-base">
-            Calculate tiered volume discounts, individual home delivery fees, and custom logo proofing costs in real-time.
-          </p>
-        </div>
+    <section className="section-padding bg-slate-950 border-b border-slate-800/80">
+      <div className="container mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Left Column: Heading + Corporate Benefits (5 cols) */}
+          <div className="lg:col-span-5 space-y-8">
+            <div className="space-y-4">
+              <span className="text-sm font-bold uppercase tracking-widest text-emerald-400">
+                Bulk Orders & Discounts
+              </span>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-100 leading-tight">
+                Transparent <span className="emerald-gradient-text">Volume Pricing</span>
+              </h2>
+              <p className="text-slate-300 text-base md:text-lg leading-relaxed">
+                Scale your corporate gifting with automated tiered discounts, individual home delivery tracking, and free custom logo proofing.
+              </p>
+            </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-6xl mx-auto">
-          {/* Controls Column (7 cols) */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="glass-panel p-6 md:p-8 space-y-6">
+            {/* Corporate Benefits List */}
+            <div className="space-y-4 pt-4 border-t border-slate-800">
+              <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 shrink-0">
+                  <CheckCircle2 className="w-6 h-6" />
+                </div>
+                <div>
+                  <h4 className="text-base font-bold text-slate-100">Volume Discounts up to 30%</h4>
+                  <p className="text-sm text-slate-400 mt-1">Automatic tier savings applied directly to all bulk gift box orders above 50 units.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 shrink-0">
+                  <Truck className="w-6 h-6" />
+                </div>
+                <div>
+                  <h4 className="text-base font-bold text-slate-100">Multi-Address Doorstep Shipping</h4>
+                  <p className="text-sm text-slate-400 mt-1">Deliver directly to individual remote employee addresses across Malaysia & global offices.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400 shrink-0">
+                  <Building2 className="w-6 h-6" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-slate-100">Corporate SST Invoicing</h4>
+                  <p className="text-sm text-slate-400 mt-1">Tax-compliant formal invoices with 30-day locked pricing for corporate procurement.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Large Calculator (7 cols) */}
+          <div className="lg:col-span-7">
+            <div className="bg-slate-900/80 p-8 md:p-10 rounded-3xl border border-slate-800 space-y-8 shadow-2xl">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div className="flex items-center gap-3">
+                  <Calculator className="w-6 h-6 text-emerald-400" />
+                  <h3 className="text-xl font-bold text-slate-100">Instant Bulk Estimator</h3>
+                </div>
+                <span className="badge badge-emerald">Live Tier Math</span>
+              </div>
+
               {/* Quantity Slider */}
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <div>
-                    <label className="text-xs font-bold uppercase text-slate-300">
-                      1. Total Recipients / Quantity
+                    <label className="text-sm font-bold uppercase text-slate-200">
+                      1. Total Recipients / Box Quantity
                     </label>
-                    <p className="text-xs text-slate-500">Number of gifts to deliver.</p>
+                    <p className="text-xs text-slate-400 mt-0.5">Select number of gift boxes to order.</p>
                   </div>
                   <div className="text-right">
-                    <span className="text-2xl font-extrabold text-emerald-400 font-heading">
+                    <span className="text-3xl font-black text-emerald-400 font-heading">
                       {quantity}
                     </span>
-                    <span className="text-xs text-slate-400 ml-1">Gifts</span>
+                    <span className="text-xs text-slate-400 ml-1">Boxes</span>
                   </div>
                 </div>
                 <input
@@ -105,191 +147,112 @@ export default function BulkEstimator() {
                   step={10}
                   value={quantity}
                   onChange={(e) => setQuantity(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-2.5 bg-slate-800 rounded-lg appearance-none cursor-pointer"
                 />
-                <div className="flex justify-between text-[11px] text-slate-500 font-semibold">
+                <div className="flex justify-between text-xs text-slate-400 font-semibold">
                   <span>20</span>
-                  <span className={quantity >= 50 ? "text-emerald-400" : ""}>50 (8% Off)</span>
-                  <span className={quantity >= 200 ? "text-emerald-400" : ""}>200 (15% Off)</span>
-                  <span className={quantity >= 500 ? "text-emerald-400" : ""}>500 (22% Off)</span>
-                  <span className={quantity >= 1000 ? "text-emerald-400" : ""}>1,000+ (30% Off)</span>
+                  <span className={quantity >= 50 ? "text-emerald-400 font-bold" : ""}>50 (8% Off)</span>
+                  <span className={quantity >= 200 ? "text-emerald-400 font-bold" : ""}>200 (15% Off)</span>
+                  <span className={quantity >= 500 ? "text-emerald-400 font-bold" : ""}>500 (22% Off)</span>
+                  <span className={quantity >= 1000 ? "text-emerald-400 font-bold" : ""}>1,000+ (30% Off)</span>
                 </div>
               </div>
 
               {/* Target Budget Per Recipient */}
-              <div className="space-y-3 pt-4 border-t border-slate-800">
+              <div className="space-y-4 pt-6 border-t border-slate-800">
                 <div className="flex justify-between items-center">
                   <div>
-                    <label className="text-xs font-bold uppercase text-slate-300">
-                      2. Target Budget Per Gift Set
+                    <label className="text-sm font-bold uppercase text-slate-200">
+                      2. Target Budget Per Gift Box
                     </label>
-                    <p className="text-xs text-slate-500">Base budget before volume discount.</p>
+                    <p className="text-xs text-slate-400 mt-0.5">Base gift value per unit.</p>
                   </div>
                   <div className="text-right">
-                    <span className="text-2xl font-extrabold text-amber-400 font-heading">
+                    <span className="text-3xl font-black text-amber-400 font-heading">
                       {formatPrice(budgetPerGift)}
                     </span>
-                    <span className="text-xs text-slate-400 ml-1">/ person</span>
+                    <span className="text-xs text-slate-400 ml-1">/ unit</span>
                   </div>
                 </div>
                 <input
                   type="range"
-                  min={30}
-                  max={400}
-                  step={5}
+                  min={50}
+                  max={800}
+                  step={10}
                   value={budgetPerGift}
                   onChange={(e) => setBudgetPerGift(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-2.5 bg-slate-800 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
 
-              {/* Shipping Logistics Mode */}
-              <div className="space-y-3 pt-4 border-t border-slate-800">
-                <label className="text-xs font-bold uppercase text-slate-300 block">
-                  3. Shipping & Fulfillment Logistics
+              {/* Logistics Toggles */}
+              <div className="space-y-4 pt-6 border-t border-slate-800">
+                <label className="text-sm font-bold uppercase text-slate-200 block">
+                  3. Fulfillment Mode
                 </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <button
                     onClick={() => setShippingMode("remote")}
-                    className={`p-4 rounded-xl border text-left transition-all flex items-start gap-3 ${
+                    className={`p-4 rounded-2xl border text-left transition-all flex items-start gap-3 ${
                       shippingMode === "remote"
-                        ? "bg-slate-900 border-emerald-500 ring-1 ring-emerald-500/50"
-                        : "bg-slate-900/40 border-slate-800 text-slate-400"
+                        ? "bg-slate-950 border-emerald-500 ring-1 ring-emerald-500/40"
+                        : "bg-slate-950/40 border-slate-800 text-slate-400"
                     }`}
                   >
                     <Truck className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
                     <div>
-                      <div className="text-xs font-bold text-slate-200">
-                        Individual Remote Drop-shipping
-                      </div>
-                      <p className="text-[11px] text-slate-400 mt-1">
-                        Ship directly to each recipient's home address globally (+{formatPrice(14)}/addr).
-                      </p>
+                      <div className="text-sm font-bold text-slate-200">Individual Home Drops</div>
+                      <p className="text-xs text-slate-400 mt-1">Multi-address doorstep delivery (+{formatPrice(14)}/box)</p>
                     </div>
                   </button>
 
                   <button
                     onClick={() => setShippingMode("single")}
-                    className={`p-4 rounded-xl border text-left transition-all flex items-start gap-3 ${
+                    className={`p-4 rounded-2xl border text-left transition-all flex items-start gap-3 ${
                       shippingMode === "single"
-                        ? "bg-slate-900 border-emerald-500 ring-1 ring-emerald-500/50"
-                        : "bg-slate-900/40 border-slate-800 text-slate-400"
+                        ? "bg-slate-950 border-emerald-500 ring-1 ring-emerald-500/40"
+                        : "bg-slate-950/40 border-slate-800 text-slate-400"
                     }`}
                   >
                     <Building2 className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
                     <div>
-                      <div className="text-xs font-bold text-slate-200">
-                        Single Location Bulk HQ Freight
-                      </div>
-                      <p className="text-[11px] text-slate-400 mt-1">
-                        Palletized bulk shipment to 1 office or event location (+{formatPrice(3)}/unit).
-                      </p>
+                      <div className="text-sm font-bold text-slate-200">Single Office Freight</div>
+                      <p className="text-xs text-slate-400 mt-1">Bulk pallet delivery to 1 HQ location (+{formatPrice(3)}/box)</p>
                     </div>
                   </button>
                 </div>
               </div>
 
-              {/* Turnaround & Options Toggles */}
-              <div className="pt-4 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <label className="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={includeBranding}
-                    onChange={(e) => setIncludeBranding(e.target.checked)}
-                    className="w-4 h-4 accent-emerald-500 rounded"
-                  />
+              {/* Grand Total Calculation Output */}
+              <div className="p-6 rounded-2xl bg-slate-950 border border-emerald-500/30 space-y-4">
+                <div className="flex justify-between items-baseline">
                   <div>
-                    <div className="text-xs font-bold text-slate-200">Full Logo Stamping & Ribbon</div>
-                    <div className="text-[10px] text-slate-400">Custom box lid imprint (+{formatPrice(6)}/unit)</div>
+                    <span className="text-xs uppercase font-bold text-slate-400">Total Estimated Cost</span>
+                    <div className="text-3xl sm:text-4xl font-extrabold text-slate-100 font-heading mt-0.5">
+                      {formatPrice(grandTotal)}
+                    </div>
                   </div>
-                </label>
-
-                <label className="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={rushTurnaround}
-                    onChange={(e) => setRushTurnaround(e.target.checked)}
-                    className="w-4 h-4 accent-emerald-500 rounded"
-                  />
-                  <div>
-                    <div className="text-xs font-bold text-slate-200">Rush Turnaround (3-5 Days)</div>
-                    <div className="text-[10px] text-slate-400">Expedited production (+15% total)</div>
+                  <div className="text-right">
+                    <span className="text-xs text-emerald-400 font-bold block">Effective Rate</span>
+                    <span className="text-lg font-bold text-emerald-300">
+                      {formatPrice(effectivePricePerRecipient)} / person
+                    </span>
                   </div>
-                </label>
+                </div>
+
+                <div className="pt-3 border-t border-slate-800 flex justify-between text-xs text-slate-400">
+                  <span>Volume Savings ({(volumeDiscountPct * 100).toFixed(0)}%):</span>
+                  <span className="text-emerald-400 font-bold">-{formatPrice(volumeSavings)}</span>
+                </div>
+
+                <button
+                  onClick={handleGenerateQuote}
+                  className="w-full btn-primary text-base py-4 justify-center shadow-xl shadow-amber-500/30"
+                >
+                  <FileText className="w-5 h-5 text-slate-950" />
+                  <span>Request Official RFQ Quote</span>
+                </button>
               </div>
-            </div>
-          </div>
-
-          {/* Live Estimate Output (5 cols) */}
-          <div className="lg:col-span-5 sticky top-24">
-            <div className="glass-panel-gold p-6 space-y-6">
-              <div className="flex items-center justify-between border-b border-amber-500/20 pb-3">
-                <span className="text-xs font-extrabold uppercase tracking-widest text-emerald-400">
-                  Calculated Enterprise RFQ
-                </span>
-                <span className="badge badge-emerald">Live Tier Math</span>
-              </div>
-
-              {/* Big Price Display */}
-              <div className="space-y-1">
-                <div className="text-xs text-slate-400">Estimated Total Expenditure</div>
-                <div className="text-3xl md:text-4xl font-extrabold text-slate-100 font-heading">
-                  {formatPrice(grandTotal)}
-                </div>
-                <div className="text-xs font-semibold text-emerald-400">
-                  Effective Cost: {formatPrice(effectivePricePerRecipient)} / recipient
-                </div>
-              </div>
-
-              {/* Cost Itemization Table */}
-              <div className="space-y-2.5 text-xs pt-4 border-t border-amber-500/20">
-                <div className="flex justify-between text-slate-400">
-                  <span>Base Gift Cost ({quantity} × {formatPrice(budgetPerGift)})</span>
-                  <span>{formatPrice(baseGiftTotal)}</span>
-                </div>
-
-                <div className="flex justify-between text-emerald-400 font-bold">
-                  <span>Volume Tier Discount ({(volumeDiscountPct * 100).toFixed(0)}%)</span>
-                  <span>-{formatPrice(volumeSavings)}</span>
-                </div>
-
-                <div className="flex justify-between text-slate-400">
-                  <span>Logo Branding ({includeBranding ? formatPrice(6) : "$0"} × {quantity})</span>
-                  <span>{formatPrice(brandingFeePerUnit * quantity)}</span>
-                </div>
-
-                <div className="flex justify-between text-slate-400">
-                  <span>Fulfillment ({shippingMode === "remote" ? "Multi-Address" : "Bulk Freight"})</span>
-                  <span>{formatPrice(shippingFeePerUnit * quantity)}</span>
-                </div>
-
-                {rushTurnaround && (
-                  <div className="flex justify-between text-amber-400 font-bold">
-                    <span>Rush Production Fee (+15%)</span>
-                    <span>{formatPrice(rushFee)}</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Production Timeline Estimate */}
-              <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2 text-slate-300">
-                  <Clock className="w-4 h-4 text-emerald-400" />
-                  <span>Estimated Delivery Window:</span>
-                </div>
-                <span className="font-bold text-amber-300">
-                  {rushTurnaround ? "3 - 5 Business Days" : "7 - 10 Business Days"}
-                </span>
-              </div>
-
-              {/* Generate Formal PDF RFQ Button */}
-              <button
-                onClick={handleGenerateQuote}
-                className="w-full btn-primary text-xs py-3.5 justify-center shadow-xl shadow-amber-500/30"
-              >
-                <FileText className="w-4 h-4 text-slate-950" />
-                <span>Generate Official PDF Quote & Lock Pricing</span>
-              </button>
             </div>
           </div>
         </div>

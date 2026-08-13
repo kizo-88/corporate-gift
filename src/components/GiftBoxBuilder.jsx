@@ -101,67 +101,64 @@ export default function GiftBoxBuilder() {
   };
 
   return (
-    <section className="py-12 bg-slate-950 min-h-screen">
-      <div className="container mx-auto px-4">
+    <section className="section-padding bg-slate-900/50 border-b border-slate-800/80">
+      <div className="container mx-auto">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold mb-3">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Interactive Build-a-Box Studio</span>
-          </div>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-slate-100">
-            Design Your Signature{" "}
-            <span className="gold-gradient-text">Corporate Gift Box</span>
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <span className="text-sm font-bold uppercase tracking-widest text-amber-400">
+            Interactive Box Studio
+          </span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-100 leading-tight">
+            Build Your Custom <span className="gold-gradient-text">Gift Box</span>
           </h2>
-          <p className="text-slate-400 mt-2 text-sm md:text-base">
-            Select luxury packaging, handpick artisan swag, upload your company logo, and generate personalized card notes with real-time pricing.
+          <p className="text-slate-300 text-base md:text-lg leading-relaxed">
+            Curate luxury packaging, handpick artisan swag, upload your company logo, and generate personalized card notes with real-time pricing.
           </p>
         </div>
 
-        {/* Wizard Step Progress Tracker */}
-        <div className="max-w-4xl mx-auto mb-10">
-          <div className="grid grid-cols-4 gap-2 md:gap-4 relative">
+        {/* Spacious 4-Step Indicator Bar */}
+        <div className="max-w-5xl mx-auto mb-14">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { num: 1, title: "1. Packaging", icon: Package },
-              { num: 2, title: "2. Add Swag", icon: Plus },
-              { num: 3, title: "3. Branding", icon: Layers },
-              { num: 4, title: "4. Card & Quantity", icon: FileText }
+              { num: 1, code: "01", title: "Choose Packaging", icon: Package },
+              { num: 2, code: "02", title: "Choose Swag", icon: Plus },
+              { num: 3, code: "03", title: "Add Branding", icon: Layers },
+              { num: 4, code: "04", title: "Review Gift Box", icon: FileText }
             ].map((step) => {
-              const Icon = step.icon;
               const isDone = currentStep > step.num;
               const isCurrent = currentStep === step.num;
               return (
                 <button
                   key={step.num}
                   onClick={() => setCurrentStep(step.num)}
-                  className={`p-3 md:p-4 rounded-xl border text-left transition-all flex flex-col md:flex-row items-center md:items-center gap-3 ${
+                  className={`p-5 rounded-2xl border text-left transition-all flex items-center gap-4 ${
                     isCurrent
-                      ? "bg-slate-900 border-amber-500 text-amber-300 shadow-lg shadow-amber-500/10"
+                      ? "bg-slate-900 border-amber-500 text-amber-300 shadow-xl shadow-amber-500/10 ring-1 ring-amber-500/40"
                       : isDone
-                      ? "bg-slate-900/60 border-slate-800 text-emerald-400"
-                      : "bg-slate-950 border-slate-800 text-slate-500 opacity-70"
+                      ? "bg-slate-950/80 border-slate-800 text-emerald-400"
+                      : "bg-slate-950/40 border-slate-800 text-slate-500 opacity-60"
                   }`}
                 >
                   <div
-                    className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs ${
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-sm ${
                       isCurrent
-                        ? "bg-amber-500 text-slate-950"
+                        ? "bg-amber-500 text-slate-950 font-heading"
                         : isDone
                         ? "bg-emerald-500/20 text-emerald-400"
                         : "bg-slate-800 text-slate-400"
                     }`}
                   >
-                    {isDone ? <CheckCircle2 className="w-5 h-5" /> : step.num}
+                    {isDone ? <CheckCircle2 className="w-5 h-5" /> : step.code}
                   </div>
-                  <div className="hidden md:block">
-                    <div className="text-xs font-bold">{step.title}</div>
-                    <div className="text-[10px] text-slate-400">
+                  <div>
+                    <div className="text-sm font-bold text-slate-200">{step.title}</div>
+                    <div className="text-xs text-slate-400 mt-0.5">
                       {step.num === 1
                         ? selectedPkg.name.split(" ")[0]
                         : step.num === 2
-                        ? `${selectedItems.length} items selected`
+                        ? `${selectedItems.length} items`
                         : step.num === 3
-                        ? logoFile ? "Logo uploaded" : "Default branding"
+                        ? logoFile ? "Logo set" : "Branding"
                         : `${boxQuantity} units`}
                     </div>
                   </div>

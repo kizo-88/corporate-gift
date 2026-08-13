@@ -80,34 +80,162 @@ export default function BrandingStudio() {
   };
 
   return (
-    <section className="py-12 bg-slate-950 min-h-screen">
-      <div className="container mx-auto px-4">
+    <section className="section-padding bg-slate-900/40 border-b border-slate-800/80">
+      <div className="container mx-auto">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold mb-3">
-            <Layers className="w-3.5 h-3.5" />
-            <span>Interactive Virtual Mockup Tool</span>
-          </div>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-slate-100">
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <span className="text-sm font-bold uppercase tracking-widest text-cyan-400">
+            3D Virtual Proofing
+          </span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-100 leading-tight">
             Custom Logo <span className="cyan-gradient-text">Branding Studio</span>
           </h2>
-          <p className="text-slate-400 mt-2 text-sm md:text-base">
-            Test precision laser engraving, gold foil stamping, and debossing on luxury merchandise before mass production.
+          <p className="text-slate-300 text-base md:text-lg leading-relaxed">
+            Preview laser engraving, metallic foil stamping, and debossing directly on luxury merchandise before production.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-6xl mx-auto">
-          {/* Left Canvas Visualizer (7 cols) */}
-          <div className="lg:col-span-7 space-y-4">
-            <div className="glass-panel p-6 rounded-3xl border-slate-800 relative overflow-hidden text-center">
-              <div className="flex items-center justify-between text-xs text-slate-400 mb-4 pb-3 border-b border-slate-800">
-                <span className="font-bold text-slate-200">{selectedProduct.name}</span>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Left Column: Controls & Logo Upload (5 cols) */}
+          <div className="lg:col-span-5 space-y-6">
+            <div className="bg-slate-900/80 p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+              {/* Product Selection */}
+              <div className="space-y-3">
+                <label className="text-sm font-bold uppercase tracking-wider text-slate-200 block">
+                  1. Select Merchandise Item
+                </label>
+                <div className="grid grid-cols-1 gap-3">
+                  {mockProducts.map((p) => (
+                    <button
+                      key={p.id}
+                      onClick={() => setSelectedProduct(p)}
+                      className={`p-4 rounded-2xl border text-left flex items-center gap-4 transition-all ${
+                        selectedProduct.id === p.id
+                          ? "bg-slate-950 border-cyan-500 text-cyan-300 font-bold shadow-lg"
+                          : "bg-slate-950/40 border-slate-800 text-slate-400 hover:text-slate-200"
+                      }`}
+                    >
+                      <img src={p.baseImage} alt={p.name} className="w-12 h-12 rounded-xl object-cover" />
+                      <div>
+                        <div className="text-sm font-bold text-slate-100">{p.name}</div>
+                        <div className="text-xs text-slate-400">{p.category}</div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Imprint Finish Selection */}
+              <div className="space-y-3 pt-4 border-t border-slate-800">
+                <label className="text-sm font-bold uppercase tracking-wider text-slate-200 block">
+                  2. Choose Logo Imprint Finish
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  {imprintMethods.map((imp) => (
+                    <button
+                      key={imp.id}
+                      onClick={() => setSelectedImprint(imp)}
+                      className={`p-3 rounded-xl border text-xs font-bold transition-all ${
+                        selectedImprint.id === imp.id
+                          ? "bg-cyan-500 text-slate-950 font-bold border-cyan-500 shadow"
+                          : "bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700"
+                      }`}
+                    >
+                      {imp.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Upload Logo vs Preset */}
+              <div className="space-y-3 pt-4 border-t border-slate-800">
+                <label className="text-sm font-bold uppercase tracking-wider text-slate-200 block">
+                  3. Upload Company Vector Logo
+                </label>
+                <div className="border-2 border-dashed border-slate-800 hover:border-cyan-500/50 p-5 rounded-2xl text-center bg-slate-950/60 transition-colors">
+                  {logoFile ? (
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-emerald-400 font-semibold truncate">{logoFile.name}</span>
+                      <button
+                        onClick={() => setLogoFile(null)}
+                        className="text-rose-400 hover:underline text-xs font-bold"
+                      >
+                        Reset Logo
+                      </button>
+                    </div>
+                  ) : (
+                    <label className="cursor-pointer flex items-center justify-center gap-2 text-sm font-semibold text-cyan-300 py-2">
+                      <Upload className="w-5 h-5" />
+                      <span>Click to Upload Logo File (PNG / SVG)</span>
+                      <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
+                    </label>
+                  )}
+                </div>
+
+                {!logoFile && (
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    <span className="text-xs text-slate-400 w-full font-semibold">Or test preset brand text:</span>
+                    {sampleLogos.map((txt) => (
+                      <button
+                        key={txt}
+                        onClick={() => setSampleTextLogo(txt)}
+                        className={`text-xs px-3 py-1.5 rounded-lg border font-bold ${
+                          sampleTextLogo === txt
+                            ? "bg-slate-800 text-amber-300 border-amber-500/50"
+                            : "bg-slate-950 text-slate-400 border-slate-800"
+                        }`}
+                      >
+                        {txt}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Sliders: Scale & Position */}
+              <div className="space-y-4 pt-4 border-t border-slate-800 text-xs">
+                <div>
+                  <div className="flex justify-between text-slate-300 font-semibold mb-1.5">
+                    <span>Logo Scale ({logoScale}%)</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={50}
+                    max={160}
+                    value={logoScale}
+                    onChange={(e) => setLogoScale(Number(e.target.value))}
+                    className="w-full h-2 bg-slate-800 rounded appearance-none"
+                  />
+                </div>
+
+                <div>
+                  <div className="flex justify-between text-slate-300 font-semibold mb-1.5">
+                    <span>Vertical Position ({logoYPos}%)</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={25}
+                    max={75}
+                    value={logoYPos}
+                    onChange={(e) => setLogoYPos(Number(e.target.value))}
+                    className="w-full h-2 bg-slate-800 rounded appearance-none"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: LARGE Merchandise Mockup Preview Canvas (7 cols) */}
+          <div className="lg:col-span-7">
+            <div className="bg-slate-900/80 p-8 rounded-3xl border border-slate-800 space-y-4 shadow-2xl text-center">
+              <div className="flex items-center justify-between text-xs text-slate-400 border-b border-slate-800 pb-4">
+                <span className="font-extrabold text-slate-200 text-base">{selectedProduct.name}</span>
                 <span className="badge badge-cyan">{selectedImprint.name}</span>
               </div>
 
-              {/* Product Mockup Canvas Area */}
+              {/* Large Mockup Canvas (h-[520px]) */}
               <div
-                className="relative rounded-2xl overflow-hidden h-[420px] flex items-center justify-center border border-slate-800 transition-colors"
+                className="relative rounded-2xl overflow-hidden h-[520px] flex items-center justify-center border border-slate-800 transition-colors shadow-inner"
                 style={{ backgroundColor: selectedColor.hex }}
               >
                 <img
@@ -128,146 +256,19 @@ export default function BrandingStudio() {
                     <img
                       src={logoFile.url}
                       alt="Uploaded Logo"
-                      className="max-h-24 max-w-[200px] object-contain filter drop-shadow-lg"
+                      className="max-h-28 max-w-[260px] object-contain filter drop-shadow-xl"
                     />
                   ) : (
                     <div
-                      className={`text-xl md:text-2xl font-black uppercase tracking-widest px-4 py-2 border-2 border-dashed border-current rounded-lg ${selectedImprint.textStyle}`}
+                      className={`text-2xl md:text-3xl font-black uppercase tracking-widest px-6 py-3 border-2 border-dashed border-current rounded-xl ${selectedImprint.textStyle}`}
                     >
                       {sampleTextLogo}
                     </div>
                   )}
                 </div>
 
-                {/* Canvas Overlay Guides */}
-                <div className="absolute bottom-3 left-3 text-[10px] bg-slate-950/80 px-3 py-1 rounded-full text-slate-400 border border-slate-800">
-                  Visual Proof • Laser Precision Scale: {logoScale}%
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Controls Column (5 cols) */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="glass-panel p-6 rounded-3xl space-y-6">
-              {/* Product Selection */}
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase text-slate-300">
-                  1. Select Merchandise Item
-                </label>
-                <div className="grid grid-cols-1 gap-2">
-                  {mockProducts.map((p) => (
-                    <button
-                      key={p.id}
-                      onClick={() => setSelectedProduct(p)}
-                      className={`p-3 rounded-xl border text-left flex items-center gap-3 transition-all ${
-                        selectedProduct.id === p.id
-                          ? "bg-slate-900 border-cyan-500 text-cyan-300 font-bold"
-                          : "bg-slate-900/40 border-slate-800 text-slate-400 hover:text-slate-200"
-                      }`}
-                    >
-                      <img src={p.baseImage} alt={p.name} className="w-10 h-10 rounded-lg object-cover" />
-                      <div className="text-xs">{p.name}</div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Imprint Finish Selection */}
-              <div className="space-y-2 pt-3 border-t border-slate-800">
-                <label className="text-xs font-bold uppercase text-slate-300">
-                  2. Choose Logo Imprint Finish
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  {imprintMethods.map((imp) => (
-                    <button
-                      key={imp.id}
-                      onClick={() => setSelectedImprint(imp)}
-                      className={`p-2.5 rounded-xl border text-xs font-semibold transition-all ${
-                        selectedImprint.id === imp.id
-                          ? "bg-cyan-500 text-slate-950 font-bold border-cyan-500"
-                          : "bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700"
-                      }`}
-                    >
-                      {imp.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Upload Logo vs Preset */}
-              <div className="space-y-3 pt-3 border-t border-slate-800">
-                <label className="text-xs font-bold uppercase text-slate-300">
-                  3. Upload Custom Vector Logo
-                </label>
-                <div className="border-2 border-dashed border-slate-800 p-4 rounded-xl text-center bg-slate-900/50">
-                  {logoFile ? (
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-emerald-400 truncate">{logoFile.name}</span>
-                      <button
-                        onClick={() => setLogoFile(null)}
-                        className="text-rose-400 hover:underline text-[11px]"
-                      >
-                        Reset
-                      </button>
-                    </div>
-                  ) : (
-                    <label className="cursor-pointer flex items-center justify-center gap-2 text-xs font-semibold text-cyan-300">
-                      <Upload className="w-4 h-4" />
-                      <span>Upload PNG / SVG Logo</span>
-                      <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
-                    </label>
-                  )}
-                </div>
-
-                {!logoFile && (
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    <span className="text-[10px] text-slate-500 w-full">Or test with preset:</span>
-                    {sampleLogos.map((txt) => (
-                      <button
-                        key={txt}
-                        onClick={() => setSampleTextLogo(txt)}
-                        className={`text-[10px] px-2 py-1 rounded border ${
-                          sampleTextLogo === txt
-                            ? "bg-slate-800 text-amber-300 border-amber-500/50"
-                            : "bg-slate-950 text-slate-400 border-slate-800"
-                        }`}
-                      >
-                        {txt}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Sliders: Scale, Y Position, Rotation */}
-              <div className="space-y-4 pt-3 border-t border-slate-800 text-xs">
-                <div>
-                  <div className="flex justify-between text-slate-300 font-semibold mb-1">
-                    <span>Logo Scale ({logoScale}%)</span>
-                  </div>
-                  <input
-                    type="range"
-                    min={50}
-                    max={160}
-                    value={logoScale}
-                    onChange={(e) => setLogoScale(Number(e.target.value))}
-                    className="w-full h-1.5 bg-slate-800 rounded appearance-none"
-                  />
-                </div>
-
-                <div>
-                  <div className="flex justify-between text-slate-300 font-semibold mb-1">
-                    <span>Vertical Position ({logoYPos}%)</span>
-                  </div>
-                  <input
-                    type="range"
-                    min={25}
-                    max={75}
-                    value={logoYPos}
-                    onChange={(e) => setLogoYPos(Number(e.target.value))}
-                    className="w-full h-1.5 bg-slate-800 rounded appearance-none"
-                  />
+                <div className="absolute bottom-4 left-4 text-xs bg-slate-950/85 px-4 py-1.5 rounded-full text-slate-300 border border-slate-800 font-semibold">
+                  Visual Proof • Precision Laser Scale: {logoScale}%
                 </div>
               </div>
             </div>

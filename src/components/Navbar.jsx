@@ -32,85 +32,69 @@ export default function Navbar() {
   const totalCartItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
 
   const navLinks = [
-    { id: "catalog", label: "Home & Catalog", icon: ShoppingBag },
-    { id: "products", label: "Products", icon: ShoppingBag },
-    { id: "builder", label: "Build a Gift Box", icon: Sparkles, badge: "Custom" },
-    { id: "estimator", label: "Bulk Orders", icon: Sliders },
-    { id: "branding", label: "Branding", icon: Layers },
-    { id: "cases", label: "Testimonials", icon: Award }
+    { id: "catalog", label: "Home" },
+    { id: "products", label: "Gifts" },
+    { id: "builder", label: "Build a Box" },
+    { id: "estimator", label: "Corporate" },
+    { id: "branding", label: "Branding" }
   ];
 
   return (
-    <header className="sticky top-0 z-50 glass-panel border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md">
-      <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        {/* Brand Logo */}
+    <header className="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-xl border-b border-slate-800/80 transition-all">
+      <div className="container mx-auto h-24 flex items-center justify-between">
+        {/* Brand Logo - Left */}
         <div
           onClick={() => setActiveTab("catalog")}
-          className="flex items-center gap-3 cursor-pointer group"
+          className="flex items-center gap-3 cursor-pointer group shrink-0"
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
+          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
             <Crown className="w-6 h-6 text-slate-950" />
           </div>
           <div>
-            <div className="flex items-center gap-1.5">
-              <span className="font-bold text-xl tracking-wider text-slate-100 font-heading">
-                AURA
-              </span>
-              <span className="text-xs px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
-                LUXE
-              </span>
-            </div>
-            <p className="text-[11px] text-slate-400 tracking-widest uppercase -mt-0.5">
-              Enterprise Gifting
+            <span className="font-extrabold text-2xl tracking-wider text-slate-100 font-heading">
+              KIZO <span className="gold-gradient-text">GIFTS</span>
+            </span>
+            <p className="text-[11px] text-slate-400 tracking-widest uppercase font-semibold">
+              Bespoke Corporate Gifting
             </p>
           </div>
         </div>
 
-        {/* Desktop Nav Links */}
-        <nav className="hidden lg:flex items-center gap-1 bg-slate-900/60 p-1.5 rounded-full border border-slate-800">
+        {/* Middle Nav Links */}
+        <nav className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => {
-            const Icon = link.icon;
             const isActive = activeTab === link.id;
             return (
               <button
                 key={link.id}
                 onClick={() => setActiveTab(link.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold transition-all ${
+                className={`text-base font-semibold transition-all relative py-2 ${
                   isActive
-                    ? "bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-md shadow-amber-500/20"
-                    : "text-slate-300 hover:text-white hover:bg-slate-800/50"
+                    ? "text-amber-400 font-bold"
+                    : "text-slate-300 hover:text-white"
                 }`}
               >
-                <Icon className="w-4 h-4" />
                 <span>{link.label}</span>
-                {link.badge && (
-                  <span
-                    className={`text-[9px] px-1.5 py-0.2 rounded-full font-bold ${
-                      isActive
-                        ? "bg-slate-950 text-amber-400"
-                        : "bg-amber-500/20 text-amber-300"
-                    }`}
-                  >
-                    {link.badge}
-                  </span>
+                {isActive && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400 rounded-full animate-fade-in" />
                 )}
               </button>
             );
           })}
         </nav>
 
-        {/* Action Controls */}
-        <div className="flex items-center gap-3">
+        {/* Right Action Controls */}
+        <div className="flex items-center gap-4">
           {/* Currency Switcher */}
-          <div className="hidden sm:flex items-center gap-1 bg-slate-900 border border-slate-800 rounded-lg p-1">
-            <Globe className="w-3.5 h-3.5 text-slate-400 ml-1.5" />
+          <div className="hidden sm:flex items-center gap-1 bg-slate-900/80 border border-slate-800 rounded-xl p-1.5">
+            <Globe className="w-4 h-4 text-slate-400 ml-1.5" />
             {Object.keys(currencySymbols).map((curr) => (
               <button
                 key={curr}
                 onClick={() => setCurrency(curr)}
-                className={`px-2 py-1 rounded text-xs font-bold transition-colors ${
+                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
                   currency === curr
-                    ? "bg-slate-800 text-amber-400"
+                    ? "bg-amber-500 text-slate-950 shadow"
                     : "text-slate-400 hover:text-slate-200"
                 }`}
               >
@@ -122,7 +106,7 @@ export default function Navbar() {
           {/* Cart Drawer Trigger */}
           <button
             onClick={() => setIsCartOpen(true)}
-            className="relative p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 hover:border-amber-500/50 hover:text-amber-400 transition-all"
+            className="relative p-3 rounded-2xl bg-slate-900 border border-slate-800 text-slate-200 hover:border-amber-500/50 hover:text-amber-400 transition-all"
             aria-label="Open Quote Cart"
           >
             <ShoppingBag className="w-5 h-5" />
@@ -133,18 +117,13 @@ export default function Navbar() {
             )}
           </button>
 
-          {/* Quick RFQ Quote CTA */}
+          {/* Request Quote CTA Button */}
           <button
             onClick={() => setIsQuoteModalOpen(true)}
-            className="hidden md:flex btn-primary text-xs"
+            className="hidden md:flex btn-primary text-sm py-3 px-6 shadow-lg shadow-amber-500/20"
           >
-            <FileText className="w-4 h-4" />
-            <span>Instant RFQ Quote</span>
-            {savedQuotes.length > 0 && (
-              <span className="bg-slate-950 text-amber-300 px-1.5 py-0.5 rounded-full text-[10px]">
-                {savedQuotes.length}
-              </span>
-            )}
+            <FileText className="w-4 h-4 text-slate-950" />
+            <span>Request Quote</span>
           </button>
 
           {/* Mobile Menu Button */}

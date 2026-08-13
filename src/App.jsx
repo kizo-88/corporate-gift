@@ -8,6 +8,7 @@ import BulkEstimator from "./components/BulkEstimator";
 import BrandingStudio from "./components/BrandingStudio";
 import RecipientPortal from "./components/RecipientPortal";
 import ClientTestimonials from "./components/ClientTestimonials";
+import QuoteCTA from "./components/QuoteCTA";
 import CartDrawer from "./components/CartDrawer";
 import ProductQuickViewModal from "./components/ProductQuickViewModal";
 import QuoteModal from "./components/QuoteModal";
@@ -21,12 +22,21 @@ function MainAppContent() {
       <div>
         <Navbar />
 
-        {/* Render Hero on Catalog tab for max impact */}
-        {activeTab === "catalog" && <Hero />}
+        {/* Home Tab: Full Luxurious Spacious Page Flow */}
+        {activeTab === "catalog" && (
+          <>
+            <Hero />
+            <ProductCatalog />
+            <GiftBoxBuilder />
+            <BulkEstimator />
+            <BrandingStudio />
+            <ClientTestimonials />
+          </>
+        )}
 
-        {/* Dynamic Tab Content Renderer */}
+        {/* Individual Tab Specific Views */}
         <main>
-          {(activeTab === "catalog" || activeTab === "products") && <ProductCatalog />}
+          {activeTab === "products" && <ProductCatalog />}
           {activeTab === "builder" && <GiftBoxBuilder />}
           {activeTab === "estimator" && <BulkEstimator />}
           {activeTab === "branding" && <BrandingStudio />}
@@ -34,8 +44,8 @@ function MainAppContent() {
           {activeTab === "cases" && <ClientTestimonials />}
         </main>
 
-        {/* Social Proof Section shown on main catalog */}
-        {activeTab === "catalog" && <ClientTestimonials />}
+        {/* Pre-Footer Striking CTA */}
+        <QuoteCTA />
       </div>
 
       {/* Global Modals & Drawers */}

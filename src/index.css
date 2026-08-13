@@ -215,9 +215,44 @@ h1, h2, h3, h4, h5 {
 
 /* Container Utility */
 .container {
-  max-width: 1280px;
+  max-width: 1360px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+/* Major Section Vertical Spacing */
+.section-padding {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: 7.5rem;
+    padding-bottom: 7.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-top: 9rem;
+    padding-bottom: 9rem;
+  }
 }
 
 /* Animations */
@@ -258,10 +293,10 @@ h1, h2, h3, h4, h5 {
   background: rgba(15, 23, 42, 0.9);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-sm);
-  padding: 0.75rem 1rem;
+  padding: 0.875rem 1.25rem;
   color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-size: 1rem;
   outline: none;
   transition: all 0.2s ease;
 }
@@ -277,15 +312,23 @@ input[type="range"] {
   cursor: pointer;
 }
 
-/* Grid Layouts */
+/* Grid Layouts - Max 3 per row on desktop, 2 on tablet, 1 on mobile */
 .grid-catalog {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: 2rem;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 640px) {
   .grid-catalog {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-catalog {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.25rem;
   }
 }
