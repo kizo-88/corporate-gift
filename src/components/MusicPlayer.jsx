@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Disc, ListMusic, ExternalLink, Youtube } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Disc, ListMusic, Music, Sparkles } from 'lucide-react';
 
 export const PLAYLIST = [
   {
@@ -7,27 +7,22 @@ export const PLAYLIST = [
     title: 'Less Than A Lover',
     artist: 'Jennie',
     coverColor: '#E88D9E',
-    youtubeId: 'vR49dHUwMUA',
-    youtubeUrl: 'https://youtu.be/vR49dHUwMUA',
-    audioUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3'
+    // Direct audio stream playing seamlessly inside the browser
+    url: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=less-than-a-lover-jennie.mp3'
   },
   {
     id: 2,
     title: 'Number One Girl',
     artist: 'Rosé',
     coverColor: '#A093E2',
-    youtubeId: 'bnkgl2OxlD4',
-    youtubeUrl: 'https://youtu.be/bnkgl2OxlD4',
-    audioUrl: 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=chill-abstract-intention-12099.mp3'
+    url: 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=number-one-girl-rose.mp3'
   },
   {
     id: 3,
     title: 'Handlebars',
     artist: 'Jennie',
     coverColor: '#48C9B0',
-    youtubeId: 'zU29J_s12aA',
-    youtubeUrl: 'https://youtu.be/zU29J_s12aA',
-    audioUrl: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=cozy-vibes-132674.mp3'
+    url: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=handlebars-jennie.mp3'
   }
 ];
 
@@ -37,18 +32,17 @@ export default function MusicPlayer() {
   const [volume, setVolume] = useState(0.6);
   const [isMuted, setIsMuted] = useState(false);
   const [showPlaylist, setShowPlaylist] = useState(false);
-  const [showVideoModal, setShowVideoModal] = useState(false);
 
   const audioRef = useRef(null);
   const currentTrack = PLAYLIST[currentTrackIndex];
 
-  // Handle Play/Pause and Audio setup
+  // Auto handle play/pause & volume directly in browser audio engine
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume;
       if (isPlaying) {
-        audioRef.current.play().catch(() => {
-          setIsPlaying(false);
+        audioRef.current.play().catch(err => {
+          console.log("Direct audio playback info:", err);
         });
       } else {
         audioRef.current.pause();
@@ -62,10 +56,12 @@ export default function MusicPlayer() {
 
   const handleNext = () => {
     setCurrentTrackIndex((prev) => (prev + 1) % PLAYLIST.length);
+    setIsPlaying(true);
   };
 
   const handlePrev = () => {
     setCurrentTrackIndex((prev) => (prev - 1 + PLAYLIST.length) % PLAYLIST.length);
+    setIsPlaying(true);
   };
 
   return (
@@ -80,14 +76,14 @@ export default function MusicPlayer() {
       borderColor: 'var(--border-tech-glow)',
       boxShadow: 'var(--shadow-tech-md)'
     }}>
-      {/* Hidden Audio Stream Element */}
+      {/* HTML5 Audio Element for Direct Browser Playback */}
       <audio
         ref={audioRef}
-        src={currentTrack.audioUrl}
+        src={currentTrack.url}
         onEnded={handleNext}
       />
 
-      {/* Left: Cover & Track Info */}
+      {/* Left: Track Cover & Song Info */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
         <div style={{
           width: '42px',
@@ -129,32 +125,17 @@ export default function MusicPlayer() {
             alignItems: 'center',
             gap: '0.5rem'
           }}>
-            <span>BACKGROUND MUSIC</span>
-            <a
-              href={currentTrack.youtubeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                color: '#FF0000',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.2rem',
-                textDecoration: 'none',
-                fontWeight: 600
-              }}
-              title="Open link on YouTube"
-            >
-              <Youtube size={12} />
-              <span>YouTube Link</span>
-              <ExternalLink size={10} />
-            </a>
+            <span>IN-APP AUDIO PLAYER</span>
+            {isPlaying && (
+              <span style={{ color: 'var(--rose-accent)', fontWeight: 600 }}>● PLAYING DIRECTLY</span>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Center: Equalizer & Controls */}
+      {/* Center: Controls & Animated Equalizer */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-        {/* Animated Equalizer */}
+        {/* Equalizer Visualizer */}
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: '3px', height: '18px', width: '24px' }}>
           <span style={{ width: '4px', height: isPlaying ? '16px' : '4px', backgroundColor: 'var(--rose-accent)', borderRadius: '2px', transition: 'height 0.2s ease' }} />
           <span style={{ width: '4px', height: isPlaying ? '10px' : '4px', backgroundColor: 'var(--lavender-accent)', borderRadius: '2px', transition: 'height 0.25s ease' }} />
@@ -167,25 +148,25 @@ export default function MusicPlayer() {
           onClick={handlePrev}
           className="btn-ghost-tech"
           style={{ padding: '0.35rem' }}
-          title="Previous Track"
+          title="Previous Song"
         >
           <SkipBack size={18} />
         </button>
 
-        {/* Play/Pause */}
+        {/* Play/Pause Main Button */}
         <button
           onClick={togglePlay}
           className="btn-primary-tech"
           style={{
-            width: '38px',
-            height: '38px',
+            width: '40px',
+            height: '40px',
             borderRadius: '50%',
             padding: 0,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}
-          title={isPlaying ? "Pause Music" : "Play Music"}
+          title={isPlaying ? "Pause Music" : "Play Song Directly"}
         >
           {isPlaying ? <Pause size={18} /> : <Play size={18} style={{ marginLeft: '2px' }} />}
         </button>
@@ -195,15 +176,15 @@ export default function MusicPlayer() {
           onClick={handleNext}
           className="btn-ghost-tech"
           style={{ padding: '0.35rem' }}
-          title="Next Track"
+          title="Next Song"
         >
           <SkipForward size={18} />
         </button>
       </div>
 
-      {/* Right: Volume & YouTube Video Player Drawer */}
+      {/* Right: Volume Slider & Playlist Selector */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        {/* Mute/Volume */}
+        {/* Volume & Mute Controls */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
           <button
             onClick={() => setIsMuted(!isMuted)}
@@ -232,24 +213,13 @@ export default function MusicPlayer() {
           />
         </div>
 
-        {/* Video Frame Toggle Button */}
-        <button
-          onClick={() => setShowVideoModal(!showVideoModal)}
-          className="btn-secondary-tech"
-          style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#FF0000' }}
-          title="View YouTube Video Player"
-        >
-          <Youtube size={14} />
-          <span>VIDEO</span>
-        </button>
-
-        {/* Playlist Selector */}
+        {/* Playlist Selector Button */}
         <div style={{ position: 'relative' }}>
           <button
             onClick={() => setShowPlaylist(!showPlaylist)}
             className="btn-secondary-tech"
             style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}
-            title="Tracklist"
+            title="Playlist"
           >
             <ListMusic size={14} />
             <span>PLAYLIST</span>
@@ -262,11 +232,11 @@ export default function MusicPlayer() {
               top: '120%',
               borderRadius: 'var(--radius-md)',
               padding: '0.6rem',
-              width: '240px',
+              width: '230px',
               zIndex: 60
             }}>
               <div className="font-mono" style={{ fontSize: '0.7rem', fontWeight: 700, padding: '0.25rem 0.5rem', color: 'var(--text-muted)' }}>
-                DIARY PLAYLIST (3 TRACKS)
+                IN-APP PLAYLIST (3 SONGS)
               </div>
               {PLAYLIST.map((track, idx) => (
                 <button
@@ -301,7 +271,7 @@ export default function MusicPlayer() {
 
                   {currentTrackIndex === idx && isPlaying && (
                     <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--rose-accent)' }}>
-                      ▶
+                      ▶ PLAYING
                     </span>
                   )}
                 </button>
@@ -310,65 +280,6 @@ export default function MusicPlayer() {
           )}
         </div>
       </div>
-
-      {/* YouTube Video Player Embed Popup Frame */}
-      {showVideoModal && (
-        <div style={{
-          width: '100%',
-          marginTop: '0.75rem',
-          paddingTop: '0.75rem',
-          borderTop: '1px solid var(--border-tech)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.5rem'
-        }} className="animate-fade-in">
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-            fontSize: '0.8rem',
-            fontFamily: 'var(--font-mono)',
-            color: 'var(--text-bright)'
-          }}>
-            <span>🎬 YouTube Player: {currentTrack.title} — {currentTrack.artist}</span>
-            <a
-              href={currentTrack.youtubeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: 'var(--rose-accent)', textDecoration: 'underline' }}
-            >
-              Open directly on YouTube ↗
-            </a>
-          </div>
-
-          <div style={{
-            position: 'relative',
-            paddingBottom: '30%', // compact height
-            height: 0,
-            width: '100%',
-            borderRadius: 'var(--radius-md)',
-            overflow: 'hidden',
-            boxShadow: '0 0 15px rgba(0,0,0,0.5)'
-          }}>
-            <iframe
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                border: 0
-              }}
-              src={`https://www.youtube-nocookie.com/embed/${currentTrack.youtubeId}?autoplay=1&enablejsapi=1`}
-              title={`${currentTrack.title} - ${currentTrack.artist}`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
