@@ -57,14 +57,14 @@ export default function Navbar({
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <h1 className="font-heading" style={{
-                  fontSize: '1.5rem',
+                  fontSize: '1.4rem',
                   fontWeight: 800,
                   letterSpacing: '-0.02em',
                   margin: 0,
                   lineHeight: 1.1,
                   color: 'var(--text-bright)'
                 }}>
-                  CipherLog OS
+                  Mmorkleyyy's Little Journal
                 </h1>
                 <span className="pulse-dot" title="Local DB Active" />
               </div>
