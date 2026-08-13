@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import EntryCard from './EntryCard';
 import { CATEGORIES, MOODS } from '../utils/storage';
-import { Search, Filter, ArrowUpDown, LayoutGrid, List, Plus, RefreshCw, Terminal } from 'lucide-react';
+import { Search, Filter, ArrowUpDown, LayoutGrid, List, Plus, RefreshCw, PenTool } from 'lucide-react';
 
 export default function EntryList({
   entries,
@@ -62,8 +62,29 @@ export default function EntryList({
   };
 
   return (
-    <section style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+    <section style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', position: 'relative' }}>
       
+      {/* Floating Action Button (FAB) for Mobile & Quick Writing */}
+      <button
+        onClick={onOpenNewForm}
+        className="btn-primary-tech animate-pop-in"
+        style={{
+          position: 'fixed',
+          bottom: '2rem',
+          right: '2rem',
+          zIndex: 80,
+          padding: '0.85rem 1.4rem',
+          borderRadius: 'var(--radius-full)',
+          boxShadow: '0 8px 30px var(--primary-glow)',
+          fontSize: '0.95rem',
+          fontWeight: 700
+        }}
+        title="Tulis Diari Baru"
+      >
+        <PenTool size={18} />
+        <span>+ Tulis Diari</span>
+      </button>
+
       {/* Search & Filter Header Toolbar */}
       <div className="glass-panel" style={{
         borderRadius: 'var(--radius-lg)',
@@ -87,20 +108,20 @@ export default function EntryList({
             letterSpacing: '0.05em',
             marginRight: '0.25rem'
           }}>
-            // FILTER:
+            TUKAR KATEGORI:
           </span>
 
           <button
             onClick={() => setSelectedCategory('All')}
-            className="hud-badge cyan"
+            className="hud-badge rose"
             style={{
               cursor: 'pointer',
               border: selectedCategory === 'All' ? '1px solid var(--primary-accent)' : '1px solid var(--border-tech)',
-              backgroundColor: selectedCategory === 'All' ? 'var(--neon-cyan-glow)' : 'transparent',
-              color: selectedCategory === 'All' ? 'var(--neon-cyan)' : 'var(--text-muted)'
+              backgroundColor: selectedCategory === 'All' ? 'var(--rose-glow)' : 'transparent',
+              color: selectedCategory === 'All' ? 'var(--rose-accent)' : 'var(--text-muted)'
             }}
           >
-            ⚡ ALL LOGS ({entries.length})
+            🌸 SEMUA TULISAN ({entries.length})
           </button>
 
           {CATEGORIES.map((cat) => {
@@ -144,7 +165,7 @@ export default function EntryList({
                 className="input-tech font-mono"
                 style={{ padding: '0.35rem 0.75rem', fontSize: '0.78rem', width: 'auto' }}
               >
-                <option value="All">ALL MOOD TELEMETRY</option>
+                <option value="All">SEMUA PERASAAN (MOOD)</option>
                 {MOODS.map(m => (
                   <option key={m.label} value={m.label}>
                     {m.emoji} {m.label}
@@ -160,7 +181,7 @@ export default function EntryList({
                 style={{ fontSize: '0.78rem', color: 'var(--primary-accent)', fontFamily: 'var(--font-mono)' }}
               >
                 <RefreshCw size={12} />
-                <span>RESET FILTERS</span>
+                <span>RESET TAPISAN</span>
               </button>
             )}
           </div>
@@ -175,9 +196,9 @@ export default function EntryList({
                 className="input-tech font-mono"
                 style={{ padding: '0.35rem 0.75rem', fontSize: '0.78rem', width: 'auto' }}
               >
-                <option value="newest">NEWEST LOGS</option>
-                <option value="oldest">OLDEST LOGS</option>
-                <option value="title">TITLE A-Z</option>
+                <option value="newest">SUSUN: TERKINI</option>
+                <option value="oldest">SUSUN: TERAWAL</option>
+                <option value="title">SUSUN: TAJUK A-Z</option>
               </select>
             </div>
 
@@ -185,7 +206,7 @@ export default function EntryList({
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              backgroundColor: 'rgba(0,0,0,0.3)',
+              backgroundColor: 'var(--bg-cyber-subtle)',
               padding: '0.2rem',
               borderRadius: 'var(--radius-sm)',
               border: '1px solid var(--border-tech)'
@@ -194,13 +215,13 @@ export default function EntryList({
                 onClick={() => setViewMode('grid')}
                 style={{
                   border: 'none',
-                  background: viewMode === 'grid' ? 'var(--bg-cyber-subtle)' : 'transparent',
+                  background: viewMode === 'grid' ? 'var(--bg-cyber-card-hover)' : 'transparent',
                   padding: '0.3rem',
                   borderRadius: '4px',
                   cursor: 'pointer',
-                  color: viewMode === 'grid' ? 'var(--primary-accent)' : 'var(--text-muted)'
+                  color: viewMode === 'grid' ? 'var(--rose-accent)' : 'var(--text-muted)'
                 }}
-                title="Grid Pod View"
+                title="Paparan Kad Grid"
               >
                 <LayoutGrid size={15} />
               </button>
@@ -208,13 +229,13 @@ export default function EntryList({
                 onClick={() => setViewMode('list')}
                 style={{
                   border: 'none',
-                  background: viewMode === 'list' ? 'var(--bg-cyber-subtle)' : 'transparent',
+                  background: viewMode === 'list' ? 'var(--bg-cyber-card-hover)' : 'transparent',
                   padding: '0.3rem',
                   borderRadius: '4px',
                   cursor: 'pointer',
-                  color: viewMode === 'list' ? 'var(--primary-accent)' : 'var(--text-muted)'
+                  color: viewMode === 'list' ? 'var(--rose-accent)' : 'var(--text-muted)'
                 }}
-                title="Compact List View"
+                title="Paparan Senarai Ringkas"
               >
                 <List size={15} />
               </button>
@@ -259,37 +280,37 @@ export default function EntryList({
             width: '60px',
             height: '60px',
             borderRadius: '50%',
-            backgroundColor: 'var(--neon-cyan-glow)',
-            color: 'var(--neon-cyan)',
+            backgroundColor: 'var(--rose-glow)',
+            color: 'var(--rose-accent)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '1.8rem',
-            boxShadow: '0 0 20px var(--neon-cyan-glow)'
+            boxShadow: '0 0 20px var(--rose-glow)'
           }}>
-            <Terminal size={28} />
+            🌸
           </div>
 
           <div>
             <h3 className="font-heading" style={{ fontSize: '1.6rem', marginBottom: '0.5rem', color: 'var(--text-bright)' }}>
-              {hasActiveFilters ? 'NO MATCHING LOGS FOUND' : 'NEURAL DATABASE READY'}
+              {hasActiveFilters ? 'TIADA DIARI DITEMUI' : 'DIARI ANDA MASIH KOSONG'}
             </h3>
             <p className="font-mono" style={{ maxWidth: '420px', margin: '0 auto', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
               {hasActiveFilters 
-                ? 'Adjust filter criteria or query keywords to scan local database.' 
-                : 'Click below to create your first encrypted diary log entry!'}
+                ? 'Sila tukar carian atau tekan butang reset untuk lihat semula tulisan anda.' 
+                : 'Tekan butang di bawah untuk mula menulis kenangan pertama anda hari ini!'}
             </p>
           </div>
 
           {hasActiveFilters ? (
             <button onClick={resetFilters} className="btn-secondary-tech">
               <RefreshCw size={15} />
-              <span>CLEAR FILTERS</span>
+              <span>RESET TAPISAN</span>
             </button>
           ) : (
             <button onClick={onOpenNewForm} className="btn-primary-tech">
               <Plus size={18} />
-              <span>CREATE FIRST LOG</span>
+              <span>TULIS KENANGAN PERTAMA</span>
             </button>
           )}
         </div>

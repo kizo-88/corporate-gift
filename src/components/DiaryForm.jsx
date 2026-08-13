@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, Sparkles, Send, X, Terminal, Cpu, Check, Calendar, Code } from 'lucide-react';
+import { Clock, Sparkles, Send, X, Calendar, Heart } from 'lucide-react';
 import { formatDateStamp, WRITING_PROMPTS, CATEGORIES, MOODS } from '../utils/storage';
 
 export default function DiaryForm({ initialData = null, onSave, onCancel, isModal = false }) {
@@ -9,8 +9,8 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
   const [content, setContent] = useState(initialData?.content || '');
   const [mood, setMood] = useState(initialData?.mood || '⚡ Focused');
   const [category, setCategory] = useState(initialData?.category || 'Protocols');
-  const [color, setColor] = useState(initialData?.color || 'cyan');
-  const [sticker, setSticker] = useState(initialData?.sticker || '⚡');
+  const [color, setColor] = useState(initialData?.color || 'rose');
+  const [sticker, setSticker] = useState(initialData?.sticker || '🌸');
   const [useCustomDate, setUseCustomDate] = useState(false);
   const [createdAt, setCreatedAt] = useState(initialData?.createdAt || nowIso);
 
@@ -20,8 +20,8 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
       setContent(initialData.content || '');
       setMood(initialData.mood || '⚡ Focused');
       setCategory(initialData.category || 'Protocols');
-      setColor(initialData.color || 'cyan');
-      setSticker(initialData.sticker || '⚡');
+      setColor(initialData.color || 'rose');
+      setSticker(initialData.sticker || '🌸');
       setCreatedAt(initialData.createdAt || nowIso);
     }
   }, [initialData]);
@@ -43,7 +43,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
 
     const entryData = {
       id: initialData?.id || `log-${Date.now()}`,
-      title: title.trim() || 'Untitled Log Entry ⚡',
+      title: title.trim() || 'Kenangan Hari Ini ✨',
       content: content.trim(),
       createdAt: timestampToSave,
       updatedAt: new Date().toISOString(),
@@ -57,7 +57,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
     onSave(entryData);
   };
 
-  const stickers = ['⚡', '🧠', '🛡️', '🚀', '🌌', '🔮', '💻', '🔒', '✨', '🎯'];
+  const stickers = ['🌸', '🌿', '☕', '✨', '📖', '🌅', '⚡', '🧠', '🛡️', '🚀'];
 
   return (
     <div className={`glass-panel ${isModal ? 'animate-pop-in' : 'animate-fade-in'}`} style={{
@@ -78,7 +78,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
           <span style={{ fontSize: '1.6rem' }}>{sticker}</span>
           <div>
             <h2 className="font-heading" style={{ fontSize: '1.5rem', margin: 0, color: 'var(--text-bright)' }}>
-              {initialData ? 'EDIT DIARY LOG' : 'CREATE NEW DIARY LOG'}
+              {initialData ? 'KEMASKINI TULISAN DIARI' : 'TULIS DIARI HARI INI'}
             </h2>
             
             {/* Automatic Date Stamp Display */}
@@ -91,10 +91,10 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
               fontFamily: 'var(--font-mono)',
               marginTop: '0.15rem'
             }}>
-              <Clock size={12} color="var(--primary-accent)" />
+              <Clock size={12} color="var(--rose-accent)" />
               <span>{formatDateStamp(useCustomDate ? createdAt : (initialData?.createdAt || nowIso))}</span>
-              <span className="hud-badge cyan" style={{ padding: '0.05rem 0.35rem', fontSize: '0.65rem' }}>
-                AUTO STAMP
+              <span className="hud-badge rose" style={{ padding: '0.05rem 0.35rem', fontSize: '0.65rem' }}>
+                AUTO TARIKH
               </span>
             </div>
           </div>
@@ -106,10 +106,10 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
             onClick={handleInsertPrompt}
             className="btn-secondary-tech"
             style={{ fontSize: '0.78rem', padding: '0.35rem 0.75rem', fontFamily: 'var(--font-mono)' }}
-            title="Generate AI Writing Prompt"
+            title="Dapatkan Idea Cadangan Tulisan"
           >
-            <Sparkles size={13} color="var(--neon-amber)" />
-            <span>AI PROMPT</span>
+            <Sparkles size={13} color="var(--amber-accent)" />
+            <span>IDE CADANGAN</span>
           </button>
 
           {isModal && onCancel && (
@@ -136,11 +136,11 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
             color: 'var(--text-muted)',
             letterSpacing: '0.05em'
           }}>
-            // LOG ENTRY TITLE
+            // TAJUK DIARI
           </label>
           <input
             type="text"
-            placeholder="e.g. Quantum Focus Session, Memory Log..."
+            placeholder="Contoh: Secawan Kopi Pagi, Cerita Petang Yang Indah..."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="input-tech font-heading"
@@ -149,6 +149,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
               fontWeight: 700,
               padding: '0.6rem 1rem'
             }}
+            autoFocus
           />
         </div>
 
@@ -168,7 +169,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
               color: 'var(--text-muted)',
               letterSpacing: '0.05em'
             }}>
-              // NEURAL MOOD STATE
+              // PERASAAN HARI INI (MOOD)
             </label>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
               {MOODS.map((m) => {
@@ -182,8 +183,8 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
                     style={{
                       cursor: 'pointer',
                       border: isSelected ? '1px solid var(--primary-accent)' : '1px solid var(--border-tech)',
-                      backgroundColor: isSelected ? 'var(--neon-cyan-glow)' : 'rgba(0,0,0,0.2)',
-                      color: isSelected ? 'var(--neon-cyan)' : 'var(--text-main)',
+                      backgroundColor: isSelected ? 'var(--rose-glow)' : 'var(--bg-cyber-subtle)',
+                      color: isSelected ? 'var(--rose-accent)' : 'var(--text-main)',
                       fontSize: '0.78rem'
                     }}
                   >
@@ -204,7 +205,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
               color: 'var(--text-muted)',
               letterSpacing: '0.05em'
             }}>
-              // CATEGORY TAG
+              // KATEGORI DIARI
             </label>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
               {CATEGORIES.map((cat) => {
@@ -240,14 +241,14 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
           justifyContent: 'space-between',
           flexWrap: 'wrap',
           gap: '0.75rem',
-          backgroundColor: 'rgba(0,0,0,0.25)',
+          backgroundColor: 'var(--bg-cyber-subtle)',
           padding: '0.6rem 0.85rem',
           borderRadius: 'var(--radius-md)',
           border: '1px solid var(--border-tech)'
         }}>
           {/* Sticker Selector */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span className="font-mono" style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)' }}>Cover Icon:</span>
+            <span className="font-mono" style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)' }}>Pilih Ikon:</span>
             <div style={{ display: 'flex', gap: '0.25rem' }}>
               {stickers.map((s) => (
                 <button
@@ -256,7 +257,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
                   onClick={() => setSticker(s)}
                   style={{
                     border: 'none',
-                    background: sticker === s ? 'rgba(0, 242, 254, 0.2)' : 'transparent',
+                    background: sticker === s ? 'var(--rose-glow)' : 'transparent',
                     borderRadius: '4px',
                     cursor: 'pointer',
                     fontSize: '1.05rem',
@@ -277,14 +278,14 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
                 checked={useCustomDate}
                 onChange={(e) => setUseCustomDate(e.target.checked)}
               />
-              <span>CUSTOM DATE STAMP</span>
+              <span>TETAPKAN TARIKH LAIN</span>
             </label>
           </div>
         </div>
 
         {useCustomDate && (
           <div className="animate-fade-in" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Calendar size={15} color="var(--primary-accent)" />
+            <Calendar size={15} color="var(--rose-accent)" />
             <input
               type="datetime-local"
               value={createdAt.slice(0, 16)}
@@ -309,16 +310,16 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
               color: 'var(--text-muted)',
               letterSpacing: '0.05em'
             }}>
-              // LOG CONTENT BODY
+              // ISI KANDUNGAN DIARI
             </label>
             <span className="font-mono" style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-              {content.length} CHARS
+              {content.length} AKSARA
             </span>
           </div>
 
           <textarea
             rows={7}
-            placeholder="Record thoughts, daily notes, ideas, or retrospectives..."
+            placeholder="Tuliskan apa yang berlaku hari ini, perkara yang anda syukuri, atau impian anda..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
             className="input-tech font-body"
@@ -346,7 +347,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
               onClick={onCancel}
               className="btn-secondary-tech"
             >
-              Cancel
+              Batal
             </button>
           )}
 
@@ -360,7 +361,7 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
             }}
           >
             <Send size={16} />
-            <span>{initialData ? 'UPDATE LOG' : 'SAVE LOG ENTRY'}</span>
+            <span>{initialData ? 'KEMASKINI TULISAN' : 'SIMPAN DIARI'}</span>
           </button>
         </div>
       </form>

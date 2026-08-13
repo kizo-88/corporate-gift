@@ -6,6 +6,7 @@ import DiaryForm from './components/DiaryForm';
 import EntryList from './components/EntryList';
 import EntryViewModal from './components/EntryViewModal';
 import LockModal from './components/LockModal';
+import HelpModal from './components/HelpModal';
 
 import {
   loadEntries,
@@ -15,7 +16,7 @@ import {
   loadSavedPin
 } from './utils/storage';
 
-import { Sparkles, Heart } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 export default function App() {
   const [entries, setEntries] = useState(() => loadEntries());
@@ -28,6 +29,7 @@ export default function App() {
   const [editingEntry, setEditingEntry] = useState(null);
   const [showFormModal, setShowFormModal] = useState(false);
   const [showLockModal, setShowLockModal] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
   // Save entries to LocalStorage
@@ -47,7 +49,7 @@ export default function App() {
   const handleToggleDarkMode = () => {
     const nextTheme = isDarkMode ? 'cream-rose' : 'midnight-rose';
     setTheme(nextTheme);
-    showToast(nextTheme === 'midnight-rose' ? 'Midnight Dark Mode activated 🌙' : 'Cream Light Mode activated ☀️');
+    showToast(nextTheme === 'midnight-rose' ? 'Mod Gelap Midnight Diaktifkan 🌙' : 'Mod Terang Cream Diaktifkan ☀️');
   };
 
   const showToast = (msg) => {
@@ -71,14 +73,14 @@ export default function App() {
 
     setShowFormModal(false);
     setEditingEntry(null);
-    showToast(entryData.id.includes('log-') ? 'Log saved to diary! 🌸' : 'Log updated! 🌿');
+    showToast('Diari tersimpan dengan selamat! 🌸✨');
   };
 
   const handleDeleteEntry = (entryId) => {
-    if (window.confirm('Are you sure you want to delete this diary log entry? This operation is permanent.')) {
+    if (window.confirm('Adakah anda pasti mahu memadamkan diari ini? Perkara ini tidak boleh diundur.')) {
       setEntries(prev => prev.filter(e => e.id !== entryId));
       if (viewingEntry?.id === entryId) setViewingEntry(null);
-      showToast('Log entry deleted 🗑️');
+      showToast('Tulisan diari dipadam 🗑️');
     }
   };
 
@@ -86,7 +88,7 @@ export default function App() {
     setEntries(prev => prev.map(e => {
       if (e.id === entryId) {
         const nextPinned = !e.isPinned;
-        showToast(nextPinned ? 'Log pinned to top ⭐️' : 'Log unpinned');
+        showToast(nextPinned ? 'Diari dipin di bahagian atas ⭐️' : 'Pin diari dibatalkan');
         return { ...e, isPinned: nextPinned };
       }
       return e;
@@ -97,11 +99,11 @@ export default function App() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(entries, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `cipherlog_backup_${new Date().toISOString().slice(0,10)}.json`);
+    downloadAnchor.setAttribute("download", `mmorkleyyy_journal_backup_${new Date().toISOString().slice(0,10)}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
-    showToast('JSON Backup downloaded 💾');
+    showToast('Backup fail diari berjaya dimuat turun! 💾');
   };
 
   return (
@@ -135,6 +137,7 @@ export default function App() {
         onExportData={handleExportData}
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
+        onOpenHelp={() => setShowHelpModal(true)}
       />
 
       {/* Main App Container */}
@@ -144,8 +147,9 @@ export default function App() {
           <div className="glass-panel animate-pop-in" style={{
             position: 'fixed',
             bottom: '2rem',
-            right: '2rem',
-            padding: '0.75rem 1.25rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            padding: '0.75rem 1.4rem',
             borderRadius: 'var(--radius-full)',
             borderColor: 'var(--border-tech-glow)',
             boxShadow: 'var(--shadow-tech-lg)',
@@ -154,11 +158,10 @@ export default function App() {
             gap: '0.6rem',
             fontSize: '0.85rem',
             fontWeight: 600,
-            fontFamily: 'var(--font-mono)',
             color: 'var(--text-bright)',
             zIndex: 1000
           }}>
-            <Sparkles size={15} color="var(--rose-accent)" />
+            <Sparkles size={16} color="var(--rose-accent)" />
             <span>{toastMessage}</span>
           </div>
         )}
@@ -247,10 +250,15 @@ export default function App() {
           onSetPin={(newPin) => {
             setSavedPinState(newPin);
             setShowLockModal(false);
-            showToast(newPin ? 'Encryption PIN set 🔒' : 'Encryption PIN removed 🔓');
+            showToast(newPin ? 'PIN Keselamatan Aktif 🔒' : 'PIN Keselamatan Dinyahaktif 🔓');
           }}
           onClose={() => setShowLockModal(false)}
         />
+      )}
+
+      {/* Help Modal */}
+      {showHelpModal && (
+        <HelpModal onClose={() => setShowHelpModal(false)} />
       )}
 
       {/* Footer */}
@@ -269,7 +277,7 @@ export default function App() {
           Mmorkleyyy's Little Journal // Diary
         </div>
         <p style={{ margin: '0.25rem 0 0 0', opacity: 0.85 }}>
-          Local Database Persistent Storage • Chic Feminine High-Tech Interface
+          Local Database Persistent Storage • User-Friendly Experience
         </p>
       </footer>
     </div>
