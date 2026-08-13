@@ -47,7 +47,7 @@ export default function EntryCard({ entry, onView, onEdit, onDelete, onTogglePin
             </span>
 
             {mood && (
-              <span className="hud-badge purple">
+              <span className="hud-badge rose">
                 {mood}
               </span>
             )}

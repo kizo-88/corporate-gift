@@ -65,12 +65,12 @@ export default function EntryViewModal({ entry, onClose, onEdit, onDelete, onTog
             </span>
 
             {mood && (
-              <span className="hud-badge purple">
+              <span className="hud-badge rose">
                 {mood}
               </span>
             )}
 
-            <span className="hud-badge emerald" style={{ fontSize: '0.7rem' }}>
+            <span className="hud-badge lavender" style={{ fontSize: '0.7rem' }}>
               <FileText size={11} style={{ marginRight: '0.2rem' }} />
               {stats.words} WORDS // {stats.readTimeMinutes} MIN READ
             </span>
