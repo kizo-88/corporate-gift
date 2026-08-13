@@ -101,11 +101,6 @@ export default function StatsHeader({ entries, onOpenNewForm }) {
               {totalEntries} {totalEntries === 1 ? 'LOG RECORDED' : 'LOGS RECORDED'}
             </span>
           </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--amber-accent)' }}>
-            <Flame size={15} color="var(--amber-accent)" />
-            <span className="font-mono">ONLINE STREAK</span>
-          </div>
         </div>
 
         {/* Top Mood Telemetry Pills */}
