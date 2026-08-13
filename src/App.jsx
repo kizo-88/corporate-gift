@@ -266,7 +266,7 @@ export default function App() {
         fontFamily: 'var(--font-mono)'
       }}>
         <div className="font-heading" style={{ fontSize: '1.35rem', color: 'var(--text-bright)', fontWeight: 800 }}>
-          Mmorkleyyy's Little Journal // Feminine Neural Diary
+          Mmorkleyyy's Little Journal // Diary
         </div>
         <p style={{ margin: '0.25rem 0 0 0', opacity: 0.85 }}>
           Local Database Persistent Storage • Chic Feminine High-Tech Interface

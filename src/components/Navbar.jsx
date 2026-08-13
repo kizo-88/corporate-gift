@@ -78,7 +78,7 @@ export default function Navbar({
                 fontFamily: 'var(--font-mono)',
                 marginTop: '0.15rem'
               }}>
-                <span>FEMININE TECH DIARY</span>
+                <span>DIARY</span>
                 <span>•</span>
                 <span className="hud-badge rose" style={{ padding: '0.1rem 0.45rem', fontSize: '0.7rem' }}>
                   {entryCount} {entryCount === 1 ? 'LOG' : 'LOGS'}
