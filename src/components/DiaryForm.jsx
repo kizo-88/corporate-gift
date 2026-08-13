@@ -112,10 +112,10 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
                 fontFamily: 'var(--font-mono)',
                 borderColor: isMusicPlaying ? 'var(--rose-accent)' : 'var(--border-tech)'
               }}
-              title="Play Jennie - Less Than A Lover while writing"
+              title="Play Calm Pastels & Coffee Dreams while writing"
             >
               <Sparkles size={13} color="var(--rose-accent)" />
-              <span>{isMusicPlaying ? '▶ PLAYING JENNIE' : '🎵 JENNIE SONG'}</span>
+              <span>{isMusicPlaying ? '▶ PLAYING MUSIC' : '🌸 CALM MUSIC'}</span>
             </button>
           )}
 

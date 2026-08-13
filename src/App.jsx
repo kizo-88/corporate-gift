@@ -226,7 +226,7 @@ export default function App() {
               onPlayMusic={() => {
                 const nextState = !isPlayingMusic;
                 setIsPlayingMusic(nextState);
-                showToast(nextState ? 'Playing Jennie - Less Than A Lover 🎵' : 'Music Paused ⏸️');
+                showToast(nextState ? 'Playing Calm Pastels & Coffee Dreams 🌸🎵' : 'Music Paused ⏸️');
               }}
               isMusicPlaying={isPlayingMusic}
             />

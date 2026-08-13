@@ -4,27 +4,27 @@ import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Disc, ListMusic, 
 export const PLAYLIST = [
   {
     id: 1,
-    title: 'Less Than A Lover',
-    artist: 'Jennie',
+    title: 'Calm Pastels & Coffee Dreams',
+    artist: 'Lofi Sanctuary',
     coverColor: '#E88D9E',
     isFeatured: true,
-    url: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=less-than-a-lover-jennie.mp3'
+    url: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=calm-pastels-lofi.mp3'
   },
   {
     id: 2,
-    title: 'Number One Girl',
-    artist: 'Rosé',
+    title: 'Midnight Moonlight Whispers',
+    artist: 'Aesthetic Haven',
     coverColor: '#A093E2',
     isFeatured: false,
-    url: 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=number-one-girl-rose.mp3'
+    url: 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=midnight-whispers-piano.mp3'
   },
   {
     id: 3,
-    title: 'Handlebars',
-    artist: 'Jennie',
+    title: 'Gentle Rain & Quiet Thoughts',
+    artist: 'Serenade Chill',
     coverColor: '#48C9B0',
     isFeatured: false,
-    url: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=handlebars-jennie.mp3'
+    url: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=gentle-rain-chill.mp3'
   }
 ];
 
@@ -65,8 +65,8 @@ export default function MusicPlayer({ isPlaying, setIsPlaying }) {
     setIsPlaying(true);
   };
 
-  const playJennieTrack = () => {
-    setCurrentTrackIndex(0); // Track #1: Less Than A Lover - Jennie
+  const playCalmTrack = () => {
+    setCurrentTrackIndex(0); // Track #1: Calm Pastels & Coffee Dreams
     setIsPlaying(true);
   };
 
@@ -89,7 +89,7 @@ export default function MusicPlayer({ isPlaying, setIsPlaying }) {
         onEnded={handleNext}
       />
 
-      {/* Left: Track Info & Jennie Badge */}
+      {/* Left: Track Info & Featured Badge */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
         <div style={{
           width: '44px',
@@ -122,7 +122,7 @@ export default function MusicPlayer({ isPlaying, setIsPlaying }) {
             </span>
             {currentTrack.id === 1 && (
               <span className="hud-badge amber" style={{ fontSize: '0.65rem', padding: '0.05rem 0.35rem' }}>
-                ⭐ FAVORITE
+                🌸 RELAXING
               </span>
             )}
           </div>
@@ -136,7 +136,7 @@ export default function MusicPlayer({ isPlaying, setIsPlaying }) {
             alignItems: 'center',
             gap: '0.5rem'
           }}>
-            <span>LISTEN WHILE WRITING DIARY</span>
+            <span>CALM BACKGROUND MUSIC</span>
             {isPlaying ? (
               <span style={{ color: 'var(--rose-accent)', fontWeight: 700 }}>● PLAYING DIRECTLY</span>
             ) : (
@@ -146,7 +146,7 @@ export default function MusicPlayer({ isPlaying, setIsPlaying }) {
         </div>
       </div>
 
-      {/* Center: Quick Play Jennie & Audio Controls */}
+      {/* Center: Audio Controls & Equalizer */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
         {/* Equalizer Visualizer */}
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: '3px', height: '18px', width: '24px' }}>
@@ -180,7 +180,7 @@ export default function MusicPlayer({ isPlaying, setIsPlaying }) {
             justifyContent: 'center',
             boxShadow: isPlaying ? '0 0 15px var(--rose-glow)' : 'none'
           }}
-          title={isPlaying ? "Pause Music" : "Play Jennie - Less Than A Lover"}
+          title={isPlaying ? "Pause Music" : "Play Calm Pastels & Coffee Dreams"}
         >
           {isPlaying ? <Pause size={18} /> : <Play size={18} style={{ marginLeft: '2px' }} />}
         </button>
@@ -196,11 +196,11 @@ export default function MusicPlayer({ isPlaying, setIsPlaying }) {
         </button>
       </div>
 
-      {/* Right: Jennie Direct Button, Volume & Playlist */}
+      {/* Right: Quick Play Calm Music, Volume & Playlist */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        {/* Quick Jennie Track Button */}
+        {/* Quick Calm Track Button */}
         <button
-          onClick={playJennieTrack}
+          onClick={playCalmTrack}
           className="btn-secondary-tech"
           style={{
             padding: '0.4rem 0.75rem',
@@ -208,10 +208,10 @@ export default function MusicPlayer({ isPlaying, setIsPlaying }) {
             fontFamily: 'var(--font-mono)',
             borderColor: currentTrackIndex === 0 && isPlaying ? 'var(--rose-accent)' : 'var(--border-tech)'
           }}
-          title="Play Jennie - Less Than A Lover"
+          title="Play Calm Pastels & Coffee Dreams"
         >
           <Sparkles size={14} color="var(--rose-accent)" />
-          <span>Jennie - Less Than A Lover</span>
+          <span>🌸 Calm Pastels</span>
         </button>
 
         {/* Volume & Mute */}
@@ -266,7 +266,7 @@ export default function MusicPlayer({ isPlaying, setIsPlaying }) {
               zIndex: 60
             }}>
               <div className="font-mono" style={{ fontSize: '0.7rem', fontWeight: 700, padding: '0.25rem 0.5rem', color: 'var(--text-muted)' }}>
-                BACKGROUND PLAYLIST (3 TRACKS)
+                CALM PLAYLIST (3 TRACKS)
               </div>
               {PLAYLIST.map((track, idx) => (
                 <button
