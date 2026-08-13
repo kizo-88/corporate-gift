@@ -7,8 +7,8 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
   
   const [title, setTitle] = useState(initialData?.title || '');
   const [content, setContent] = useState(initialData?.content || '');
-  const [mood, setMood] = useState(initialData?.mood || '⚡ Focused');
-  const [category, setCategory] = useState(initialData?.category || 'Protocols');
+  const [mood, setMood] = useState(initialData?.mood || '🌸 Happy');
+  const [category, setCategory] = useState(initialData?.category || 'Personal');
   const [color, setColor] = useState(initialData?.color || 'rose');
   const [sticker, setSticker] = useState(initialData?.sticker || '🌸');
   const [useCustomDate, setUseCustomDate] = useState(false);
@@ -18,8 +18,8 @@ export default function DiaryForm({ initialData = null, onSave, onCancel, isModa
     if (initialData) {
       setTitle(initialData.title || '');
       setContent(initialData.content || '');
-      setMood(initialData.mood || '⚡ Focused');
-      setCategory(initialData.category || 'Protocols');
+      setMood(initialData.mood || '🌸 Happy');
+      setCategory(initialData.category || 'Personal');
       setColor(initialData.color || 'rose');
       setSticker(initialData.sticker || '🌸');
       setCreatedAt(initialData.createdAt || nowIso);

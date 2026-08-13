@@ -1,87 +1,86 @@
 // Local Storage Key
-const STORAGE_KEY = 'cipherlog_os_diary_entries_v2';
-const THEME_KEY = 'cipherlog_os_theme';
-const LOCK_KEY = 'cipherlog_os_pin';
+const STORAGE_KEY = 'mmorkleyyy_journal_entries_v3';
+const THEME_KEY = 'mmorkleyyy_journal_theme';
+const LOCK_KEY = 'mmorkleyyy_journal_pin';
 
-// High-Tech Default Sample Entries
+// Default Sample Entries
 export const DEFAULT_ENTRIES = [
   {
-    id: 'tech-entry-1',
-    title: 'Quantum Coffee & Morning Neural Sync ⚡',
-    content: `System status nominal. Started the morning session with black espresso and zero digital distractions. 
+    id: 'entry-1',
+    title: 'Morning Coffee & Peaceful Thoughts 🌸',
+    content: `There is something so peaceful about quiet morning hours. Enjoyed a warm cup of coffee by the window while watching the soft morning sunlight.
 
-Today's core protocols:
-1. Deep work block on project architecture.
-2. Maintain high energy flow & focus integrity.
-3. Review evening retrospective log.
-
-Remember: Consistency beats intensity. Keep building step by step.`,
+Today's goals:
+1. Go slow and focus on deep, meaningful work.
+2. Spend time outdoors for a 20-minute afternoon walk.
+3. Remember to celebrate small daily progress!`,
     createdAt: new Date(Date.now() - 3600000 * 2).toISOString(), // 2 hours ago
     updatedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
-    mood: '⚡ Focused',
-    category: 'Protocols',
-    color: 'cyan',
-    sticker: '⚡',
+    mood: '🌸 Happy',
+    category: 'Personal',
+    color: 'rose',
+    sticker: '🌸',
     isPinned: true,
   },
   {
-    id: 'tech-entry-2',
-    title: 'Late Night Code & Cyber Solitude 🌌',
-    content: `There is immense clarity in late night sessions when ambient noise drops to zero. 
-
-Calibrated the upcoming project roadmap and organized key thoughts into structured modules. Progress is steady, and local database sync is running smooth.`,
+    id: 'entry-2',
+    title: 'Quiet Reflections & Books 💭',
+    content: `Spent the evening reading by warm candlelight and organizing my thoughts for the upcoming week. Gratitude is the key to inner peace.`,
     createdAt: new Date(Date.now() - 86400000 * 1 - 3600000 * 4).toISOString(), // Yesterday
     updatedAt: new Date(Date.now() - 86400000 * 1 - 3600000 * 4).toISOString(),
-    mood: '🧠 Analytical',
-    category: 'Brain Dumps',
-    color: 'purple',
-    sticker: '🧠',
+    mood: '🌙 Reflective',
+    category: 'Reflections',
+    color: 'lavender',
+    sticker: '📖',
     isPinned: false,
   },
   {
-    id: 'tech-entry-3',
-    title: 'Daily Retrospective & Milestone Log 🛡️',
-    content: `Achieved 3 major milestone tasks ahead of schedule today! 
-
-Took a 30-minute evening walk under neon city lights to clear my mind. Balance between high-speed execution and quiet recovery is essential for long-term momentum.`,
+    id: 'entry-3',
+    title: 'Growth & Daily Progress 🌱',
+    content: `Achieved key milestones today! Remembering that balance between hard work and quiet recovery is essential for long-term happiness.`,
     createdAt: new Date(Date.now() - 86400000 * 3).toISOString(), // 3 days ago
     updatedAt: new Date(Date.now() - 86400000 * 3).toISOString(),
-    mood: '🛡️ Secure',
-    category: 'Personal Logs',
+    mood: '🔥 Motivated',
+    category: 'Growth',
     color: 'emerald',
-    sticker: '🛡️',
+    sticker: '🌱',
     isPinned: false,
   }
 ];
 
-// Tech Writing Prompts
+// Writing Prompts
 export const WRITING_PROMPTS = [
-  "System Audit: What was your biggest technical or personal win today?",
-  "Brain Dump: What complex problem is currently on your mind?",
-  "Protocol Check: What is one habit or workflow you want to optimize tomorrow?",
-  "Data Log: What inspired or energized you during today's work?",
-  "Retrospective: What mistake did you make today, and what is the patch/fix?",
-  "Future Vision: Where do you see your goals 90 days from now?"
+  "What made you smile or feel at peace today?",
+  "List 3 simple things you are genuinely grateful for right now.",
+  "What is one goal or dream you are working towards this week?",
+  "Describe a quiet moment that brought you joy recently.",
+  "What is a lesson you learned today that will help you grow tomorrow?"
 ];
 
-// Tech Categories
+// Updated Categories
 export const CATEGORIES = [
-  { id: 'Protocols', label: 'Protocols', color: 'cyan', icon: '⚡' },
-  { id: 'Brain Dumps', label: 'Brain Dumps', color: 'purple', icon: '🧠' },
-  { id: 'Personal Logs', label: 'Personal Logs', color: 'emerald', icon: '🛡️' },
-  { id: 'Ideas & Ops', label: 'Ideas & Ops', color: 'amber', icon: '🚀' },
-  { id: 'Cosmos', label: 'Cosmos & Dreams', color: 'pink', icon: '🌌' },
-  { id: 'Reflections', label: 'Reflections', color: 'cyan', icon: '🔮' }
+  { id: 'Personal', label: 'Personal', color: 'rose', icon: '📖' },
+  { id: 'Reflections', label: 'Reflections', color: 'lavender', icon: '💭' },
+  { id: 'Gratitude', label: 'Gratitude', color: 'amber', icon: '🙏' },
+  { id: 'Growth', label: 'Growth', color: 'emerald', icon: '🌱' },
+  { id: 'Work & Career', label: 'Work & Career', color: 'cyan', icon: '💼' },
+  { id: 'Relationships', label: 'Relationships', color: 'pink', icon: '❤️' },
+  { id: 'Travel & Memories', label: 'Travel & Memories', color: 'sky', icon: '✈️' },
+  { id: 'Goals & Dreams', label: 'Goals & Dreams', color: 'purple', icon: '🎯' }
 ];
 
-// Tech Mood Options
+// Updated Moods
 export const MOODS = [
-  { emoji: '⚡', label: 'Focused' },
-  { emoji: '🧠', label: 'Analytical' },
-  { emoji: '🛡️', label: 'Secure' },
-  { emoji: '🚀', label: 'Inspired' },
-  { emoji: '🧘', label: 'Calm' },
-  { emoji: '☕', label: 'Energized' }
+  { emoji: '🌸', label: 'Happy' },
+  { emoji: '😌', label: 'Calm' },
+  { emoji: '🥺', label: 'Grateful' },
+  { emoji: '😔', label: 'Sad' },
+  { emoji: '😤', label: 'Frustrated' },
+  { emoji: '🥱', label: 'Tired' },
+  { emoji: '🌙', label: 'Reflective' },
+  { emoji: '🔥', label: 'Motivated' },
+  { emoji: '😰', label: 'Anxious' },
+  { emoji: '🤍', label: 'Peaceful' }
 ];
 
 // Storage Helpers
@@ -109,7 +108,7 @@ export function saveEntries(entries) {
 
 // Theme storage
 export function loadSavedTheme() {
-  return localStorage.getItem(THEME_KEY) || 'obsidian';
+  return localStorage.getItem(THEME_KEY) || 'cream-rose';
 }
 
 export function saveTheme(theme) {
@@ -134,7 +133,6 @@ export function formatDateStamp(dateInput) {
   if (!dateInput) return '';
   const date = new Date(dateInput);
   
-  // High-Tech Format: "2026-08-13 • 09:38:12 AM [UTC+8]"
   const dateStr = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit', weekday: 'short' });
   const timeStr = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 
