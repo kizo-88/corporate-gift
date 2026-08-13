@@ -2,7 +2,7 @@ export const packagingOptions = [
   {
     id: "pkg-matte-black",
     name: "Luxury Matte Black Magnetic Box",
-    price: 18,
+    price: 45,
     maxVolumeUnits: 10,
     colorHex: "#18181b",
     borderHex: "#3f3f46",
@@ -13,7 +13,7 @@ export const packagingOptions = [
   {
     id: "pkg-emerald-velvet",
     name: "Royal Emerald Velvet Sleeve Box",
-    price: 24,
+    price: 60,
     maxVolumeUnits: 12,
     colorHex: "#064e3b",
     borderHex: "#10b981",
@@ -24,7 +24,7 @@ export const packagingOptions = [
   {
     id: "pkg-eco-kraft",
     name: "Sustainable FSC Eco-Kraft Box",
-    price: 12,
+    price: 30,
     maxVolumeUnits: 8,
     colorHex: "#78350f",
     borderHex: "#d97706",
@@ -35,7 +35,7 @@ export const packagingOptions = [
   {
     id: "pkg-wooden-chest",
     name: "Artisan Pine Wood Treasure Chest",
-    price: 35,
+    price: 90,
     maxVolumeUnits: 15,
     colorHex: "#451a03",
     borderHex: "#b45309",

@@ -26,7 +26,7 @@ function MainAppContent() {
 
         {/* Dynamic Tab Content Renderer */}
         <main>
-          {activeTab === "catalog" && <ProductCatalog />}
+          {(activeTab === "catalog" || activeTab === "products") && <ProductCatalog />}
           {activeTab === "builder" && <GiftBoxBuilder />}
           {activeTab === "estimator" && <BulkEstimator />}
           {activeTab === "branding" && <BrandingStudio />}

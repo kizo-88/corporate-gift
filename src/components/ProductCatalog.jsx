@@ -39,7 +39,7 @@ export default function ProductCatalog() {
   });
 
   return (
-    <section className="py-12 bg-slate-950 min-h-screen">
+    <section id="product-catalog-section" className="py-12 bg-slate-950 min-h-screen">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-slate-800 pb-8">

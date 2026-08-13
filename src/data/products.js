@@ -3,7 +3,7 @@ export const products = [
     id: "box-exec-welcome",
     name: "The C-Suite Executive Onboarding Box",
     category: "Executive Onboarding",
-    price: 185,
+    price: 450,
     rating: 4.9,
     reviewsCount: 128,
     moq: 5,
@@ -20,10 +20,10 @@ export const products = [
       "Heavyweight Anodized Brass Ballpoint Pen"
     ],
     tiers: [
-      { min: 1, max: 24, price: 185 },
-      { min: 25, max: 99, price: 165 },
-      { min: 100, max: 499, price: 145 },
-      { min: 500, max: 9999, price: 129 }
+      { min: 1, max: 24, price: 450 },
+      { min: 25, max: 99, price: 405 },
+      { min: 100, max: 499, price: 360 },
+      { min: 500, max: 9999, price: 315 }
     ],
     customizationOptions: ["Laser Engraved Logo", "Custom Foil Greeting Card", "Custom Box Lid Stamping"]
   },
@@ -31,7 +31,7 @@ export const products = [
     id: "box-tech-luminary",
     name: "The Tech Luminary Kit",
     category: "Tech & Innovation",
-    price: 240,
+    price: 580,
     rating: 5.0,
     reviewsCount: 94,
     moq: 10,
@@ -48,10 +48,10 @@ export const products = [
       "Cold-Brew Coffee Concentrate Duo"
     ],
     tiers: [
-      { min: 1, max: 24, price: 240 },
-      { min: 25, max: 99, price: 215 },
-      { min: 100, max: 499, price: 190 },
-      { min: 500, max: 9999, price: 168 }
+      { min: 1, max: 24, price: 580 },
+      { min: 25, max: 99, price: 522 },
+      { min: 100, max: 499, price: 464 },
+      { min: 500, max: 9999, price: 406 }
     ],
     customizationOptions: ["Custom UV Color Print", "LED Engraved Logo", "Branded Cable Wrap"]
   },
@@ -59,7 +59,7 @@ export const products = [
     id: "box-eco-sustainability",
     name: "Verdant Horizon Eco-Gift Set",
     category: "Eco-Friendly",
-    price: 110,
+    price: 280,
     rating: 4.8,
     reviewsCount: 210,
     moq: 15,
@@ -76,10 +76,10 @@ export const products = [
       "Seed Paper Notepad that Sprouts Wildflowers"
     ],
     tiers: [
-      { min: 1, max: 24, price: 110 },
-      { min: 25, max: 99, price: 98 },
-      { min: 100, max: 499, price: 86 },
-      { min: 500, max: 9999, price: 74 }
+      { min: 1, max: 24, price: 280 },
+      { min: 25, max: 99, price: 252 },
+      { min: 100, max: 499, price: 224 },
+      { min: 500, max: 9999, price: 196 }
     ],
     customizationOptions: ["Eco Ink Screen Print", "Laser Etched Bamboo Logo", "Plantable Recycled Card"]
   },
@@ -87,7 +87,7 @@ export const products = [
     id: "box-artisan-gourmet",
     name: "Global Artisan Sommelier & Treats",
     category: "Client Appreciation",
-    price: 160,
+    price: 390,
     rating: 4.9,
     reviewsCount: 176,
     moq: 5,
@@ -104,10 +104,10 @@ export const products = [
       "Wildflower Honey & Olive Oil Crackers"
     ],
     tiers: [
-      { min: 1, max: 24, price: 160 },
-      { min: 25, max: 99, price: 142 },
-      { min: 100, max: 499, price: 125 },
-      { min: 500, max: 9999, price: 109 }
+      { min: 1, max: 24, price: 390 },
+      { min: 25, max: 99, price: 351 },
+      { min: 100, max: 499, price: 312 },
+      { min: 500, max: 9999, price: 273 }
     ],
     customizationOptions: ["Custom Laser Burned Wood Board", "Monogrammed Wine Sleeve", "Wax Sealed Gift Tag"]
   },
@@ -115,7 +115,7 @@ export const products = [
     id: "box-wellness-retreat",
     name: "Executive Zenith Wellness & Spa",
     category: "Wellness & Care",
-    price: 135,
+    price: 320,
     rating: 4.9,
     reviewsCount: 88,
     moq: 10,
@@ -132,10 +132,10 @@ export const products = [
       "Ceremonial Grade Uji Matcha Powder (50g)"
     ],
     tiers: [
-      { min: 1, max: 24, price: 135 },
-      { min: 25, max: 99, price: 120 },
-      { min: 100, max: 499, price: 105 },
-      { min: 500, max: 9999, price: 89 }
+      { min: 1, max: 24, price: 320 },
+      { min: 25, max: 99, price: 288 },
+      { min: 100, max: 499, price: 256 },
+      { min: 500, max: 9999, price: 224 }
     ],
     customizationOptions: ["Custom Candle Label", "Embroidered Silk Pouch", "Personalized Wellness Journal"]
   },
@@ -143,7 +143,7 @@ export const products = [
     id: "box-holiday-gala",
     name: "The Apex Annual Holiday Gala Hamper",
     category: "Holiday & Milestones",
-    price: 295,
+    price: 680,
     rating: 5.0,
     reviewsCount: 312,
     moq: 5,
@@ -160,10 +160,10 @@ export const products = [
       "Handmade Brass Snowflake Ornament"
     ],
     tiers: [
-      { min: 1, max: 24, price: 295 },
-      { min: 25, max: 99, price: 260 },
-      { min: 100, max: 499, price: 230 },
-      { min: 500, max: 9999, price: 199 }
+      { min: 1, max: 24, price: 680 },
+      { min: 25, max: 99, price: 612 },
+      { min: 100, max: 499, price: 544 },
+      { min: 500, max: 9999, price: 476 }
     ],
     customizationOptions: ["Engraved Trunk Brass Plate", "Monogram Flutes", "Custom Ribbon & Wax Seal"]
   }

@@ -25,9 +25,13 @@ export default function QuoteModal() {
     showNotification
   } = useGiftContext();
 
-  const [companyName, setCompanyName] = useState("Acme Global Technologies");
-  const [contactEmail, setContactEmail] = useState("procurement@acme.com");
-  const [deliveryDate, setDeliveryDate] = useState("2026-09-15");
+  const [fullName, setFullName] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
+  const [orderQuantity, setOrderQuantity] = useState("100");
+  const [budgetRange, setBudgetRange] = useState("RM 5,000 - RM 15,000");
+  const [customMessage, setCustomMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   if (!isQuoteModalOpen) return null;
@@ -47,7 +51,7 @@ export default function QuoteModal() {
       spread: 70,
       origin: { y: 0.6 }
     });
-    showNotification("RFQ Quote successfully generated and dispatched to your procurement team!");
+    showNotification("RFQ Quote successfully generated and dispatched!");
   };
 
   const handlePrint = () => {
@@ -55,7 +59,7 @@ export default function QuoteModal() {
   };
 
   return (
-    <div className="modal-backdrop animate-fade-in">
+    <div className="modal-backdrop animate-fade-in z-50">
       <div className="glass-panel-gold max-w-3xl w-full p-6 md:p-8 rounded-3xl relative overflow-hidden space-y-6 max-h-[90vh] overflow-y-auto">
         {/* Close Button */}
         <button
@@ -74,20 +78,34 @@ export default function QuoteModal() {
             <div className="border-b border-amber-500/20 pb-4">
               <div className="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider mb-1">
                 <FileText className="w-4 h-4" />
-                <span>Formal Enterprise RFQ Generation</span>
+                <span>Formal Corporate RFQ Request</span>
               </div>
               <h2 className="text-2xl font-extrabold text-slate-100">
-                Lock Price & Request Official Proposal
+                Request a Custom Corporate Quote
               </h2>
               <p className="text-xs text-slate-400 mt-1">
-                Provide procurement contact details to receive a binding 30-day quote with tax exemption & multi-address shipping schedules.
+                Fill in your company details below to receive a formal 30-day locked pricing quote with sample mockups.
               </p>
             </div>
 
             <form onSubmit={handleSubmitQuote} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Full Name */}
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-300">Company Name</label>
+                  <label className="text-xs font-bold text-slate-300">Your Full Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className="custom-input text-xs"
+                    placeholder="e.g. Sarah Ahmad"
+                  />
+                </div>
+
+                {/* Company Name */}
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-300">Company / Organization *</label>
                   <div className="relative">
                     <Building className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
                     <input
@@ -96,13 +114,14 @@ export default function QuoteModal() {
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
                       className="custom-input pl-9 text-xs"
-                      placeholder="Enterprise Org Name"
+                      placeholder="e.g. Axiata Digital"
                     />
                   </div>
                 </div>
 
+                {/* Contact Email */}
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-300">Procurement Contact Email</label>
+                  <label className="text-xs font-bold text-slate-300">Work Email *</label>
                   <div className="relative">
                     <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
                     <input
@@ -111,62 +130,101 @@ export default function QuoteModal() {
                       value={contactEmail}
                       onChange={(e) => setContactEmail(e.target.value)}
                       className="custom-input pl-9 text-xs"
-                      placeholder="work.email@company.com"
+                      placeholder="sarah@company.com.my"
                     />
                   </div>
                 </div>
-              </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-300">Target Delivery Date</label>
-                <div className="relative">
-                  <Calendar className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+                {/* Contact Phone */}
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-300">Phone Number *</label>
                   <input
-                    type="date"
+                    type="tel"
                     required
-                    value={deliveryDate}
-                    onChange={(e) => setDeliveryDate(e.target.value)}
-                    className="custom-input pl-9 text-xs"
+                    value={contactPhone}
+                    onChange={(e) => setContactPhone(e.target.value)}
+                    className="custom-input text-xs"
+                    placeholder="+60 12-345 6789"
                   />
                 </div>
-              </div>
 
-              {/* Items Summary Table */}
-              <div className="pt-2">
-                <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block mb-2">
-                  Quote Summary ({cart.length} Line Items)
-                </span>
-                <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2 text-xs">
-                  {cart.map((item) => (
-                    <div key={item.cartId} className="flex justify-between items-center text-slate-300">
-                      <div>
-                        <span className="font-semibold text-slate-100">{item.name}</span>
-                        <span className="text-slate-500 ml-2">({item.quantity} units)</span>
-                      </div>
-                      <span className="font-bold text-amber-400">
-                        {formatPrice((item.unitPrice || item.price) * item.quantity)}
-                      </span>
-                    </div>
-                  ))}
-                  {cart.length === 0 && (
-                    <div className="text-slate-500 italic">No cart items. Showing default bulk estimate.</div>
-                  )}
+                {/* Quantity */}
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-300">Estimated Quantity (Units) *</label>
+                  <input
+                    type="number"
+                    required
+                    min="5"
+                    value={orderQuantity}
+                    onChange={(e) => setOrderQuantity(e.target.value)}
+                    className="custom-input text-xs"
+                    placeholder="e.g. 100"
+                  />
+                </div>
 
-                  <div className="pt-3 border-t border-slate-800 flex justify-between items-center text-sm font-extrabold">
-                    <span className="text-slate-200">Estimated Total Expenditure:</span>
-                    <span className="text-amber-400 text-lg font-heading">
-                      {formatPrice(totalAmount > 0 ? totalAmount : 14500)}
-                    </span>
-                  </div>
+                {/* Budget */}
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-300">Estimated Total Budget *</label>
+                  <select
+                    value={budgetRange}
+                    onChange={(e) => setBudgetRange(e.target.value)}
+                    className="custom-input text-xs bg-slate-900"
+                  >
+                    <option value="RM 2,000 - RM 5,000">RM 2,000 - RM 5,000</option>
+                    <option value="RM 5,000 - RM 15,000">RM 5,000 - RM 15,000</option>
+                    <option value="RM 15,000 - RM 30,000">RM 15,000 - RM 30,000</option>
+                    <option value="RM 30,000 - RM 50,000+">RM 30,000 - RM 50,000+</option>
+                  </select>
                 </div>
               </div>
 
+              {/* Message */}
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-300">Message / Special Requirements</label>
+                <textarea
+                  rows={3}
+                  value={customMessage}
+                  onChange={(e) => setCustomMessage(e.target.value)}
+                  className="custom-input text-xs leading-relaxed"
+                  placeholder="Tell us about your event, delivery date, custom logo requests, or preferred gift items..."
+                />
+              </div>
+
+              {/* Items Summary Table if Cart Exists */}
+              {cart.length > 0 && (
+                <div className="pt-2">
+                  <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block mb-2">
+                    Attached Cart Items ({cart.length} items)
+                  </span>
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2 text-xs">
+                    {cart.map((item) => (
+                      <div key={item.cartId} className="flex justify-between items-center text-slate-300">
+                        <div>
+                          <span className="font-semibold text-slate-100">{item.name}</span>
+                          <span className="text-slate-500 ml-2">({item.quantity} units)</span>
+                        </div>
+                        <span className="font-bold text-amber-400">
+                          {formatPrice((item.unitPrice || item.price) * item.quantity)}
+                        </span>
+                      </div>
+                    ))}
+                    <div className="pt-2 border-t border-slate-800 flex justify-between items-center text-xs font-extrabold">
+                      <span className="text-slate-200">Cart Total Estimate:</span>
+                      <span className="text-amber-400 text-sm font-heading">
+                        {formatPrice(totalAmount)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Submit Button */}
               <button
                 type="submit"
                 className="w-full btn-primary text-xs py-3.5 justify-center shadow-xl shadow-amber-500/30"
               >
                 <Send className="w-4 h-4 text-slate-950" />
-                <span>Submit & Download Official RFQ Proposal</span>
+                <span>Submit Quote Request</span>
               </button>
             </form>
           </div>

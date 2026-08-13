@@ -3,20 +3,20 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const GiftContext = createContext();
 
 export const currencySymbols = {
+  MYR: "RM",
   USD: "$",
-  EUR: "€",
-  GBP: "£"
+  SGD: "S$"
 };
 
 export const currencyRates = {
-  USD: 1.0,
-  EUR: 0.92,
-  GBP: 0.79
+  MYR: 1.0,
+  USD: 0.22,
+  SGD: 0.30
 };
 
 export const GiftProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
-  const [currency, setCurrency] = useState("USD");
+  const [currency, setCurrency] = useState("MYR");
   const [logoFile, setLogoFile] = useState(null); // { name, url }
   const [savedQuotes, setSavedQuotes] = useState([]);
   
@@ -35,11 +35,12 @@ export const GiftProvider = ({ children }) => {
     }, 3500);
   };
 
-  const formatPrice = (usdAmount) => {
+  const formatPrice = (amount) => {
+    if (typeof amount !== "number" || isNaN(amount)) return "RM 0";
+    const symbol = currencySymbols[currency] || "RM";
     const rate = currencyRates[currency] || 1.0;
-    const symbol = currencySymbols[currency] || "$";
-    const converted = Math.round(usdAmount * rate);
-    return `${symbol}${converted.toLocaleString()}`;
+    const converted = Math.round(amount * rate);
+    return `${symbol} ${converted.toLocaleString()}`;
   };
 
   const addToCart = (item) => {

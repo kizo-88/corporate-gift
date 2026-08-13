@@ -32,12 +32,12 @@ export default function Navbar() {
   const totalCartItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
 
   const navLinks = [
-    { id: "catalog", label: "Gift Catalog", icon: ShoppingBag },
-    { id: "builder", label: "Build-a-Box Studio", icon: Sparkles, badge: "Interactive" },
-    { id: "estimator", label: "Bulk Estimator", icon: Sliders },
-    { id: "branding", label: "Branding Studio", icon: Layers },
-    { id: "portal", label: "Recipient Portal", icon: Users },
-    { id: "cases", label: "Client Stories", icon: Award }
+    { id: "catalog", label: "Home & Catalog", icon: ShoppingBag },
+    { id: "products", label: "Products", icon: ShoppingBag },
+    { id: "builder", label: "Build a Gift Box", icon: Sparkles, badge: "Custom" },
+    { id: "estimator", label: "Bulk Orders", icon: Sliders },
+    { id: "branding", label: "Branding", icon: Layers },
+    { id: "cases", label: "Testimonials", icon: Award }
   ];
 
   return (
