@@ -70,7 +70,7 @@ export default function Navbar({
                 fontFamily: 'var(--font-mono)',
                 marginTop: '0.15rem'
               }}>
-                <span>DIARY</span>
+                <span>MY LITTLE JOURNAL</span>
                 <span>•</span>
                 <span className="hud-badge rose" style={{ padding: '0.1rem 0.45rem', fontSize: '0.7rem' }}>
                   {entryCount} {entryCount === 1 ? 'ENTRY' : 'ENTRIES'}

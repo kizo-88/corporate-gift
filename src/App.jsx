@@ -281,7 +281,7 @@ export default function App() {
         fontFamily: 'var(--font-mono)'
       }}>
         <div className="font-heading" style={{ fontSize: '1.35rem', color: 'var(--text-bright)', fontWeight: 800 }}>
-          Mmorkleyyy's Little Journal // Diary
+          Mmorkleyyy's Little Journal // Personal Journal
         </div>
         <p style={{ margin: '0.35rem 0 0 0', opacity: 0.9, fontSize: '0.85rem' }}>
           당신의 소중한 순간들을 기록하는 곳 ✨ • 오늘도 당신의 꿈을 응원합니다! 🌸
