@@ -1,55 +1,46 @@
 /* ==========================================================================
-   CIPHERLOG OS - FUTURISTIC TECH DIARY DESIGN SYSTEM & CSS
-   Cyber Dark Glassmorphism, Neon Glow Accents & Futuristic Typography
+   CIPHERLOG OS - FEMININE HIGH-TECH DESIGN SYSTEM (CREAM LIGHT & ROSE DARK)
+   Chic High-Tech Glassmorphism, Rose Gold / Lavender Neon & Cream Backgrounds
    ========================================================================== */
 
-/* Google Fonts:
-   - Headings: 'Space Grotesk', 'Outfit', sans-serif
-   - Monospace / Tech Data: 'JetBrains Mono', monospace
-   - Body Text: 'Inter', sans-serif
-*/
-
 :root {
-  /* Default Cyber Obsidian Theme */
-  --bg-cyber-base: #0B0E17;
-  --bg-cyber-card: rgba(18, 24, 38, 0.75);
-  --bg-cyber-card-hover: rgba(26, 34, 54, 0.85);
-  --bg-cyber-subtle: rgba(255, 255, 255, 0.04);
+  /* Default Theme: Feminine Cream Tech (Light Mode) */
+  --bg-cyber-base: #FAF6F0;
+  --bg-cyber-card: rgba(255, 253, 249, 0.88);
+  --bg-cyber-card-hover: #FFFFFF;
+  --bg-cyber-subtle: rgba(235, 215, 220, 0.35);
   
-  --text-bright: #F8FAFC;
-  --text-main: #CBD5E1;
-  --text-muted: #64748B;
+  --text-bright: #2E2328;
+  --text-main: #5C4B53;
+  --text-muted: #96838C;
   
-  /* Cyber Neon Palette */
-  --neon-cyan: #00F2FE;
-  --neon-cyan-glow: rgba(0, 242, 254, 0.25);
+  /* Feminine Tech Palette */
+  --rose-accent: #E88D9E;
+  --rose-glow: rgba(232, 141, 158, 0.25);
   
-  --neon-purple: #A855F7;
-  --neon-purple-glow: rgba(168, 85, 247, 0.25);
+  --lavender-accent: #A093E2;
+  --lavender-glow: rgba(160, 147, 226, 0.25);
   
-  --neon-emerald: #10B981;
-  --neon-emerald-glow: rgba(16, 185, 129, 0.25);
+  --mint-accent: #48C9B0;
+  --mint-glow: rgba(72, 201, 176, 0.25);
   
-  --neon-amber: #F59E0B;
-  --neon-amber-glow: rgba(245, 158, 11, 0.25);
-  
-  --neon-pink: #EC4899;
-  --neon-pink-glow: rgba(236, 72, 153, 0.25);
+  --amber-accent: #E5A967;
+  --amber-glow: rgba(229, 169, 103, 0.25);
 
-  --primary-accent: #00F2FE;
-  --primary-accent-hover: #38BDF8;
-  --primary-glow: rgba(0, 242, 254, 0.35);
+  --primary-accent: #E88D9E;
+  --primary-accent-hover: #D47587;
+  --primary-glow: rgba(232, 141, 158, 0.3);
   
-  --border-tech: rgba(255, 255, 255, 0.08);
-  --border-tech-glow: rgba(0, 242, 254, 0.3);
+  --border-tech: rgba(225, 195, 205, 0.5);
+  --border-tech-glow: rgba(232, 141, 158, 0.5);
   
-  --shadow-tech-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
-  --shadow-tech-md: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 242, 254, 0.1);
-  --shadow-tech-lg: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 242, 254, 0.2);
+  --shadow-tech-sm: 0 4px 12px rgba(90, 60, 70, 0.04);
+  --shadow-tech-md: 0 8px 24px rgba(90, 60, 70, 0.08), 0 0 15px rgba(232, 141, 158, 0.12);
+  --shadow-tech-lg: 0 16px 40px rgba(90, 60, 70, 0.12), 0 0 30px rgba(232, 141, 158, 0.2);
   
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
   --radius-full: 9999px;
 
   /* Typography */
@@ -57,53 +48,67 @@
   --font-mono: 'JetBrains Mono', monospace;
   --font-body: 'Inter', sans-serif;
   
-  --transition-fast: 0.15s ease;
+  --transition-fast: 0.18s ease;
   --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* High-Tech Theme variations */
-[data-theme="matrix"] {
-  --bg-cyber-base: #05130B;
-  --bg-cyber-card: rgba(12, 32, 20, 0.75);
-  --bg-cyber-card-hover: rgba(18, 48, 30, 0.85);
-  --text-bright: #F0FDF4;
-  --text-main: #86EFAC;
-  --text-muted: #4ADE80;
-  --primary-accent: #10B981;
-  --primary-accent-hover: #34D399;
-  --primary-glow: rgba(16, 185, 129, 0.4);
-  --border-tech: rgba(16, 185, 129, 0.2);
-  --border-tech-glow: rgba(16, 185, 129, 0.5);
+/* Dark Mode Theme: Midnight Rose Cyber */
+[data-theme="dark"],
+[data-theme="midnight-rose"] {
+  --bg-cyber-base: #140E17;
+  --bg-cyber-card: rgba(28, 20, 33, 0.82);
+  --bg-cyber-card-hover: rgba(38, 27, 45, 0.9);
+  --bg-cyber-subtle: rgba(255, 255, 255, 0.06);
+  
+  --text-bright: #FDF4F7;
+  --text-main: #E2D3DB;
+  --text-muted: #8E7A86;
+  
+  --rose-accent: #FF9EAE;
+  --rose-glow: rgba(255, 158, 174, 0.3);
+  
+  --lavender-accent: #C4B8FF;
+  --lavender-glow: rgba(196, 184, 255, 0.3);
+  
+  --primary-accent: #FF9EAE;
+  --primary-accent-hover: #E88798;
+  --primary-glow: rgba(255, 158, 174, 0.35);
+  
+  --border-tech: rgba(255, 255, 255, 0.1);
+  --border-tech-glow: rgba(255, 158, 174, 0.4);
+  
+  --shadow-tech-md: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 158, 174, 0.15);
 }
 
-[data-theme="quantum-light"] {
-  --bg-cyber-base: #F8FAFC;
-  --bg-cyber-card: rgba(255, 255, 255, 0.85);
+/* Theme variations */
+[data-theme="matcha-cream"] {
+  --bg-cyber-base: #F4F7F4;
+  --bg-cyber-card: rgba(250, 252, 250, 0.88);
   --bg-cyber-card-hover: #FFFFFF;
-  --bg-cyber-subtle: rgba(15, 23, 42, 0.04);
-  --text-bright: #0F172A;
-  --text-main: #334155;
-  --text-muted: #64748B;
-  --primary-accent: #2563EB;
-  --primary-accent-hover: #1D4ED8;
-  --primary-glow: rgba(37, 99, 235, 0.2);
-  --border-tech: rgba(15, 23, 42, 0.08);
-  --border-tech-glow: rgba(37, 99, 235, 0.3);
-  --shadow-tech-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --bg-cyber-subtle: rgba(210, 230, 215, 0.4);
+  --text-bright: #1E2D22;
+  --text-main: #425747;
+  --text-muted: #738A78;
+  --primary-accent: #52B788;
+  --primary-accent-hover: #409A71;
+  --primary-glow: rgba(82, 183, 136, 0.3);
+  --border-tech: rgba(180, 215, 190, 0.5);
+  --border-tech-glow: rgba(82, 183, 136, 0.5);
 }
 
-[data-theme="solar-flare"] {
-  --bg-cyber-base: #140D07;
-  --bg-cyber-card: rgba(34, 21, 12, 0.75);
-  --bg-cyber-card-hover: rgba(50, 31, 18, 0.85);
-  --text-bright: #FFF7ED;
-  --text-main: #FDBA74;
-  --text-muted: #9A3412;
-  --primary-accent: #F97316;
-  --primary-accent-hover: #FB923C;
-  --primary-glow: rgba(249, 115, 22, 0.35);
-  --border-tech: rgba(249, 115, 22, 0.2);
-  --border-tech-glow: rgba(249, 115, 22, 0.5);
+[data-theme="lavender-cream"] {
+  --bg-cyber-base: #F7F5FC;
+  --bg-cyber-card: rgba(253, 251, 255, 0.88);
+  --bg-cyber-card-hover: #FFFFFF;
+  --bg-cyber-subtle: rgba(220, 210, 240, 0.4);
+  --text-bright: #2A2338;
+  --text-main: #544968;
+  --text-muted: #85789A;
+  --primary-accent: #9A8C9D;
+  --primary-accent-hover: #837586;
+  --primary-glow: rgba(154, 140, 157, 0.3);
+  --border-tech: rgba(210, 195, 225, 0.5);
+  --border-tech-glow: rgba(154, 140, 157, 0.5);
 }
 
 /* Reset & Base Setup */
@@ -126,18 +131,19 @@ body {
   font-family: var(--font-body);
   line-height: 1.6;
   min-height: 100vh;
-  /* Cyber Grid & Glowing Spotlight Pattern */
+  /* Feminine Tech Grid & Rose Gold Glow Spotlight */
   background-image: 
-    radial-gradient(circle at 50% 0%, rgba(0, 242, 254, 0.12) 0%, transparent 60%),
-    radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+    radial-gradient(circle at 50% 0%, var(--rose-glow) 0%, transparent 55%),
+    radial-gradient(circle at 90% 90%, var(--lavender-glow) 0%, transparent 45%),
+    linear-gradient(to right, rgba(230, 190, 200, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(230, 190, 200, 0.15) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
   background-attachment: fixed;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Glassmorphism Utilities */
+/* Glassmorphism Panels */
 .glass-panel {
   background: var(--bg-cyber-card);
   backdrop-filter: blur(16px);
@@ -151,7 +157,7 @@ body {
 }
 .glass-panel-hover:hover {
   border-color: var(--border-tech-glow);
-  box-shadow: var(--shadow-tech-md), 0 0 20px var(--primary-glow);
+  box-shadow: var(--shadow-tech-md), 0 0 22px var(--primary-glow);
   background: var(--bg-cyber-card-hover);
 }
 
@@ -195,57 +201,51 @@ button, input, textarea, select {
   font-size: inherit;
 }
 
-/* High-Tech HUD Badges */
+/* High-Tech HUD Badges (Feminine Chic) */
 .hud-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
   padding: 0.25rem 0.65rem;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-full);
   font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   border: 1px solid transparent;
   transition: var(--transition-fast);
 }
 
-.hud-badge.cyan {
-  background-color: var(--neon-cyan-glow);
-  color: var(--neon-cyan);
-  border-color: rgba(0, 242, 254, 0.3);
+.hud-badge.rose, .hud-badge.cyan {
+  background-color: var(--rose-glow);
+  color: var(--rose-accent);
+  border-color: rgba(232, 141, 158, 0.4);
 }
 
-.hud-badge.purple {
-  background-color: var(--neon-purple-glow);
-  color: var(--neon-purple);
-  border-color: rgba(168, 85, 247, 0.3);
+.hud-badge.purple, .hud-badge.lavender {
+  background-color: var(--lavender-glow);
+  color: var(--lavender-accent);
+  border-color: rgba(160, 147, 226, 0.4);
 }
 
-.hud-badge.emerald {
-  background-color: var(--neon-emerald-glow);
-  color: var(--neon-emerald);
-  border-color: rgba(16, 185, 129, 0.3);
+.hud-badge.emerald, .hud-badge.mint {
+  background-color: var(--mint-glow);
+  color: var(--mint-accent);
+  border-color: rgba(72, 201, 176, 0.4);
 }
 
 .hud-badge.amber {
-  background-color: var(--neon-amber-glow);
-  color: var(--neon-amber);
-  border-color: rgba(245, 158, 11, 0.3);
+  background-color: var(--amber-glow);
+  color: var(--amber-accent);
+  border-color: rgba(229, 169, 103, 0.4);
 }
 
-.hud-badge.pink {
-  background-color: var(--neon-pink-glow);
-  color: var(--neon-pink);
-  border-color: rgba(236, 72, 153, 0.3);
-}
-
-/* High-Tech Inputs & Buttons */
+/* Inputs & Buttons */
 .input-tech {
   width: 100%;
   padding: 0.75rem 1rem;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--bg-cyber-subtle);
   border: 1px solid var(--border-tech);
   border-radius: var(--radius-md);
   color: var(--text-bright);
@@ -257,7 +257,7 @@ button, input, textarea, select {
 .input-tech:focus {
   border-color: var(--primary-accent);
   box-shadow: 0 0 0 3px var(--primary-glow), 0 0 15px var(--primary-glow);
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--bg-cyber-card-hover);
 }
 
 .btn-primary-tech {
@@ -266,10 +266,10 @@ button, input, textarea, select {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.7rem 1.4rem;
-  background: linear-gradient(135deg, var(--primary-accent), var(--neon-purple));
+  background: linear-gradient(135deg, var(--rose-accent), var(--lavender-accent));
   color: #FFFFFF;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   font-family: var(--font-heading);
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -281,7 +281,7 @@ button, input, textarea, select {
 .btn-primary-tech:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 25px var(--primary-glow);
-  filter: brightness(1.1);
+  filter: brightness(1.08);
 }
 
 .btn-secondary-tech {
@@ -293,7 +293,7 @@ button, input, textarea, select {
   background: var(--bg-cyber-subtle);
   color: var(--text-bright);
   border: 1px solid var(--border-tech);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   font-family: var(--font-body);
   font-weight: 600;
   cursor: pointer;
@@ -301,7 +301,7 @@ button, input, textarea, select {
 }
 
 .btn-secondary-tech:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(232, 141, 158, 0.12);
   border-color: var(--border-tech-glow);
 }
 
@@ -323,20 +323,20 @@ button, input, textarea, select {
   color: var(--text-bright);
 }
 
-/* Pulse Dot Online Indicator */
+/* Pulse Dot Indicator */
 .pulse-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: var(--neon-emerald);
-  box-shadow: 0 0 8px var(--neon-emerald);
+  background-color: var(--rose-accent);
+  box-shadow: 0 0 8px var(--rose-accent);
   animation: pulseGlow 2s infinite;
 }
 
 @keyframes pulseGlow {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(232, 141, 158, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(232, 141, 158, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(232, 141, 158, 0); }
 }
 
 /* App Container Layout */
@@ -381,7 +381,7 @@ button, input, textarea, select {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-accent);
+  background: var(--rose-accent);
 }
 
 /* Responsive adjustments */

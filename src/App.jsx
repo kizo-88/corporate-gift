@@ -14,7 +14,7 @@ import {
   loadSavedPin
 } from './utils/storage';
 
-import { Terminal, Cpu, ShieldCheck, Activity } from 'lucide-react';
+import { Sparkles, Heart } from 'lucide-react';
 
 export default function App() {
   const [entries, setEntries] = useState(() => loadEntries());
@@ -29,14 +29,25 @@ export default function App() {
   const [showLockModal, setShowLockModal] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
+  // Save entries to LocalStorage
   useEffect(() => {
     saveEntries(entries);
   }, [entries]);
 
+  // Apply Theme Attribute to DOM
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     saveTheme(theme);
   }, [theme]);
+
+  // Dark mode status check
+  const isDarkMode = theme === 'midnight-rose';
+
+  const handleToggleDarkMode = () => {
+    const nextTheme = isDarkMode ? 'cream-rose' : 'midnight-rose';
+    setTheme(nextTheme);
+    showToast(nextTheme === 'midnight-rose' ? 'Midnight Dark Mode activated 🌙' : 'Cream Light Mode activated ☀️');
+  };
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -59,14 +70,14 @@ export default function App() {
 
     setShowFormModal(false);
     setEditingEntry(null);
-    showToast(entryData.id.includes('log-') ? 'Log saved to neural DB ⚡' : 'Log updated successfully 🛡️');
+    showToast(entryData.id.includes('log-') ? 'Log saved to diary! 🌸' : 'Log updated! 🌿');
   };
 
   const handleDeleteEntry = (entryId) => {
     if (window.confirm('Are you sure you want to delete this diary log entry? This operation is permanent.')) {
       setEntries(prev => prev.filter(e => e.id !== entryId));
       if (viewingEntry?.id === entryId) setViewingEntry(null);
-      showToast('Log entry purged 🗑️');
+      showToast('Log entry deleted 🗑️');
     }
   };
 
@@ -116,6 +127,8 @@ export default function App() {
         }}
         currentTheme={theme}
         onSelectTheme={(t) => setTheme(t)}
+        isDarkMode={isDarkMode}
+        onToggleDarkMode={handleToggleDarkMode}
         isLocked={Boolean(savedPin)}
         onToggleLock={() => setShowLockModal(true)}
         onExportData={handleExportData}
@@ -144,7 +157,7 @@ export default function App() {
             color: 'var(--text-bright)',
             zIndex: 1000
           }}>
-            <Terminal size={15} color="var(--neon-cyan)" />
+            <Sparkles size={15} color="var(--rose-accent)" />
             <span>{toastMessage}</span>
           </div>
         )}
@@ -182,7 +195,7 @@ export default function App() {
         <div style={{
           position: 'fixed',
           inset: 0,
-          backgroundColor: 'rgba(5, 8, 15, 0.75)',
+          backgroundColor: 'rgba(20, 14, 23, 0.65)',
           backdropFilter: 'blur(8px)',
           zIndex: 90,
           display: 'flex',
@@ -234,7 +247,7 @@ export default function App() {
         />
       )}
 
-      {/* High-Tech Footer */}
+      {/* Footer */}
       <footer className="glass-panel" style={{
         borderRadius: 0,
         borderLeft: 0,
@@ -247,10 +260,10 @@ export default function App() {
         fontFamily: 'var(--font-mono)'
       }}>
         <div className="font-heading" style={{ fontSize: '1.35rem', color: 'var(--text-bright)', fontWeight: 800 }}>
-          CipherLog OS // Neural Diary Dashboard
+          CipherLog OS // Feminine Neural Diary Dashboard
         </div>
-        <p style={{ margin: '0.25rem 0 0 0', opacity: 0.8 }}>
-          AES-256 Browser Encryption Enabled • Local Database Persistent Storage
+        <p style={{ margin: '0.25rem 0 0 0', opacity: 0.85 }}>
+          Local Database Persistent Storage • Chic Feminine High-Tech Interface
         </p>
       </footer>
     </div>

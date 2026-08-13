@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Terminal, Plus, Shield, Lock, Unlock, Download, Cpu, Search, Activity } from 'lucide-react';
+import { Terminal, Plus, Lock, Unlock, Download, Sun, Moon, Palette, Search, Sparkles } from 'lucide-react';
 
 export default function Navbar({
   entryCount,
   onOpenNewForm,
   currentTheme,
   onSelectTheme,
+  isDarkMode,
+  onToggleDarkMode,
   isLocked,
   onToggleLock,
   onExportData,
@@ -15,10 +17,10 @@ export default function Navbar({
   const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
 
   const themes = [
-    { id: 'obsidian', name: 'Cyber Obsidian', color: '#0B0E17', accent: '#00F2FE' },
-    { id: 'matrix', name: 'Matrix Terminal', color: '#05130B', accent: '#10B981' },
-    { id: 'quantum-light', name: 'Quantum Glass', color: '#F8FAFC', accent: '#2563EB' },
-    { id: 'solar-flare', name: 'Solar Flare', color: '#140D07', accent: '#F97316' }
+    { id: 'cream-rose', name: 'Cream Rose (Light)', color: '#FAF6F0', accent: '#E88D9E' },
+    { id: 'midnight-rose', name: 'Midnight Rose (Dark)', color: '#140E17', accent: '#FF9EAE' },
+    { id: 'matcha-cream', name: 'Matcha Cream', color: '#F4F7F4', accent: '#52B788' },
+    { id: 'lavender-cream', name: 'Lavender Quartz', color: '#F7F5FC', accent: '#A093E2' }
   ];
 
   return (
@@ -36,20 +38,20 @@ export default function Navbar({
           flexWrap: 'wrap',
           gap: '1rem'
         }}>
-          {/* Logo & Title */}
+          {/* Logo & Branding */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div style={{
               width: '42px',
               height: '42px',
               borderRadius: '12px',
-              background: 'linear-gradient(135deg, var(--primary-accent), var(--neon-purple))',
+              background: 'linear-gradient(135deg, var(--rose-accent), var(--lavender-accent))',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#FFFFFF',
-              boxShadow: '0 0 15px var(--primary-glow)'
+              boxShadow: '0 0 15px var(--rose-glow)'
             }}>
-              <Terminal size={22} />
+              <Sparkles size={22} />
             </div>
 
             <div>
@@ -76,9 +78,9 @@ export default function Navbar({
                 fontFamily: 'var(--font-mono)',
                 marginTop: '0.15rem'
               }}>
-                <span>NEURAL DIARY</span>
+                <span>FEMININE TECH DIARY</span>
                 <span>•</span>
-                <span className="hud-badge cyan" style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem' }}>
+                <span className="hud-badge rose" style={{ padding: '0.1rem 0.45rem', fontSize: '0.7rem' }}>
                   {entryCount} {entryCount === 1 ? 'LOG' : 'LOGS'}
                 </span>
               </div>
@@ -92,8 +94,8 @@ export default function Navbar({
             gap: '0.6rem',
             flexWrap: 'wrap'
           }}>
-            {/* High-Tech Search Bar */}
-            <div style={{ position: 'relative', minWidth: '200px' }}>
+            {/* Search Input Bar */}
+            <div style={{ position: 'relative', minWidth: '190px' }}>
               <Search size={14} style={{
                 position: 'absolute',
                 left: '12px',
@@ -103,7 +105,7 @@ export default function Navbar({
               }} />
               <input
                 type="text"
-                placeholder="Search logs & keywords..."
+                placeholder="Search logs..."
                 value={searchTerm}
                 onChange={(e) => onSearchChange(e.target.value)}
                 className="input-tech font-mono"
@@ -117,16 +119,35 @@ export default function Navbar({
               />
             </div>
 
-            {/* Tech Theme Selector */}
+            {/* Direct Dark Mode / Light Mode Toggle Switch */}
+            <button
+              onClick={onToggleDarkMode}
+              className="btn-secondary-tech"
+              title={isDarkMode ? "Switch to Cream Light Mode" : "Switch to Midnight Dark Mode"}
+              style={{ padding: '0.45rem 0.85rem', fontSize: '0.85rem' }}
+            >
+              {isDarkMode ? (
+                <>
+                  <Sun size={16} color="var(--amber-accent)" />
+                  <span style={{ fontSize: '0.8rem', fontFamily: 'var(--font-mono)' }}>Light</span>
+                </>
+              ) : (
+                <>
+                  <Moon size={16} color="var(--lavender-accent)" />
+                  <span style={{ fontSize: '0.8rem', fontFamily: 'var(--font-mono)' }}>Dark</span>
+                </>
+              )}
+            </button>
+
+            {/* Theme Dropdown Palette */}
             <div style={{ position: 'relative' }}>
               <button
                 onClick={() => setIsThemeMenuOpen(!isThemeMenuOpen)}
                 className="btn-secondary-tech"
-                title="Switch Cyber Theme"
-                style={{ padding: '0.45rem 0.85rem', fontSize: '0.85rem' }}
+                title="Select Theme Palette"
+                style={{ padding: '0.45rem 0.75rem' }}
               >
-                <Cpu size={16} />
-                <span style={{ display: 'none' }}>Theme</span>
+                <Palette size={16} />
               </button>
 
               {isThemeMenuOpen && (
@@ -136,11 +157,11 @@ export default function Navbar({
                   top: '120%',
                   borderRadius: 'var(--radius-md)',
                   padding: '0.5rem',
-                  width: '190px',
+                  width: '200px',
                   zIndex: 50
                 }}>
                   <div style={{ fontSize: '0.7rem', fontWeight: 700, padding: '0.25rem 0.5rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                    THEME ENGINE
+                    COLOR PALETTES
                   </div>
                   {themes.map((t) => (
                     <button
@@ -156,7 +177,7 @@ export default function Navbar({
                         gap: '0.6rem',
                         padding: '0.45rem 0.6rem',
                         border: 'none',
-                        background: currentTheme === t.id ? 'rgba(255,255,255,0.08)' : 'transparent',
+                        background: currentTheme === t.id ? 'var(--bg-cyber-subtle)' : 'transparent',
                         borderRadius: 'var(--radius-sm)',
                         cursor: 'pointer',
                         textAlign: 'left',
@@ -179,7 +200,7 @@ export default function Navbar({
               )}
             </div>
 
-            {/* Export Backup */}
+            {/* Export Backup JSON */}
             <button
               onClick={onExportData}
               className="btn-secondary-tech"
@@ -189,17 +210,17 @@ export default function Navbar({
               <Download size={16} />
             </button>
 
-            {/* Lock Security Toggle */}
+            {/* Security Lock Toggle */}
             <button
               onClick={onToggleLock}
               className="btn-secondary-tech"
               title={isLocked ? "Diary Encrypted & Protected" : "Set Passcode Lock"}
               style={{ padding: '0.45rem 0.75rem', fontSize: '0.85rem' }}
             >
-              {isLocked ? <Lock size={16} color="var(--neon-cyan)" /> : <Unlock size={16} />}
+              {isLocked ? <Lock size={16} color="var(--rose-accent)" /> : <Unlock size={16} />}
             </button>
 
-            {/* New Entry Primary CTA Button */}
+            {/* New Entry Button */}
             <button
               onClick={onOpenNewForm}
               className="btn-primary-tech"
