@@ -2,84 +2,106 @@ import React from 'react';
 
 export default function Footer({ onOpenBooking }) {
   return (
-    <footer style={{ backgroundColor: 'var(--color-forest)', color: 'var(--bg-cream)', paddingTop: '6.5rem', paddingBottom: '3.5rem' }}>
+    <footer style={{ backgroundColor: 'var(--bg-dark)', color: 'var(--color-text-light)', paddingTop: '5.5rem', paddingBottom: '3rem', borderTop: '1px solid var(--color-border-dark)' }}>
       <div className="container">
         <div
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(12, 1fr)',
-            gap: '4rem',
-            marginBottom: '5rem'
+            gap: '3.5rem',
+            marginBottom: '4.5rem'
           }}
           className="footer-grid"
         >
           {/* Brand Column */}
           <div style={{ gridColumn: 'span 4' }} className="footer-col">
-            <h3 style={{ fontFamily: 'var(--font-serif)', color: 'var(--bg-ivory)', fontSize: '2.35rem', marginBottom: '1.25rem' }}>
-              <span style={{ color: 'var(--color-gold)', fontStyle: 'italic' }}>Lumé</span> Studio
+            <h3 style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-text-white)', fontSize: '2.1rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+              <div style={{
+                width: '34px',
+                height: '34px',
+                borderRadius: '8px',
+                background: 'linear-gradient(135deg, #E5C158 0%, #C5A059 100%)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#0B1325',
+                fontWeight: 800,
+                fontSize: '1.2rem',
+                fontFamily: 'var(--font-serif)'
+              }}>
+                A
+              </div>
+              <span>Aura Luxe Corporate</span>
             </h3>
-            <p style={{ color: 'rgba(247, 241, 231, 0.8)', fontSize: '1.05rem', marginBottom: '2rem', lineHeight: 1.75, maxWidth: '360px' }}>
-              Your Time. Your Ritual. Your Glow. Dedicated to bespoke beauty treatments and serene wellness experiences in Kuala Lumpur.
+            <p style={{ color: 'var(--color-text-light)', fontSize: '0.98rem', marginBottom: '1.75rem', lineHeight: 1.7, maxWidth: '360px' }}>
+              Bespoke luxury corporate gifts, custom-branded executive hampers, and multi-address fulfillment for global enterprises.
             </p>
-            <button onClick={onOpenBooking} className="btn btn-gold" style={{ padding: '0.85rem 1.75rem', fontSize: '0.95rem' }}>
-              Book Appointment
+            <button onClick={onOpenBooking} className="btn btn-gold btn-sm">
+              Build Custom Quote
             </button>
           </div>
 
-          {/* Quick Links */}
+          {/* Navigation */}
           <div style={{ gridColumn: 'span 2' }} className="footer-col">
-            <h4 style={{ color: 'var(--color-gold-light)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.12em', fontFamily: 'var(--font-sans)', marginBottom: '1.5rem', fontWeight: 700 }}>
-              NAVIGATION
+            <h4 style={{ color: 'var(--color-gold)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.12em', fontFamily: 'var(--font-sans)', marginBottom: '1.25rem', fontWeight: 700 }}>
+              SOLUTIONS
             </h4>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.95rem' }}>
-              {['Home', 'Services', 'Specialists', 'Packages', 'About', 'Contact'].map((item) => (
-                <li key={item}>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              {[
+                { name: 'Gift Catalog', href: '#catalog' },
+                { name: 'Custom Branding', href: '#branding' },
+                { name: 'Curated Kits', href: '#kits' },
+                { name: 'Enterprise Workflow', href: '#solutions' },
+                { name: 'Client Case Studies', href: '#portfolio' },
+                { name: 'Inquire', href: '#contact' }
+              ].map((item) => (
+                <li key={item.name}>
                   <a
-                    href={`#${item.toLowerCase()}`}
-                    style={{ color: 'rgba(247, 241, 231, 0.85)', textDecoration: 'none', fontSize: '1.025rem', transition: 'color 0.25s ease' }}
+                    href={item.href}
+                    style={{ color: 'var(--color-text-light)', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.25s ease' }}
                     onMouseEnter={(e) => e.target.style.color = 'var(--color-gold)'}
-                    onMouseLeave={(e) => e.target.style.color = 'rgba(247, 241, 231, 0.85)'}
+                    onMouseLeave={(e) => e.target.style.color = 'var(--color-text-light)'}
                   >
-                    {item}
+                    {item.name}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Treatment Menu */}
+          {/* Collections */}
           <div style={{ gridColumn: 'span 3' }} className="footer-col">
-            <h4 style={{ color: 'var(--color-gold-light)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.12em', fontFamily: 'var(--font-sans)', marginBottom: '1.5rem', fontWeight: 700 }}>
-              SERVICES
+            <h4 style={{ color: 'var(--color-gold)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.12em', fontFamily: 'var(--font-sans)', marginBottom: '1.25rem', fontWeight: 700 }}>
+              POPULAR CATEGORIES
             </h4>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.95rem', fontSize: '1.025rem', color: 'rgba(247, 241, 231, 0.85)' }}>
-              <li>Signature Glow Facial</li>
-              <li>Aromatherapy Massage</li>
-              <li>Botanical Hair Spa</li>
-              <li>Luxury Spa Manicure</li>
-              <li>Precision Brow Sculpting</li>
-              <li>Holistic Wellness Ritual</li>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.85rem', fontSize: '0.95rem', color: 'var(--color-text-light)' }}>
+              <li>Executive Tech &amp; Gadgets</li>
+              <li>Handcrafted Tuscan Leatherware</li>
+              <li>Artisanal Wine &amp; Truffle Hampers</li>
+              <li>Day-One Employee Onboarding Kits</li>
+              <li>ESG Eco-Friendly &amp; Wellness Suites</li>
+              <li>C-Suite VIP Legacy Chests</li>
             </ul>
           </div>
 
-          {/* Hours & Contact */}
+          {/* Contact Details */}
           <div style={{ gridColumn: 'span 3' }} className="footer-col">
-            <h4 style={{ color: 'var(--color-gold-light)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.12em', fontFamily: 'var(--font-sans)', marginBottom: '1.5rem', fontWeight: 700 }}>
-              HOURS &amp; ADDRESS
+            <h4 style={{ color: 'var(--color-gold)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.12em', fontFamily: 'var(--font-sans)', marginBottom: '1.25rem', fontWeight: 700 }}>
+              CONCIERGE DESK
             </h4>
-            <p style={{ fontSize: '1rem', color: 'rgba(247, 241, 231, 0.85)', margin: '0 0 1.25rem 0', lineHeight: 1.6 }}>
-              18, Jalan Telawi 3, Bangsar, 59100 Kuala Lumpur
+            <p style={{ fontSize: '0.95rem', color: 'var(--color-text-light)', margin: '0 0 1rem 0', lineHeight: 1.6 }}>
+              Suite 3800, 500 Executive Pkwy, New York, NY 10022
             </p>
-            <p style={{ fontSize: '0.95rem', color: 'rgba(247, 241, 231, 0.75)', margin: '0 0 0.5rem 0' }}>
-              Mon – Fri: 10:00 AM – 8:00 PM
+            <p style={{ fontSize: '0.95rem', color: 'var(--color-text-light)', margin: '0 0 0.4rem 0' }}>
+              Phone: +1 (800) 589-9438
             </p>
-            <p style={{ fontSize: '0.95rem', color: 'rgba(247, 241, 231, 0.75)', margin: '0 0 1.75rem 0' }}>
-              Sat – Sun: 9:00 AM – 7:00 PM
+            <p style={{ fontSize: '0.95rem', color: 'var(--color-text-light)', margin: '0 0 1.5rem 0' }}>
+              Email: concierge@auraluxegifts.com
             </p>
             
             {/* Social Icons */}
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              {['Instagram', 'Facebook', 'Pinterest'].map((social) => (
+            <div style={{ display: 'flex', gap: '0.75rem' }}>
+              {['LinkedIn', 'Instagram', 'Twitter'].map((social) => (
                 <a
                   key={social}
                   href={`#${social.toLowerCase()}`}
@@ -87,10 +109,10 @@ export default function Footer({ onOpenBooking }) {
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    width: '42px',
-                    height: '42px',
-                    borderRadius: '50%',
-                    border: '1px solid rgba(198, 161, 91, 0.45)',
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '6px',
+                    border: '1px solid var(--color-border-dark)',
                     color: 'var(--color-gold)',
                     textDecoration: 'none',
                     fontSize: '0.85rem',
@@ -107,18 +129,20 @@ export default function Footer({ onOpenBooking }) {
         {/* Bottom Bar */}
         <div
           style={{
-            paddingTop: '2.5rem',
-            borderTop: '1px solid rgba(247, 241, 231, 0.15)',
+            paddingTop: '2rem',
+            borderTop: '1px solid var(--color-border-dark)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            fontSize: '0.95rem',
-            color: 'rgba(247, 241, 231, 0.65)'
+            fontSize: '0.875rem',
+            color: 'var(--color-text-muted)'
           }}
           className="footer-bottom"
         >
-          <span>© {new Date().getFullYear()} Lumé Studio. All rights reserved.</span>
-          <span style={{ fontStyle: 'italic', fontFamily: 'var(--font-serif)', color: 'var(--color-gold-light)', fontSize: '1.05rem' }}>Your Time. Your Ritual. Your Glow.</span>
+          <span>© {new Date().getFullYear()} Aura Luxe Corporate Gifting Solutions LLC. All rights reserved.</span>
+          <span style={{ fontStyle: 'italic', fontFamily: 'var(--font-serif)', color: 'var(--color-gold)', fontSize: '1rem' }}>
+            Elevating Executive Relationships Through Curated Craft.
+          </span>
         </div>
       </div>
 
@@ -133,7 +157,7 @@ export default function Footer({ onOpenBooking }) {
           }
           .footer-bottom {
             flex-direction: column !important;
-            gap: 0.85rem !important;
+            gap: 0.75rem !important;
             text-align: center;
           }
         }
@@ -141,3 +165,4 @@ export default function Footer({ onOpenBooking }) {
     </footer>
   );
 }
+

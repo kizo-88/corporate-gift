@@ -1,124 +1,92 @@
 import React from 'react';
-import { specialists } from '../data/mockData';
 
 export default function Specialists({ onSelectSpecialist }) {
+  const steps = [
+    {
+      num: '01',
+      title: 'Select & Customize Gifts',
+      desc: 'Browse our executive catalog or tell our concierge team your budget. Upload your logo and select precision laser etching, blind debossing, or foil stamping.',
+      badge: 'Step 1: Curation'
+    },
+    {
+      num: '02',
+      title: 'Digital Mockup & Physical Sample',
+      desc: 'Receive 3D digital artwork proofs within 4 hours. Request a physical pre-production sample delivered directly to your office before approving mass production.',
+      badge: 'Step 2: Verification'
+    },
+    {
+      num: '03',
+      title: 'Global Multi-Address Logistics',
+      desc: 'Bulk ship to corporate event venues or individually dispatch custom boxes to 10,000+ remote employee home addresses worldwide with end-to-end tracking.',
+      badge: 'Step 3: Fulfillment'
+    }
+  ];
+
   return (
-    <section id="specialists" className="section-padding" style={{ backgroundColor: 'var(--bg-cream)' }}>
+    <section id="solutions" className="section-padding" style={{ backgroundColor: 'var(--bg-white)' }}>
       <div className="container">
         {/* Section Header */}
         <div className="section-header">
-          <span className="eyebrow">MEET OUR ARTISTS</span>
-          <h2>Master Practitioners</h2>
+          <span className="eyebrow">HOW IT WORKS</span>
+          <h2>Seamless Corporate Gifting Workflow</h2>
           <p>
-            Dedicated experts possessing deep clinical knowledge and an intuitive touch to deliver restorative personalized care.
+            From initial concept to multi-destination international delivery, we remove all friction from enterprise gifting.
           </p>
         </div>
 
-        {/* Editorial Grid */}
+        {/* 3 Step Workflow Grid */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '3.5rem'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '2.5rem'
           }}
-          className="specialists-grid"
         >
-          {specialists.map((sp) => (
+          {steps.map((step) => (
             <div
-              key={sp.id}
+              key={step.num}
+              className="card-white"
               style={{
-                backgroundColor: 'var(--bg-ivory)',
-                border: '1px solid var(--color-border)',
-                borderRadius: '6px',
-                padding: '3rem',
-                display: 'grid',
-                gridTemplateColumns: '250px 1fr',
-                gap: '2.5rem',
-                alignItems: 'center',
-                boxShadow: 'var(--shadow-card)',
-                transition: 'all 0.35s ease'
+                padding: '3rem 2.25rem',
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                backgroundColor: 'var(--bg-slate)'
               }}
-              className="specialist-card"
             >
-              {/* Photo */}
-              <div style={{ position: 'relative', borderRadius: '4px', overflow: 'hidden', height: '300px' }}>
-                <img
-                  src={sp.image}
-                  alt={sp.name}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: '1rem',
-                    left: '1rem',
-                    backgroundColor: 'rgba(255, 253, 248, 0.95)',
-                    backdropFilter: 'blur(6px)',
-                    padding: '0.35rem 0.85rem',
-                    borderRadius: '3px',
-                    fontSize: '0.85rem',
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+                  <span style={{
+                    fontSize: '2.75rem',
+                    fontFamily: 'var(--font-serif)',
                     fontWeight: 700,
-                    color: 'var(--color-forest)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.35rem'
-                  }}
-                >
-                  <span style={{ color: 'var(--color-gold)' }}>★</span> {sp.rating} ({sp.reviewsCount})
+                    color: 'var(--color-gold)',
+                    lineHeight: 1
+                  }}>
+                    {step.num}
+                  </span>
+                  <span className="tag">{step.badge}</span>
                 </div>
+
+                <h3 style={{ fontSize: '1.5rem', fontFamily: 'var(--font-serif)', color: 'var(--color-navy)', marginBottom: '1rem' }}>
+                  {step.title}
+                </h3>
+
+                <p style={{ fontSize: '1rem', color: 'var(--color-text-muted)', lineHeight: 1.65 }}>
+                  {step.desc}
+                </p>
               </div>
 
-              {/* Bio Details */}
-              <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
-                <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.65rem' }}>
-                    <div>
-                      <h3 style={{ fontSize: '1.85rem', fontFamily: 'var(--font-serif)', color: 'var(--color-forest)', margin: 0 }}>
-                        {sp.name}
-                      </h3>
-                      <span style={{ fontSize: '0.9rem', color: 'var(--color-gold)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                        {sp.role}
-                      </span>
-                    </div>
-                    <span className="tag">{sp.experience} Exp</span>
-                  </div>
-
-                  <p style={{ fontSize: '1.025rem', color: 'var(--color-warm-gray)', marginTop: '1rem', marginBottom: '1.5rem', lineHeight: 1.65 }}>
-                    {sp.intro}
-                  </p>
-
-                  <div style={{ fontSize: '0.9rem', color: 'var(--color-forest)', fontWeight: 600, marginBottom: '1.75rem', backgroundColor: 'var(--bg-cream)', padding: '0.75rem 1.1rem', borderRadius: '4px', border: '1px solid var(--color-border)' }}>
-                    <span style={{ color: 'var(--color-warm-gray)', fontWeight: 400 }}>Specialty: </span>
-                    {sp.specialty}
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => onSelectSpecialist(sp)}
-                  className="btn btn-secondary"
-                  style={{ alignSelf: 'flex-start', padding: '0.85rem 1.75rem', fontSize: '0.95rem' }}
-                >
-                  View Availability &amp; Book
-                </button>
+              <div style={{ marginTop: '2.5rem', paddingTop: '1.25rem', borderTop: '1px solid var(--color-border-subtle)', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-navy)', fontWeight: 600, fontSize: '0.9rem' }}>
+                <span>Dedicated Concierge Support</span>
+                <span style={{ color: 'var(--color-gold)' }}>→</span>
               </div>
             </div>
           ))}
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 1100px) {
-          .specialists-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
-        @media (max-width: 640px) {
-          .specialist-card {
-            grid-template-columns: 1fr !important;
-            padding: 2rem !important;
-          }
-        }
-      `}</style>
     </section>
   );
 }
+

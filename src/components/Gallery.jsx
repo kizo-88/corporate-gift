@@ -3,23 +3,23 @@ import { galleryImages } from '../data/mockData';
 
 export default function Gallery() {
   return (
-    <section className="section-padding" style={{ backgroundColor: 'var(--bg-cream)' }}>
+    <section className="section-padding" style={{ backgroundColor: 'var(--bg-white)' }}>
       <div className="container">
         {/* Section Header */}
         <div className="section-header">
-          <span className="eyebrow">STUDIO ATMOSPHERE</span>
-          <h2>A Glimpse Into Lumé</h2>
+          <span className="eyebrow">CRAFTSMANSHIP &amp; UNBOXING</span>
+          <h2>Luxury Packaging Showcase</h2>
           <p>
-            An aesthetic sanctuary meticulously crafted with warm natural textures, acoustic silence, and gentle ambient light.
+            Experience the unboxing detail of our custom embossed boxes, foil stamped satin ribbons, laser engraved metalware, and hand-sealed executive letters.
           </p>
         </div>
 
-        {/* Large Editorial Visual Blocks */}
+        {/* Large Visual Blocks */}
         <div
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(12, 1fr)',
-            gap: '2rem'
+            gap: '1.75rem'
           }}
           className="gallery-grid"
         >
@@ -31,10 +31,11 @@ export default function Gallery() {
                 style={{
                   gridColumn: colSpan,
                   position: 'relative',
-                  borderRadius: '6px',
+                  borderRadius: '12px',
                   overflow: 'hidden',
-                  height: '440px',
-                  boxShadow: 'var(--shadow-card)'
+                  height: '420px',
+                  boxShadow: 'var(--shadow-card)',
+                  border: '1px solid var(--color-border-subtle)'
                 }}
                 className="gallery-item"
               >
@@ -57,14 +58,14 @@ export default function Gallery() {
                     left: 0,
                     right: 0,
                     padding: '2.5rem 2rem 1.5rem 2rem',
-                    background: 'linear-gradient(to top, rgba(31, 74, 60, 0.9), transparent)',
-                    color: 'var(--bg-ivory)'
+                    background: 'linear-gradient(to top, rgba(11, 19, 37, 0.92), transparent)',
+                    color: 'var(--color-text-white)'
                   }}
                 >
-                  <h4 style={{ color: 'var(--bg-ivory)', fontFamily: 'var(--font-serif)', fontSize: '1.5rem', margin: 0 }}>
+                  <h4 style={{ color: 'var(--color-text-white)', fontFamily: 'var(--font-serif)', fontSize: '1.4rem', margin: 0 }}>
                     {img.title}
                   </h4>
-                  <span style={{ fontSize: '0.9rem', color: 'var(--color-gold-light)', letterSpacing: '0.06em' }}>
+                  <span style={{ fontSize: '0.875rem', color: 'var(--color-gold)', letterSpacing: '0.06em' }}>
                     {img.subtitle}
                   </span>
                 </div>
@@ -89,3 +90,4 @@ export default function Gallery() {
     </section>
   );
 }
+

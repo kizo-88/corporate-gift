@@ -1,304 +1,348 @@
 export const categories = [
-  { id: 'all', name: 'All Treatments' },
-  { id: 'hair', name: 'Hair Styling' },
-  { id: 'facial', name: 'Facials' },
-  { id: 'massage', name: 'Massage Therapy' },
-  { id: 'nails', name: 'Nail Care' },
-  { id: 'brows', name: 'Brow & Lash' },
-  { id: 'wellness', name: 'Wellness Rituals' }
+  { id: 'all', name: 'All Gifts & Catalog' },
+  { id: 'tech', name: 'Executive Tech & Gadgets' },
+  { id: 'gourmet', name: 'Luxury Gourmet & Fine Wine' },
+  { id: 'leather', name: 'Bespoke Leatherware' },
+  { id: 'onboarding', name: 'Employee Onboarding & Kits' },
+  { id: 'eco', name: 'Eco-Luxury & Wellness' },
+  { id: 'vip', name: 'VIP C-Suite Curated Boxes' }
 ];
 
-export const services = [
+export const products = [
   {
-    id: 's1',
-    category: 'hair',
-    name: 'Signature Hair Styling & Cut',
-    shortDesc: 'Custom hair consultation, revitalizing wash, precision cut, and editorial blow-dry finish.',
-    duration: '60 mins',
-    price: 120,
-    image: 'https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=800&q=80'
+    id: 'cg1',
+    category: 'tech',
+    name: 'Aura Wireless Executive Desk Pad',
+    shortDesc: 'Italian top-grain leather desk pad with built-in fast 15W Qi wireless charging and magnetic pen rest.',
+    moq: 10,
+    price: 110,
+    rating: 4.9,
+    leadTime: '3-5 Days',
+    customization: ['Laser Engraving', 'Blind Debossing', 'Gold Foil'],
+    image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80',
+    tags: ['Best Seller', 'C-Suite Preferred']
   },
   {
-    id: 's2',
-    category: 'hair',
-    name: 'Botanical Hair Spa Treatment',
-    shortDesc: 'Deep scalp detoxification and nourishing plant oil therapy for glossy, healthy tresses.',
-    duration: '75 mins',
-    price: 160,
-    image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80'
+    id: 'cg2',
+    category: 'tech',
+    name: 'Master & Dynamic ANC Noise-Cancelling Headphones',
+    shortDesc: 'Custom-engraved premium wireless headphones featuring beryllium drivers and brushed aluminum finish.',
+    moq: 5,
+    price: 380,
+    rating: 5.0,
+    leadTime: '5-7 Days',
+    customization: ['Precision Laser Etching', 'Custom Sleeve Packaging'],
+    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
+    tags: ['VIP Luxury', 'Award Gift']
   },
   {
-    id: 's3',
-    category: 'facial',
-    name: 'Signature Lumé Glow Facial',
-    shortDesc: 'Deep cleansing, double exfoliation, hyaluronic hydration infusion, and soothing facial massage.',
-    duration: '75 mins',
-    price: 180,
-    image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=800&q=80'
+    id: 'cg3',
+    category: 'gourmet',
+    name: 'Artisanal Reserve Wine & Truffle Box',
+    shortDesc: 'Bespoke wooden crate featuring a 2018 Napa Cabernet Reserve, handcrafted Swiss truffles, and gold wine stopper.',
+    moq: 15,
+    price: 165,
+    rating: 4.9,
+    leadTime: '2-4 Days',
+    customization: ['Fire-Branded Box Logo', 'Personalized Wax Seal Card'],
+    image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80',
+    tags: ['Holiday Special', 'Client Appreciation']
   },
   {
-    id: 's4',
-    category: 'facial',
-    name: 'Cellular Renewal Peel',
-    shortDesc: 'Gentle AHA acid resurfacing combined with red light therapy to stimulate collagen regeneration.',
-    duration: '60 mins',
-    price: 210,
-    image: 'https://images.unsplash.com/photo-1512290900673-700200411b51?auto=format&fit=crop&w=800&q=80'
+    id: 'cg4',
+    category: 'gourmet',
+    name: 'Grand Reserve Artisan Teas & Honey Set',
+    shortDesc: 'Organic single-origin loose leaf teas in brass caddies paired with raw wildflower honey and teak honey dipper.',
+    moq: 20,
+    price: 85,
+    rating: 4.8,
+    leadTime: '3-5 Days',
+    customization: ['Custom Ribbon Print', 'Logo Engraved Brass Tins'],
+    image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80',
+    tags: ['Wellness Gift', 'Popular']
   },
   {
-    id: 's5',
-    category: 'massage',
-    name: 'Aromatherapy Sanctuary Massage',
-    shortDesc: 'Custom essential oil blend with rhythmic Swedish techniques to dissolve tension and restore balance.',
-    duration: '90 mins',
-    price: 220,
-    image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80'
+    id: 'cg5',
+    category: 'leather',
+    name: 'Handcrafted Tuscan Leather Travel Folio',
+    shortDesc: 'Genuine vegetable-tanned Italian leather folio with tablet sleeve, card slots, and refillable linen notebook.',
+    moq: 10,
+    price: 145,
+    rating: 5.0,
+    leadTime: '4-6 Days',
+    customization: ['Hot Monogram Foil Stamping', 'Blind Embossing'],
+    image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80',
+    tags: ['Executive Choice']
   },
   {
-    id: 's6',
-    category: 'massage',
-    name: 'Deep Tissue Muscle Release',
-    shortDesc: 'Targeted pressure therapy focusing on deep muscle layers to alleviate persistent tightness.',
-    duration: '60 mins',
-    price: 195,
-    image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=800&q=80'
+    id: 'cg6',
+    category: 'leather',
+    name: 'Monogrammed Leather Weekender Duffel',
+    shortDesc: 'Full-grain brass-hardware weekender bag designed for business travel and luxury retreats.',
+    moq: 5,
+    price: 290,
+    rating: 4.9,
+    leadTime: '7-10 Days',
+    customization: ['Debossed Initial Monogram', 'Custom Interior Tag'],
+    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80',
+    tags: ['Milestone Gift', 'Retirement / Gala']
   },
   {
-    id: 's7',
-    category: 'nails',
-    name: 'Luxury Spa Manicure',
-    shortDesc: 'Exfoliating rose scrub, cuticle care, hand hydration mask, massage, and premium non-toxic polish.',
-    duration: '45 mins',
-    price: 95,
-    image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 's8',
-    category: 'nails',
-    name: 'Velvet Gel Pedicure',
-    shortDesc: 'Essential foot soak, smoothing pumice treatment, gel color application, and foot massage.',
-    duration: '60 mins',
-    price: 130,
-    image: 'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 's9',
-    category: 'brows',
-    name: 'Precision Brow Sculpting',
-    shortDesc: 'Custom brow map styling, organic wax shaping, trimming, and custom tinting for perfect arches.',
-    duration: '30 mins',
+    id: 'cg7',
+    category: 'onboarding',
+    name: 'Day-One Premier Employee Welcome Box',
+    shortDesc: 'Curated welcome kit containing insulated matte thermal tumbler, hardcover journal, metallic pen, and branded tech pouch.',
+    moq: 25,
     price: 75,
-    image: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=800&q=80'
+    rating: 4.9,
+    leadTime: '3-5 Days',
+    customization: ['Full Custom Box Sleeve', 'Laser Engraved Tumbler', 'Personalized Welcome Note'],
+    image: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80',
+    tags: ['Top Onboarding Kit', 'HR Favorite']
   },
   {
-    id: 's10',
-    category: 'brows',
-    name: 'Keratin Lash Lift & Tint',
-    shortDesc: 'Nourishing lash lamination to curl and darken natural eyelashes for an open, youthful gaze.',
-    duration: '50 mins',
-    price: 140,
-    image: 'https://images.unsplash.com/photo-1583001809873-a1284d5630d7?auto=format&fit=crop&w=800&q=80'
+    id: 'cg8',
+    category: 'onboarding',
+    name: 'Remote Team Workstation Elevation Kit',
+    shortDesc: 'Ergonomic aluminum laptop stand, woven cable organizer, acoustic felt desk mat, and ceramic mug with warmer.',
+    moq: 15,
+    price: 125,
+    rating: 4.8,
+    leadTime: '4-6 Days',
+    customization: ['Laser Etched Stand', 'Custom Branded Packaging'],
+    image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80',
+    tags: ['Remote Culture', 'Employee Retention']
   },
   {
-    id: 's11',
-    category: 'wellness',
-    name: 'Lumé Holistic Wellness Ritual',
-    shortDesc: 'Full body dry brushing, warm herbal oil body wrap, sound bowl meditation, and scalp therapy.',
-    duration: '100 mins',
-    price: 280,
-    image: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=800&q=80'
+    id: 'cg9',
+    category: 'eco',
+    name: 'Sustainably Crafted Bamboo & Steel Coffee Set',
+    shortDesc: 'FSC-certified bamboo thermal carafe, two double-wall stainless steel cups, and organic fair-trade coffee roast.',
+    moq: 20,
+    price: 65,
+    rating: 4.9,
+    leadTime: '3-5 Days',
+    customization: ['Eco Laser Engraving', 'Recycled Box Packaging'],
+    image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80',
+    tags: ['ESG Compliant', 'Eco Friendly']
+  },
+  {
+    id: 'cg10',
+    category: 'eco',
+    name: 'Aura Organic Botanical Spa & Relaxation Suite',
+    shortDesc: 'Handpoured soy wax aromatherapy candle, eucalyptus bath salts, organic waffle linen robe, and bamboo slippers.',
+    moq: 15,
+    price: 135,
+    rating: 5.0,
+    leadTime: '3-5 Days',
+    customization: ['Custom Candle Label', 'Embroidered Monogram Robe'],
+    image: 'https://images.unsplash.com/photo-1608248597261-8332586b96f1?auto=format&fit=crop&w=800&q=80',
+    tags: ['Wellness Ritual', 'Holiday Favorite']
+  },
+  {
+    id: 'cg11',
+    category: 'vip',
+    name: 'The C-Suite Legacy Gold Edition Chest',
+    shortDesc: 'Hand-assembled dark mahogany wooden chest containing Montblanc rollerball pen, Crystal Decanter, and 25-Year Aged Malt Scotch.',
+    moq: 2,
+    price: 490,
+    rating: 5.0,
+    leadTime: '5-7 Days',
+    customization: ['Brass Plate Engraving', 'Gold Foil Personal Letter', 'Hand-Delivered White Glove Service'],
+    image: 'https://images.unsplash.com/photo-1527061011665-3652c757a4d4?auto=format&fit=crop&w=800&q=80',
+    tags: ['Ultimate VIP', 'Presidential Level']
+  },
+  {
+    id: 'cg12',
+    category: 'vip',
+    name: 'Global Executive Sound & Tech Suite',
+    shortDesc: 'Bose SoundLink Flex Speaker, Anker 20,000mAh MagSafe Powerbank, and Leather Tech Organizer in matte black magnetic box.',
+    moq: 5,
+    price: 320,
+    rating: 4.9,
+    leadTime: '4-6 Days',
+    customization: ['Laser Engraved Tech Enclosure', 'Custom Box Branding'],
+    image: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=800&q=80',
+    tags: ['Tech Executive', 'High Impact']
   }
 ];
 
-export const specialists = [
-  {
-    id: 'sp1',
-    name: 'Alya Rahman',
-    role: 'Senior Hair Stylist',
-    specialty: 'Precision Cut & Organic Scalp Spa',
-    experience: '7+ Years',
-    rating: '4.9',
-    reviewsCount: 142,
-    intro: 'Alya specializes in effortless, lived-in haircuts and restorative botanical hair therapies tailored to individual face shapes.',
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 'sp2',
-    name: 'Mei Lin Tan',
-    role: 'Lead Skin Therapist',
-    specialty: 'Hydra Glow & Advanced Dermal Facials',
-    experience: '9+ Years',
-    rating: '5.0',
-    reviewsCount: 198,
-    intro: 'Mei Lin blends clinical skin science with relaxing holistic facial touch to treat skin concerns from deep within.',
-    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 'sp3',
-    name: 'Sarah Ismail',
-    role: 'Senior Massage Therapist',
-    specialty: 'Aromatherapy & Deep Tissue Healing',
-    experience: '8+ Years',
-    rating: '4.9',
-    reviewsCount: 165,
-    intro: 'Trained in Eastern and Western bodywork, Sarah intuitively customizes pressure points to release physical stress.',
-    image: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 'sp4',
-    name: 'Nadia Lee',
-    role: 'Nail & Brow Artist',
-    specialty: 'Keratin Lash Lamination & Luxury Nail Art',
-    experience: '6+ Years',
-    rating: '4.8',
-    reviewsCount: 120,
-    intro: 'Nadia is celebrated for her meticulous attention to brow architecture and minimalist, healthy nail care.',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80'
-  }
-];
+// Alias export for backward compatibility with component imports
+export const services = products;
 
 export const packages = [
   {
     id: 'p1',
-    name: 'Glow Reset',
-    tagline: 'Deep Cleanse & Mindful Relaxation',
-    included: ['Signature Facial (75m)', 'Aromatherapy Massage (60m)'],
-    duration: '2.5 Hours',
-    price: 320,
-    originalPrice: 380,
-    popular: true
+    name: 'The Executive Onboarding Experience',
+    tagline: 'Turn New Hires into Lifelong Brand Champions',
+    included: ['Day-One Premier Box', 'Leather Tech Organizer', 'Custom Welcome Card', 'Direct-to-Employee Shipping'],
+    moq: 'Min. 10 Units',
+    price: 95,
+    originalPrice: 120,
+    popular: true,
+    image: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'p2',
-    name: 'Weekend Recharge',
-    tagline: 'Total Body & Hand Pampering',
-    included: ['Deep Tissue Massage (60m)', 'Luxury Spa Manicure (45m)', 'Scalp Therapy (15m)'],
-    duration: '2 Hours',
-    price: 350,
-    originalPrice: 410,
-    popular: false
+    name: 'Annual Board & VIP Client Recognition',
+    tagline: 'Express Unforgettable Gratitude to Key Stakeholders',
+    included: ['Artisanal Wine & Truffle Box', 'Tuscan Leather Folio', 'Gold Foil Engraved Plaque', 'Luxury Presentation Chest'],
+    moq: 'Min. 5 Units',
+    price: 280,
+    originalPrice: 340,
+    popular: true,
+    image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'p3',
-    name: 'Bridal Preparation',
-    tagline: 'Head-to-Toe Luminescent Glow',
-    included: ['Botanical Hair Spa (60m)', 'Signature Glow Facial (75m)', 'Luxury Manicure & Pedicure (90m)'],
-    duration: '3.5 Hours',
-    price: 520,
-    originalPrice: 620,
-    popular: true
+    name: 'Global Summit & Gala Attendees Set',
+    tagline: 'High-Impact Branded Keepsakes for Large Corporate Events',
+    included: ['Wireless Executive Desk Pad', 'Bamboo & Steel Coffee Set', 'Custom Branded Box Sleeve'],
+    moq: 'Min. 50 Units',
+    price: 140,
+    originalPrice: 175,
+    popular: false,
+    image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'p4',
-    name: 'Executive Wellness',
-    tagline: 'Ultimate Rejuvenation Sanctuary',
-    included: ['Aromatherapy Massage (90m)', 'Cellular Renewal Facial (60m)', 'Holistic Wellness Ritual (90m)'],
-    duration: '4 Hours',
-    price: 580,
-    originalPrice: 710,
-    popular: false
+    name: 'ESG Eco-Sustainability Corporate Hamper',
+    tagline: '100% Certified Carbon-Neutral & Zero-Plastic Gift Suite',
+    included: ['Organic Tea & Honey Set', 'Bamboo Thermal Tumbler', 'Recycled Linen Notebook', 'Tree Planted per Box'],
+    moq: 'Min. 15 Units',
+    price: 115,
+    originalPrice: 145,
+    popular: false,
+    image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80'
+  }
+];
+
+export const customizationMethods = [
+  {
+    id: 'm1',
+    name: 'Precision Laser Engraving',
+    description: 'Crisp, permanent metallic or wood etching for logos, recipient names, and serial numbers.',
+    bestFor: 'Metal tumblers, wireless chargers, tech devices, wooden boxes.'
+  },
+  {
+    id: 'm2',
+    name: 'Blind & Gold Foil Debossing',
+    description: 'Subtle indented leather stamping or shimmering 24k gold foil pressed into journals and leatherware.',
+    bestFor: 'Italian leather folios, weekender bags, premium cardstock.'
+  },
+  {
+    id: 'm3',
+    name: 'Bespoke Custom Box Sleeves',
+    description: 'Full-color edge-to-edge custom printed outer box sleeves with your company brand guidelines.',
+    bestFor: 'All presentation boxes, onboarding kits, holiday hampers.'
+  },
+  {
+    id: 'm4',
+    name: 'Hand-Poured Wax Seals & Ribbons',
+    description: 'Bespoke wax seals carrying your corporate crest, wrapped with woven satin corporate ribbons.',
+    bestFor: 'VIP client letters, executive wine crates, holiday gifts.'
   }
 ];
 
 export const whyChooseUs = [
   {
     id: 1,
-    title: 'Experienced Specialists',
-    desc: 'Certified practitioners with over 5+ years of dedicated expertise in beauty science and holistic therapy.'
+    title: 'Dedicated Corporate Concierge',
+    desc: 'Assigned account manager handles sample requests, design mockups, and logistics seamlessly.'
   },
   {
     id: 2,
-    title: 'Premium Products',
-    desc: 'We exclusively use organic, non-toxic, and dermatologically tested botanical skincare and oils.'
+    title: 'Multi-Address Global Fulfillment',
+    desc: 'Ship individually to 10,000+ remote employee home addresses or bulk deliver to event venues.'
   },
   {
     id: 3,
-    title: 'Personalized Treatments',
-    desc: 'Every session begins with a bespoke consultation to align treatments with your specific needs.'
+    title: '100% Brand Consistency Guarantee',
+    desc: 'Digital mockups and physical pre-production samples provided before mass production.'
   },
   {
     id: 4,
-    title: 'Seamless Online Booking',
-    desc: 'Select your preferred artist, choose convenient time slots, and manage appointments effortlessly.'
+    title: 'Flexible MOQs & Scale',
+    desc: 'Whether you need 5 VIP C-Suite hampers or 5,000 gala welcome boxes, we scale effortlessly.'
   },
   {
     id: 5,
-    title: 'Calm & Serene Environment',
-    desc: 'Thoughtfully designed interior with soothing acoustic resonance, warm lighting, and private suites.'
+    title: 'Instant Corporate Invoicing & Net-30',
+    desc: 'Streamlined enterprise billing with tax invoices, purchase order support, and flexible terms.'
   }
 ];
 
 export const testimonials = [
   {
     id: 't1',
-    name: 'Elena Rostova',
-    role: 'Verified Client',
-    service: 'Signature Lumé Glow Facial',
+    name: 'Victoria Sterling',
+    role: 'VP of Global People Ops, TechCorp',
+    service: 'Onboarding Kit Suite (2,400 Boxes)',
     rating: 5,
-    review: 'Lumé Studio is truly an oasis of tranquil luxury. Mei Lin analyzed my skin concerns with such care. My skin hasn’t glowed like this in years!',
+    review: 'Aura Luxe elevated our new hire onboarding experience tenfold. The quality of the leather folios and custom wireless desk pads exceeded all our expectations. Delivery to 14 countries was flawless!',
     featured: true,
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80'
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80'
   },
   {
     id: 't2',
-    name: 'Sophia Chen',
-    role: 'Regular Member',
-    service: 'Glow Reset Package',
+    name: 'Marcus Vance',
+    role: 'Head of Enterprise Events, Horizon Financial',
+    service: 'VIP Executive Wine Chests',
     rating: 5,
-    review: 'The attention to detail from the moment you step through the doors is immaculate. The warm herbal tea and quiet suite made all my work stress melt away.',
-    featured: false,
-    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80'
+    review: 'Our C-suite clients were blown away by the mahogany chests and custom laser engraving. Aura Luxe is our go-to partner for high-stakes corporate gifting.',
+    featured: true,
+    avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80'
   },
   {
     id: 't3',
-    name: 'Amira Azman',
-    role: 'Verified Client',
-    service: 'Signature Hair Styling & Cut',
+    name: 'Elena Rostova',
+    role: 'Chief Brand Officer, Lumina Group',
+    service: 'Annual Partner Appreciation Gifts',
     rating: 5,
-    review: 'Alya transformed my dry hair into glossy perfection. The scalp massage during the wash was heavenly. Worth every single ringgit.',
+    review: 'The instant quote builder made budgeting effortless, and the physical sample arrived at my office within 48 hours. Absolute perfection.',
     featured: false,
-    avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80'
+    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80'
   }
 ];
 
 export const galleryImages = [
   {
-    url: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
-    title: 'Private Treatment Suite',
-    subtitle: 'Quiet relaxation sanctuary'
+    url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80',
+    title: 'Custom Branded Packaging',
+    subtitle: 'Matte black magnetic box with gold foil seal'
   },
   {
-    url: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80',
-    title: 'Botanical Elixirs',
-    subtitle: '100% Organic certified formulas'
+    url: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80',
+    title: 'Italian Leather Monogramming',
+    subtitle: 'Blind debossed corporate initials'
   },
   {
-    url: 'https://images.unsplash.com/photo-1560750588-73207b1ef5b8?auto=format&fit=crop&w=800&q=80',
-    title: 'Lumé Reception Lounge',
-    subtitle: 'Warm ivory aesthetics'
+    url: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80',
+    title: 'Executive Reserve hampers',
+    subtitle: 'Fire-branded wooden crate with wax seal'
   },
   {
-    url: 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=800&q=80',
-    title: 'Holistic Massage Chamber',
-    subtitle: 'Heated beds & essential oils'
+    url: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80',
+    title: 'Precision Laser Tech Etching',
+    subtitle: 'Wireless chargers & desk accessories'
   }
 ];
 
-export const timeSlots = [
-  '9:00 AM',
-  '10:30 AM',
-  '12:00 PM',
-  '2:00 PM',
-  '3:30 PM',
-  '5:00 PM'
+export const clientLogos = [
+  { name: 'TechCorp', symbol: '❖ TechCorp' },
+  { name: 'Horizon Financial', symbol: '▲ Horizon' },
+  { name: 'Vertex Group', symbol: '● Vertex' },
+  { name: 'InnovateX', symbol: '◆ InnovateX' },
+  { name: 'Global Logistics', symbol: '✦ Global' }
 ];
 
 export const contactDetails = {
-  address: '18, Jalan Telawi 3, Bangsar, 59100 Kuala Lumpur, Malaysia',
-  phone: '+60 3-2284 8920',
-  email: 'hello@lumestudio.my',
+  address: 'Suite 3800, 500 Executive Parkway, New York, NY 10022',
+  phone: '+1 (800) 589-9438 / +1 (212) 555-0192',
+  email: 'concierge@auraluxegifts.com',
   hours: [
-    { days: 'Monday – Friday', time: '10:00 AM – 8:00 PM' },
-    { days: 'Saturday – Sunday', time: '9:00 AM – 7:00 PM' }
+    { days: 'Monday – Friday', time: '8:00 AM – 7:00 PM EST' },
+    { days: 'Saturday (Concierge Hotline)', time: '9:00 AM – 4:00 PM EST' }
   ]
 };
+

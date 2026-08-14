@@ -13,12 +13,12 @@ export default function Navbar({ onOpenBooking, onOpenAppointments, appointmentC
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: '#hero' },
-    { name: 'Services', href: '#services' },
-    { name: 'Specialists', href: '#specialists' },
-    { name: 'Packages', href: '#packages' },
-    { name: 'About', href: '#about' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Gift Catalog', href: '#catalog' },
+    { name: 'Custom Branding', href: '#branding' },
+    { name: 'Curated Kits', href: '#kits' },
+    { name: 'Enterprise Solutions', href: '#solutions' },
+    { name: 'Portfolio', href: '#portfolio' },
+    { name: 'Contact Us', href: '#contact' },
   ];
 
   const handleNavClick = (e, href) => {
@@ -39,39 +39,64 @@ export default function Navbar({ onOpenBooking, onOpenAppointments, appointmentC
           left: 0,
           right: 0,
           zIndex: 100,
-          backgroundColor: isScrolled ? 'rgba(255, 253, 248, 0.96)' : 'var(--bg-cream)',
+          backgroundColor: isScrolled ? 'rgba(11, 19, 37, 0.94)' : 'var(--bg-dark)',
           backdropFilter: isScrolled ? 'blur(16px)' : 'none',
-          borderBottom: isScrolled ? '1px solid var(--color-border)' : '1px solid transparent',
+          borderBottom: '1px solid var(--color-border-dark)',
           transition: 'all 0.35s ease',
-          padding: isScrolled ? '1.15rem 0' : '1.75rem 0',
-          minHeight: isScrolled ? '88px' : '98px',
+          padding: isScrolled ? '1rem 0' : '1.5rem 0',
           display: 'flex',
           alignItems: 'center'
         }}
       >
         <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          {/* Logo */}
+          {/* Brand Logo */}
           <a
             href="#hero"
             onClick={(e) => handleNavClick(e, '#hero')}
             style={{
               fontFamily: 'var(--font-serif)',
-              fontSize: '2.25rem',
-              fontWeight: 600,
-              color: 'var(--color-forest)',
+              fontSize: '2rem',
+              fontWeight: 700,
+              color: 'var(--color-text-white)',
               textDecoration: 'none',
-              letterSpacing: '-0.02em',
+              letterSpacing: '-0.01em',
               display: 'flex',
               alignItems: 'center',
-              gap: '0.5rem'
+              gap: '0.65rem'
             }}
           >
-            <span style={{ color: 'var(--color-gold)', fontStyle: 'italic', fontWeight: 400, fontSize: '2.35rem' }}>Lumé</span>
-            <span style={{ textTransform: 'uppercase', fontSize: '1.1rem', letterSpacing: '0.18em', fontWeight: 700, color: 'var(--color-forest)' }}>Studio</span>
+            <div style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '8px',
+              background: 'linear-gradient(135deg, #E5C158 0%, #C5A059 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#0B1325',
+              fontWeight: 800,
+              fontSize: '1.25rem',
+              fontFamily: 'var(--font-serif)'
+            }}>
+              A
+            </div>
+            <span>Aura Luxe</span>
+            <span style={{
+              fontSize: '0.75rem',
+              fontFamily: 'var(--font-sans)',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.15em',
+              color: 'var(--color-gold)',
+              padding: '0.2rem 0.5rem',
+              border: '1px solid var(--color-border)',
+              borderRadius: '4px',
+              backgroundColor: 'rgba(212, 175, 55, 0.1)'
+            }}>Corporate</span>
           </a>
 
-          {/* Desktop Navigation Links */}
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '2.75rem' }} className="desktop-nav">
+          {/* Desktop Nav Links */}
+          <nav style={{ display: 'flex', alignItems: 'center', gap: '2.25rem' }} className="desktop-nav">
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -79,15 +104,15 @@ export default function Navbar({ onOpenBooking, onOpenAppointments, appointmentC
                 onClick={(e) => handleNavClick(e, link.href)}
                 style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '1.05rem',
+                  fontSize: '0.95rem',
                   fontWeight: 500,
-                  color: 'var(--color-charcoal)',
+                  color: 'var(--color-text-light)',
                   textDecoration: 'none',
-                  letterSpacing: '0.02em',
+                  letterSpacing: '0.01em',
                   transition: 'color 0.25s ease'
                 }}
-                onMouseEnter={(e) => (e.target.style.color = 'var(--color-forest)')}
-                onMouseLeave={(e) => (e.target.style.color = 'var(--color-charcoal)')}
+                onMouseEnter={(e) => (e.target.style.color = 'var(--color-gold)')}
+                onMouseLeave={(e) => (e.target.style.color = 'var(--color-text-light)')}
               >
                 {link.name}
               </a>
@@ -95,55 +120,55 @@ export default function Navbar({ onOpenBooking, onOpenAppointments, appointmentC
           </nav>
 
           {/* Action Buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }} className="desktop-actions">
-            {appointmentCount > 0 && (
-              <button
-                onClick={onOpenAppointments}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }} className="desktop-actions">
+            <button
+              onClick={onOpenAppointments}
+              style={{
+                background: 'transparent',
+                border: '1px solid var(--color-border-dark)',
+                color: 'var(--color-text-white)',
+                padding: '0.65rem 1.15rem',
+                borderRadius: '6px',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '0.9rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                transition: 'all 0.25s ease'
+              }}
+              onMouseEnter={(e) => (e.target.style.borderColor = 'var(--color-gold)')}
+              onMouseLeave={(e) => (e.target.style.borderColor = 'var(--color-border-dark)')}
+            >
+              Quote List
+              <span
                 style={{
-                  background: 'transparent',
-                  border: '1px solid var(--color-border)',
-                  color: 'var(--color-forest)',
-                  padding: '0.75rem 1.35rem',
-                  borderRadius: '3px',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '0.95rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
+                  backgroundColor: 'var(--color-gold)',
+                  color: '#0B1325',
+                  borderRadius: '50%',
+                  width: '20px',
+                  height: '20px',
+                  fontSize: '0.75rem',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.5rem'
+                  justifyContent: 'center',
+                  fontWeight: 700
                 }}
               >
-                Appointments
-                <span
-                  style={{
-                    backgroundColor: 'var(--color-gold)',
-                    color: '#fff',
-                    borderRadius: '50%',
-                    width: '22px',
-                    height: '22px',
-                    fontSize: '0.8rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontWeight: 700
-                  }}
-                >
-                  {appointmentCount}
-                </span>
-              </button>
-            )}
+                {appointmentCount}
+              </span>
+            </button>
 
             <button
               onClick={() => onOpenBooking()}
-              className="btn btn-primary"
-              style={{ padding: '0.85rem 1.85rem', fontSize: '1rem' }}
+              className="btn btn-gold btn-sm"
             >
-              Book Now
+              Build Custom Quote
             </button>
           </div>
 
-          {/* Mobile Hamburger Toggle */}
+          {/* Mobile Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="mobile-toggle"
@@ -154,7 +179,7 @@ export default function Navbar({ onOpenBooking, onOpenAppointments, appointmentC
               border: 'none',
               cursor: 'pointer',
               padding: '0.5rem',
-              color: 'var(--color-forest)'
+              color: 'var(--color-text-white)'
             }}
           >
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -175,13 +200,13 @@ export default function Navbar({ onOpenBooking, onOpenAppointments, appointmentC
               top: '100%',
               left: 0,
               right: 0,
-              backgroundColor: 'var(--bg-ivory)',
-              borderBottom: '1px solid var(--color-border)',
-              padding: '1.75rem 2rem 2.25rem 2rem',
+              backgroundColor: 'var(--bg-dark-secondary)',
+              borderBottom: '1px solid var(--color-border-dark)',
+              padding: '1.5rem 2rem',
               display: 'flex',
               flexDirection: 'column',
-              gap: '1.35rem',
-              boxShadow: 'var(--shadow-hover)'
+              gap: '1.2rem',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
             }}
           >
             {navLinks.map((link) => (
@@ -191,9 +216,9 @@ export default function Navbar({ onOpenBooking, onOpenAppointments, appointmentC
                 onClick={(e) => handleNavClick(e, link.href)}
                 style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '1.2rem',
+                  fontSize: '1.1rem',
                   fontWeight: 500,
-                  color: 'var(--color-forest)',
+                  color: 'var(--color-text-white)',
                   textDecoration: 'none'
                 }}
               >
@@ -201,27 +226,24 @@ export default function Navbar({ onOpenBooking, onOpenAppointments, appointmentC
               </a>
             ))}
 
-            <div style={{ paddingTop: '1.25rem', borderTop: '1px solid var(--color-border-light)', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-              {appointmentCount > 0 && (
-                <button
-                  onClick={() => { setMobileMenuOpen(false); onOpenAppointments(); }}
-                  className="btn btn-secondary btn-full"
-                >
-                  My Appointments ({appointmentCount})
-                </button>
-              )}
+            <div style={{ paddingTop: '1rem', borderTop: '1px solid var(--color-border-dark)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <button
+                onClick={() => { setMobileMenuOpen(false); onOpenAppointments(); }}
+                className="btn btn-outline-gold btn-full"
+              >
+                Quote List ({appointmentCount})
+              </button>
               <button
                 onClick={() => { setMobileMenuOpen(false); onOpenBooking(); }}
-                className="btn btn-primary btn-full"
+                className="btn btn-gold btn-full"
               >
-                Book Appointment
+                Build Custom Quote
               </button>
             </div>
           </div>
         )}
       </header>
 
-      {/* Responsive Inline CSS rules for Navbar */}
       <style>{`
         @media (max-width: 1024px) {
           .desktop-nav, .desktop-actions {
@@ -235,3 +257,4 @@ export default function Navbar({ onOpenBooking, onOpenAppointments, appointmentC
     </>
   );
 }
+

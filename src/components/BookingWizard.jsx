@@ -1,88 +1,82 @@
 import React, { useState, useEffect } from 'react';
-import { services, specialists, timeSlots } from '../data/mockData';
+import { products, customizationMethods } from '../data/mockData';
 
 export default function BookingWizard({ isOpen, onClose, initialData = null, onConfirmBooking }) {
   const [step, setStep] = useState(1);
-  const [selectedService, setSelectedService] = useState(null);
-  const [selectedSpecialist, setSelectedSpecialist] = useState(null);
-  const [selectedDate, setSelectedDate] = useState('');
-  const [selectedTime, setSelectedTime] = useState('');
-  const [customerInfo, setCustomerInfo] = useState({
-    name: '',
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [quantity, setQuantity] = useState(25);
+  const [selectedBranding, setSelectedBranding] = useState(['Laser Engraving']);
+  const [customCardMessage, setCustomCardMessage] = useState('');
+  const [companyDetails, setCompanyDetails] = useState({
+    companyName: '',
+    contactName: '',
     email: '',
     phone: '',
+    deliveryDate: '',
     notes: ''
   });
   const [errors, setErrors] = useState({});
-  const [bookingSuccess, setBookingSuccess] = useState(false);
-  const [confirmedBookingDetails, setConfirmedBookingDetails] = useState(null);
-
-  // Initialize date to tomorrow by default
-  useEffect(() => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const dateStr = tomorrow.toISOString().split('T')[0];
-    setSelectedDate(dateStr);
-  }, []);
+  const [quoteSuccess, setQuoteSuccess] = useState(false);
+  const [generatedQuote, setGeneratedQuote] = useState(null);
 
   // Pre-fill selection if passed from outside
   useEffect(() => {
     if (initialData) {
       if (initialData.service) {
-        setSelectedService(initialData.service);
+        setSelectedProduct(initialData.service);
       } else if (initialData.package) {
-        setSelectedService({
+        setSelectedProduct({
           id: initialData.package.id,
-          name: `${initialData.package.name} Package`,
+          name: initialData.package.name,
           shortDesc: initialData.package.tagline,
-          duration: initialData.package.duration,
-          price: initialData.package.price
+          price: initialData.package.price,
+          moq: 10
         });
       }
-
-      if (initialData.specialist) {
-        setSelectedSpecialist(initialData.specialist);
-      }
-
-      // Automatically advance to appropriate step
-      if (initialData.service || initialData.package) {
-        setStep(2);
-      } else if (initialData.specialist) {
-        setStep(1);
-      }
+      setStep(2);
+    } else if (products.length > 0 && !selectedProduct) {
+      setSelectedProduct(products[0]);
     }
   }, [initialData]);
 
   if (!isOpen) return null;
 
+  // Calculate instant pricing & bulk discounts
+  const basePrice = selectedProduct ? selectedProduct.price : 100;
+  let discountPct = 0;
+  if (quantity >= 100) discountPct = 0.20; // 20% off
+  else if (quantity >= 50) discountPct = 0.15; // 15% off
+  else if (quantity >= 25) discountPct = 0.10; // 10% off
+
+  const unitPriceAfterDiscount = Math.round(basePrice * (1 - discountPct));
+  const subtotal = unitPriceAfterDiscount * quantity;
+  const brandingFee = selectedBranding.length * 3 * quantity; // $3 per branding option per unit
+  const grandTotal = subtotal + brandingFee;
+
+  const toggleBranding = (methodName) => {
+    if (selectedBranding.includes(methodName)) {
+      setSelectedBranding(prev => prev.filter(b => b !== methodName));
+    } else {
+      setSelectedBranding(prev => [...prev, methodName]);
+    }
+  };
+
   const handleNextStep = () => {
-    if (step === 1 && !selectedService) {
-      alert('Please select a treatment service to proceed.');
-      return;
-    }
-    if (step === 2 && !selectedSpecialist) {
-      setSelectedSpecialist(specialists[0]);
-    }
-    if (step === 3 && !selectedDate) {
-      alert('Please choose an appointment date.');
-      return;
-    }
-    if (step === 4 && !selectedTime) {
-      alert('Please select an appointment time slot.');
+    if (step === 1 && !selectedProduct) {
+      alert('Please select a corporate gift item to proceed.');
       return;
     }
     if (step === 5) {
       const newErrors = {};
-      if (!customerInfo.name.trim()) newErrors.name = 'Full name is required';
-      if (!customerInfo.email.trim()) newErrors.email = 'Email address is required';
-      if (!customerInfo.phone.trim()) newErrors.phone = 'Phone number is required';
+      if (!companyDetails.companyName.trim()) newErrors.companyName = 'Company name is required';
+      if (!companyDetails.contactName.trim()) newErrors.contactName = 'Contact name is required';
+      if (!companyDetails.email.trim()) newErrors.email = 'Work email is required';
 
       if (Object.keys(newErrors).length > 0) {
         setErrors(newErrors);
         return;
       }
     }
-
     setStep((prev) => Math.min(prev + 1, 6));
   };
 
@@ -90,30 +84,35 @@ export default function BookingWizard({ isOpen, onClose, initialData = null, onC
     setStep((prev) => Math.max(prev - 1, 1));
   };
 
-  const handleConfirm = () => {
-    const booking = {
-      id: Math.floor(100000 + Math.random() * 900000).toString(),
-      service: selectedService,
-      specialist: selectedSpecialist || specialists[0],
-      date: selectedDate,
-      time: selectedTime,
-      customer: customerInfo,
+  const handleConfirmQuote = () => {
+    const quote = {
+      id: 'AQ-' + Math.floor(100000 + Math.random() * 900000),
+      product: selectedProduct,
+      service: selectedProduct, // Alias for cart compatibility
+      quantity,
+      selectedBranding,
+      customCardMessage,
+      unitPrice: unitPriceAfterDiscount,
+      grandTotal,
+      company: companyDetails,
+      customer: {
+        name: companyDetails.contactName,
+        email: companyDetails.email,
+        phone: companyDetails.phone
+      },
       createdAt: new Date().toISOString()
     };
 
-    setConfirmedBookingDetails(booking);
-    setBookingSuccess(true);
-    onConfirmBooking(booking);
+    setGeneratedQuote(quote);
+    setQuoteSuccess(true);
+    onConfirmBooking(quote);
   };
 
   const resetAndClose = () => {
     setStep(1);
-    setSelectedService(null);
-    setSelectedSpecialist(null);
-    setSelectedTime('');
-    setCustomerInfo({ name: '', email: '', phone: '', notes: '' });
+    setCompanyDetails({ companyName: '', contactName: '', email: '', phone: '', deliveryDate: '', notes: '' });
     setErrors({});
-    setBookingSuccess(false);
+    setQuoteSuccess(false);
     onClose();
   };
 
@@ -122,115 +121,122 @@ export default function BookingWizard({ isOpen, onClose, initialData = null, onC
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
-          backgroundColor: 'var(--bg-ivory)',
+          backgroundColor: 'var(--bg-white)',
           width: '100%',
-          maxWidth: '880px',
-          maxHeight: '90vh',
-          borderRadius: '8px',
-          padding: '3rem',
+          maxWidth: '920px',
+          maxHeight: '92vh',
+          borderRadius: '12px',
+          padding: '2.5rem',
           display: 'flex',
           flexDirection: 'column',
-          boxShadow: 'var(--shadow-hover)',
-          border: '1px solid var(--color-border)',
+          boxShadow: '0 24px 60px rgba(0,0,0,0.5)',
+          border: '1px solid var(--color-border-subtle)',
           overflowY: 'auto'
         }}
       >
         {/* Header Bar */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.25rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--color-border)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', paddingBottom: '1rem', borderBottom: '1px solid var(--color-border-subtle)' }}>
           <div>
-            <span className="eyebrow" style={{ margin: 0 }}>ONLINE RESERVATION</span>
-            <h3 style={{ fontSize: '2rem', fontFamily: 'var(--font-serif)', color: 'var(--color-forest)', margin: 0 }}>
-              Book Your Lumé Ritual
+            <span className="eyebrow" style={{ margin: 0 }}>INSTANT QUOTE CALCULATOR</span>
+            <h3 style={{ fontSize: '1.8rem', fontFamily: 'var(--font-serif)', color: 'var(--color-navy)', margin: 0 }}>
+              Build Your Corporate Gift Proposal
             </h3>
           </div>
           <button
             onClick={resetAndClose}
-            style={{ background: 'none', border: 'none', fontSize: '1.75rem', color: 'var(--color-forest)', cursor: 'pointer' }}
+            style={{ background: 'none', border: 'none', fontSize: '1.6rem', color: 'var(--color-navy)', cursor: 'pointer' }}
           >
             ✕
           </button>
         </div>
 
-        {/* Success Screen View */}
-        {bookingSuccess ? (
-          <div style={{ textAlign: 'center', padding: '2.5rem 1rem' }}>
+        {/* Quote Success Screen */}
+        {quoteSuccess ? (
+          <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
             <div
               style={{
-                width: '84px',
-                height: '84px',
+                width: '76px',
+                height: '76px',
                 borderRadius: '50%',
-                backgroundColor: 'rgba(31, 74, 60, 0.1)',
-                color: 'var(--color-forest)',
+                backgroundColor: 'rgba(212, 175, 55, 0.15)',
+                color: 'var(--color-gold)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '3rem',
-                margin: '0 auto 1.75rem auto'
+                fontSize: '2.5rem',
+                margin: '0 auto 1.5rem auto',
+                border: '2px solid var(--color-gold)'
               }}
             >
               ✓
             </div>
 
-            <h2 style={{ fontSize: '2.5rem', color: 'var(--color-forest)', margin: '0 0 0.75rem 0' }}>
-              Your Appointment is Confirmed!
+            <h2 style={{ fontSize: '2.25rem', color: 'var(--color-navy)', margin: '0 0 0.5rem 0' }}>
+              Corporate Quote Generated!
             </h2>
-            <p style={{ fontSize: '1.15rem', color: 'var(--color-warm-gray)', marginBottom: '2.5rem' }}>
-              We have sent a confirmation email to <strong style={{ color: 'var(--color-forest)' }}>{confirmedBookingDetails?.customer?.email}</strong>.
+            <p style={{ fontSize: '1.05rem', color: 'var(--color-text-muted)', marginBottom: '2rem' }}>
+              A formal proposal reference <strong style={{ color: 'var(--color-navy)' }}>#{generatedQuote?.id}</strong> has been created for <strong style={{ color: 'var(--color-navy)' }}>{generatedQuote?.company?.companyName}</strong>.
             </p>
 
-            {/* Summary Ticket */}
+            {/* Proposal Ticket */}
             <div
               style={{
-                backgroundColor: 'var(--bg-cream)',
-                border: '1px solid var(--color-border)',
-                borderRadius: '6px',
-                padding: '2.5rem',
-                maxWidth: '560px',
-                margin: '0 auto 3rem auto',
+                backgroundColor: 'var(--bg-slate)',
+                border: '1px solid var(--color-border-subtle)',
+                borderRadius: '10px',
+                padding: '2rem',
+                maxWidth: '620px',
+                margin: '0 auto 2.5rem auto',
                 textAlign: 'left'
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', paddingBottom: '1rem', borderBottom: '1px solid var(--color-border)' }}>
-                <span style={{ fontSize: '0.9rem', color: 'var(--color-warm-gray)', fontWeight: 600 }}>RESERVATION REF:</span>
-                <span style={{ fontSize: '1.05rem', color: 'var(--color-forest)', fontWeight: 700 }}>#{confirmedBookingDetails?.id}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--color-border-subtle)' }}>
+                <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', fontWeight: 700 }}>PROPOSAL REFERENCE:</span>
+                <span style={{ fontSize: '1rem', color: 'var(--color-gold)', fontWeight: 800 }}>{generatedQuote?.id}</span>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.95rem', fontSize: '1.05rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.95rem' }}>
                 <div>
-                  <strong style={{ color: 'var(--color-forest)' }}>Treatment:</strong> {confirmedBookingDetails?.service?.name}
+                  <strong style={{ color: 'var(--color-navy)' }}>Selected Item:</strong> {generatedQuote?.product?.name}
                 </div>
                 <div>
-                  <strong style={{ color: 'var(--color-forest)' }}>Specialist:</strong> {confirmedBookingDetails?.specialist?.name}
+                  <strong style={{ color: 'var(--color-navy)' }}>Order Volume:</strong> {generatedQuote?.quantity} Gift Boxes
                 </div>
                 <div>
-                  <strong style={{ color: 'var(--color-forest)' }}>Date &amp; Time:</strong> {confirmedBookingDetails?.date} at {confirmedBookingDetails?.time}
+                  <strong style={{ color: 'var(--color-navy)' }}>Branding Methods:</strong> {generatedQuote?.selectedBranding?.join(', ') || 'Standard Packaging'}
                 </div>
                 <div>
-                  <strong style={{ color: 'var(--color-forest)' }}>Duration:</strong> {confirmedBookingDetails?.service?.duration || '60 mins'}
+                  <strong style={{ color: 'var(--color-navy)' }}>Contact:</strong> {generatedQuote?.company?.contactName} ({generatedQuote?.company?.email})
                 </div>
-                <div>
-                  <strong style={{ color: 'var(--color-forest)' }}>Total Investment:</strong> RM {confirmedBookingDetails?.service?.price}
+                <div style={{ marginTop: '0.5rem', paddingTop: '0.75rem', borderTop: '1px solid var(--color-border-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-navy)' }}>Total Estimated Investment:</span>
+                  <span style={{ fontSize: '1.85rem', fontFamily: 'var(--font-serif)', fontWeight: 800, color: 'var(--color-navy)' }}>
+                    ${generatedQuote?.grandTotal?.toLocaleString()} <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>USD</span>
+                  </span>
                 </div>
               </div>
             </div>
 
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-              <button onClick={resetAndClose} className="btn btn-primary" style={{ padding: '1.25rem 2.85rem', fontSize: '1.1rem' }}>
-                Return to Home
+              <button onClick={() => window.print()} className="btn btn-outline-navy" style={{ padding: '0.9rem 1.8rem' }}>
+                Print / Save PDF Quote
+              </button>
+              <button onClick={resetAndClose} className="btn btn-gold" style={{ padding: '0.9rem 2.2rem' }}>
+                Return to Site
               </button>
             </div>
           </div>
         ) : (
           <>
             {/* Step Progress Indicators */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2.5rem', position: 'relative' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem', position: 'relative' }}>
               {[
-                { num: 1, label: 'Service' },
-                { num: 2, label: 'Specialist' },
-                { num: 3, label: 'Date' },
-                { num: 4, label: 'Time' },
-                { num: 5, label: 'Details' },
-                { num: 6, label: 'Summary' }
+                { num: 1, label: 'Gift Selection' },
+                { num: 2, label: 'Quantity' },
+                { num: 3, label: 'Logo Branding' },
+                { num: 4, label: 'Card & Note' },
+                { num: 5, label: 'Company Info' },
+                { num: 6, label: 'Proposal Summary' }
               ].map((s) => (
                 <div
                   key={s.num}
@@ -247,23 +253,22 @@ export default function BookingWizard({ isOpen, onClose, initialData = null, onC
                 >
                   <div
                     style={{
-                      width: '38px',
-                      height: '38px',
+                      width: '34px',
+                      height: '34px',
                       borderRadius: '50%',
-                      backgroundColor: step === s.num ? 'var(--color-forest)' : step > s.num ? 'var(--color-gold)' : 'var(--bg-cream)',
-                      color: step >= s.num ? 'var(--bg-ivory)' : 'var(--color-warm-gray)',
+                      backgroundColor: step === s.num ? 'var(--color-navy)' : step > s.num ? 'var(--color-gold)' : '#E2E8F0',
+                      color: step >= s.num ? '#FFFFFF' : 'var(--color-text-muted)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '0.95rem',
+                      fontSize: '0.85rem',
                       fontWeight: 700,
-                      border: step >= s.num ? 'none' : '1px solid var(--color-border)',
                       transition: 'all 0.3s ease'
                     }}
                   >
                     {step > s.num ? '✓' : s.num}
                   </div>
-                  <span style={{ fontSize: '0.825rem', marginTop: '0.45rem', fontWeight: step === s.num ? 700 : 500, color: step === s.num ? 'var(--color-forest)' : 'var(--color-warm-gray)' }}>
+                  <span style={{ fontSize: '0.775rem', marginTop: '0.35rem', fontWeight: step === s.num ? 700 : 500, color: step === s.num ? 'var(--color-navy)' : 'var(--color-text-muted)' }}>
                     {s.label}
                   </span>
                 </div>
@@ -271,25 +276,25 @@ export default function BookingWizard({ isOpen, onClose, initialData = null, onC
             </div>
 
             {/* Step Content */}
-            <div style={{ minHeight: '380px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              {/* STEP 1: CHOOSE SERVICE */}
+            <div style={{ minHeight: '360px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              {/* STEP 1: CHOOSE GIFT */}
               {step === 1 && (
                 <div>
-                  <h4 style={{ fontSize: '1.4rem', fontFamily: 'var(--font-serif)', color: 'var(--color-forest)', marginBottom: '1.25rem' }}>
-                    Step 1: Select Treatment Service
+                  <h4 style={{ fontSize: '1.3rem', fontFamily: 'var(--font-serif)', color: 'var(--color-navy)', marginBottom: '1rem' }}>
+                    Step 1: Select Corporate Gift Item
                   </h4>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxHeight: '380px', overflowY: 'auto', paddingRight: '0.5rem' }}>
-                    {services.map((serv) => {
-                      const isSelected = selectedService?.id === serv.id;
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', maxHeight: '340px', overflowY: 'auto', paddingRight: '0.3rem' }}>
+                    {products.map((p) => {
+                      const isSelected = selectedProduct?.id === p.id;
                       return (
                         <div
-                          key={serv.id}
-                          onClick={() => setSelectedService(serv)}
+                          key={p.id}
+                          onClick={() => setSelectedProduct(p)}
                           style={{
-                            padding: '1.25rem 1.6rem',
-                            borderRadius: '6px',
-                            border: isSelected ? '2px solid var(--color-forest)' : '1px solid var(--color-border)',
-                            backgroundColor: isSelected ? 'var(--bg-cream)' : 'var(--bg-white)',
+                            padding: '1rem 1.25rem',
+                            borderRadius: '8px',
+                            border: isSelected ? '2px solid var(--color-gold)' : '1px solid var(--color-border-subtle)',
+                            backgroundColor: isSelected ? 'rgba(212, 175, 55, 0.08)' : 'var(--bg-white)',
                             cursor: 'pointer',
                             display: 'flex',
                             justifyContent: 'space-between',
@@ -297,16 +302,19 @@ export default function BookingWizard({ isOpen, onClose, initialData = null, onC
                             transition: 'all 0.2s ease'
                           }}
                         >
-                          <div>
-                            <h5 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-serif)', color: 'var(--color-forest)', margin: 0 }}>
-                              {serv.name}
-                            </h5>
-                            <span style={{ fontSize: '0.9rem', color: 'var(--color-warm-gray)' }}>
-                              {serv.duration} • {serv.shortDesc}
-                            </span>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                            <img src={p.image} alt={p.name} style={{ width: '48px', height: '48px', borderRadius: '6px', objectFit: 'cover' }} />
+                            <div>
+                              <h5 style={{ fontSize: '1.1rem', fontFamily: 'var(--font-serif)', color: 'var(--color-navy)', margin: 0 }}>
+                                {p.name}
+                              </h5>
+                              <span style={{ fontSize: '0.825rem', color: 'var(--color-text-muted)' }}>
+                                MOQ: {p.moq} Units • Lead Time: {p.leadTime}
+                              </span>
+                            </div>
                           </div>
-                          <span style={{ fontSize: '1.35rem', fontFamily: 'var(--font-serif)', fontWeight: 700, color: 'var(--color-forest)', whiteSpace: 'nowrap', marginLeft: '1.5rem' }}>
-                            RM {serv.price}
+                          <span style={{ fontSize: '1.25rem', fontFamily: 'var(--font-serif)', fontWeight: 700, color: 'var(--color-navy)', whiteSpace: 'nowrap' }}>
+                            ${p.price} USD
                           </span>
                         </div>
                       );
@@ -315,46 +323,103 @@ export default function BookingWizard({ isOpen, onClose, initialData = null, onC
                 </div>
               )}
 
-              {/* STEP 2: CHOOSE SPECIALIST */}
+              {/* STEP 2: QUANTITY & BULK DISCOUNTS */}
               {step === 2 && (
                 <div>
-                  <h4 style={{ fontSize: '1.4rem', fontFamily: 'var(--font-serif)', color: 'var(--color-forest)', marginBottom: '1.25rem' }}>
-                    Step 2: Select Specialist
+                  <h4 style={{ fontSize: '1.3rem', fontFamily: 'var(--font-serif)', color: 'var(--color-navy)', marginBottom: '0.5rem' }}>
+                    Step 2: Select Recipient Quantity
                   </h4>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }} className="form-row">
-                    {specialists.map((sp) => {
-                      const isSelected = selectedSpecialist?.id === sp.id;
+                  <p style={{ fontSize: '0.95rem', color: 'var(--color-text-muted)', marginBottom: '1.75rem' }}>
+                    Configure the total volume. Higher quantities automatically unlock tiered enterprise savings.
+                  </p>
+
+                  <div style={{ backgroundColor: 'var(--bg-slate)', padding: '2rem', borderRadius: '10px', marginBottom: '2rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                      <span style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--color-navy)' }}>Total Gift Boxes:</span>
+                      <span style={{ fontSize: '2rem', fontFamily: 'var(--font-serif)', fontWeight: 800, color: 'var(--color-gold)' }}>
+                        {quantity} Units
+                      </span>
+                    </div>
+
+                    <input
+                      type="range"
+                      min={selectedProduct?.moq || 10}
+                      max="500"
+                      step="5"
+                      value={quantity}
+                      onChange={(e) => setQuantity(parseInt(e.target.value))}
+                      style={{ width: '100%', accentColor: 'var(--color-gold)', cursor: 'pointer', height: '8px' }}
+                    />
+
+                    {/* Tier Badges */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1.5rem', gap: '0.5rem' }}>
+                      <div style={{ padding: '0.5rem 0.75rem', borderRadius: '6px', backgroundColor: quantity < 25 ? 'var(--color-navy)' : '#E2E8F0', color: quantity < 25 ? '#FFF' : '#64748B', fontSize: '0.8rem', fontWeight: 600, textAlign: 'center' }}>
+                        10-24 Units (Standard)
+                      </div>
+                      <div style={{ padding: '0.5rem 0.75rem', borderRadius: '6px', backgroundColor: quantity >= 25 && quantity < 50 ? 'var(--color-gold)' : '#E2E8F0', color: quantity >= 25 && quantity < 50 ? '#0B1325' : '#64748B', fontSize: '0.8rem', fontWeight: 600, textAlign: 'center' }}>
+                        25-49 Units (10% OFF)
+                      </div>
+                      <div style={{ padding: '0.5rem 0.75rem', borderRadius: '6px', backgroundColor: quantity >= 50 && quantity < 100 ? 'var(--color-gold)' : '#E2E8F0', color: quantity >= 50 && quantity < 100 ? '#0B1325' : '#64748B', fontSize: '0.8rem', fontWeight: 600, textAlign: 'center' }}>
+                        50-99 Units (15% OFF)
+                      </div>
+                      <div style={{ padding: '0.5rem 0.75rem', borderRadius: '6px', backgroundColor: quantity >= 100 ? 'var(--color-navy)' : '#E2E8F0', color: quantity >= 100 ? '#FFF' : '#64748B', fontSize: '0.8rem', fontWeight: 600, textAlign: 'center' }}>
+                        100+ Units (20% OFF)
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Instant Subtotal Preview */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.5rem', backgroundColor: 'rgba(212, 175, 55, 0.1)', borderRadius: '8px', border: '1px solid var(--color-gold)' }}>
+                    <span>Discounted Unit Price: <strong>${unitPriceAfterDiscount}</strong> ({discountPct * 100}% savings)</span>
+                    <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-navy)' }}>
+                      Box Subtotal: ${subtotal.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 3: BRANDING METHODS */}
+              {step === 3 && (
+                <div>
+                  <h4 style={{ fontSize: '1.3rem', fontFamily: 'var(--font-serif)', color: 'var(--color-navy)', marginBottom: '0.5rem' }}>
+                    Step 3: Select Logo Branding Methods
+                  </h4>
+                  <p style={{ fontSize: '0.95rem', color: 'var(--color-text-muted)', marginBottom: '1.5rem' }}>
+                    Choose how your corporate logo or crest should be applied to the product &amp; packaging.
+                  </p>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }} className="form-row">
+                    {customizationMethods.map((m) => {
+                      const isChecked = selectedBranding.includes(m.name);
                       return (
                         <div
-                          key={sp.id}
-                          onClick={() => setSelectedSpecialist(sp)}
+                          key={m.id}
+                          onClick={() => toggleBranding(m.name)}
                           style={{
-                            padding: '1.5rem',
-                            borderRadius: '6px',
-                            border: isSelected ? '2px solid var(--color-forest)' : '1px solid var(--color-border)',
-                            backgroundColor: isSelected ? 'var(--bg-cream)' : 'var(--bg-white)',
+                            padding: '1.2rem',
+                            borderRadius: '8px',
+                            border: isChecked ? '2px solid var(--color-gold)' : '1px solid var(--color-border-subtle)',
+                            backgroundColor: isChecked ? 'rgba(212, 175, 55, 0.08)' : 'var(--bg-white)',
                             cursor: 'pointer',
                             display: 'flex',
-                            alignItems: 'center',
-                            gap: '1.25rem',
+                            gap: '0.85rem',
+                            alignItems: 'flex-start',
                             transition: 'all 0.2s ease'
                           }}
                         >
-                          <img
-                            src={sp.image}
-                            alt={sp.name}
-                            style={{ width: '68px', height: '68px', borderRadius: '50%', objectFit: 'cover' }}
+                          <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={() => {}}
+                            style={{ marginTop: '0.2rem', accentColor: 'var(--color-gold)', cursor: 'pointer' }}
                           />
                           <div>
-                            <h5 style={{ fontSize: '1.2rem', fontFamily: 'var(--font-serif)', color: 'var(--color-forest)', margin: 0 }}>
-                              {sp.name}
+                            <h5 style={{ fontSize: '1.05rem', fontFamily: 'var(--font-serif)', color: 'var(--color-navy)', margin: '0 0 0.25rem 0' }}>
+                              {m.name}
                             </h5>
-                            <span style={{ fontSize: '0.85rem', color: 'var(--color-gold)', fontWeight: 600, display: 'block' }}>
-                              {sp.role}
-                            </span>
-                            <span style={{ fontSize: '0.8rem', color: 'var(--color-warm-gray)' }}>
-                              ★ {sp.rating} rating
-                            </span>
+                            <p style={{ fontSize: '0.825rem', color: 'var(--color-text-muted)', margin: 0, lineHeight: 1.4 }}>
+                              {m.description}
+                            </p>
                           </div>
                         </div>
                       );
@@ -363,133 +428,95 @@ export default function BookingWizard({ isOpen, onClose, initialData = null, onC
                 </div>
               )}
 
-              {/* STEP 3: CHOOSE DATE */}
-              {step === 3 && (
-                <div>
-                  <h4 style={{ fontSize: '1.4rem', fontFamily: 'var(--font-serif)', color: 'var(--color-forest)', marginBottom: '1rem' }}>
-                    Step 3: Choose Appointment Date
-                  </h4>
-                  <p style={{ fontSize: '1.05rem', color: 'var(--color-warm-gray)', marginBottom: '1.75rem' }}>
-                    Select your preferred date for the appointment.
-                  </p>
-
-                  <div className="form-group" style={{ maxWidth: '400px' }}>
-                    <label className="form-label">Appointment Date</label>
-                    <input
-                      type="date"
-                      value={selectedDate}
-                      min={new Date().toISOString().split('T')[0]}
-                      onChange={(e) => setSelectedDate(e.target.value)}
-                      className="form-input"
-                      style={{ fontSize: '1.15rem', padding: '1.1rem' }}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* STEP 4: CHOOSE TIME */}
+              {/* STEP 4: CARD PERSONALIZATION */}
               {step === 4 && (
                 <div>
-                  <h4 style={{ fontSize: '1.4rem', fontFamily: 'var(--font-serif)', color: 'var(--color-forest)', marginBottom: '0.65rem' }}>
-                    Step 4: Select Time Slot
+                  <h4 style={{ fontSize: '1.3rem', fontFamily: 'var(--font-serif)', color: 'var(--color-navy)', marginBottom: '0.5rem' }}>
+                    Step 4: Custom Note Card &amp; Message
                   </h4>
-                  <p style={{ fontSize: '1.05rem', color: 'var(--color-warm-gray)', marginBottom: '1.75rem' }}>
-                    Available slots for {selectedDate}:
+                  <p style={{ fontSize: '0.95rem', color: 'var(--color-text-muted)', marginBottom: '1.5rem' }}>
+                    Every box includes a heavy cardstock foil-stamped greeting letter. Enter your custom text or logo message below.
                   </p>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.25rem' }}>
-                    {timeSlots.map((slot) => {
-                      const isSelected = selectedTime === slot;
-                      return (
-                        <button
-                          key={slot}
-                          onClick={() => setSelectedTime(slot)}
-                          style={{
-                            padding: '1.25rem',
-                            fontFamily: 'var(--font-sans)',
-                            fontSize: '1.1rem',
-                            fontWeight: 600,
-                            borderRadius: '6px',
-                            border: isSelected ? '2px solid var(--color-forest)' : '1px solid var(--color-border)',
-                            backgroundColor: isSelected ? 'var(--color-forest)' : 'var(--bg-white)',
-                            color: isSelected ? 'var(--bg-ivory)' : 'var(--color-forest)',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease'
-                          }}
-                        >
-                          {slot}
-                        </button>
-                      );
-                    })}
+                  <div className="form-group">
+                    <label className="form-label">Personalized Welcome Message / Letter</label>
+                    <textarea
+                      value={customCardMessage}
+                      onChange={(e) => setCustomCardMessage(e.target.value)}
+                      placeholder="e.g. Dear [Recipient Name], Thank you for your extraordinary leadership and dedication to our company mission..."
+                      className="form-textarea"
+                      style={{ minHeight: '140px' }}
+                    ></textarea>
                   </div>
                 </div>
               )}
 
-              {/* STEP 5: CUSTOMER DETAILS */}
+              {/* STEP 5: COMPANY DETAILS */}
               {step === 5 && (
                 <div>
-                  <h4 style={{ fontSize: '1.4rem', fontFamily: 'var(--font-serif)', color: 'var(--color-forest)', marginBottom: '1.25rem' }}>
-                    Step 5: Client Contact Details
+                  <h4 style={{ fontSize: '1.3rem', fontFamily: 'var(--font-serif)', color: 'var(--color-navy)', marginBottom: '1.25rem' }}>
+                    Step 5: Enterprise Contact Details
                   </h4>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }} className="form-row">
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }} className="form-row">
                     <div className="form-group">
-                      <label className="form-label">Full Name *</label>
+                      <label className="form-label">Company Name *</label>
                       <input
                         type="text"
-                        value={customerInfo.name}
+                        value={companyDetails.companyName}
                         onChange={(e) => {
-                          setCustomerInfo({ ...customerInfo, name: e.target.value });
-                          if (errors.name) setErrors({ ...errors, name: '' });
+                          setCompanyDetails({ ...companyDetails, companyName: e.target.value });
+                          if (errors.companyName) setErrors({ ...errors, companyName: '' });
                         }}
-                        placeholder="e.g. Sarah Jenkins"
+                        placeholder="e.g. Deloitte / TechCorp"
                         className="form-input"
-                        style={{ borderColor: errors.name ? '#d9534f' : undefined }}
+                        style={{ borderColor: errors.companyName ? '#EF4444' : undefined }}
                       />
-                      {errors.name && <span style={{ color: '#d9534f', fontSize: '0.85rem' }}>{errors.name}</span>}
+                      {errors.companyName && <span style={{ color: '#EF4444', fontSize: '0.8rem' }}>{errors.companyName}</span>}
                     </div>
 
                     <div className="form-group">
-                      <label className="form-label">Email Address *</label>
+                      <label className="form-label">Contact Person *</label>
                       <input
-                        type="email"
-                        value={customerInfo.email}
+                        type="text"
+                        value={companyDetails.contactName}
                         onChange={(e) => {
-                          setCustomerInfo({ ...customerInfo, email: e.target.value });
-                          if (errors.email) setErrors({ ...errors, email: '' });
+                          setCompanyDetails({ ...companyDetails, contactName: e.target.value });
+                          if (errors.contactName) setErrors({ ...errors, contactName: '' });
                         }}
-                        placeholder="e.g. sarah@example.com"
+                        placeholder="e.g. Marcus Vance"
                         className="form-input"
-                        style={{ borderColor: errors.email ? '#d9534f' : undefined }}
+                        style={{ borderColor: errors.contactName ? '#EF4444' : undefined }}
                       />
-                      {errors.email && <span style={{ color: '#d9534f', fontSize: '0.85rem' }}>{errors.email}</span>}
+                      {errors.contactName && <span style={{ color: '#EF4444', fontSize: '0.8rem' }}>{errors.contactName}</span>}
                     </div>
                   </div>
 
-                  <div className="form-group">
-                    <label className="form-label">Phone Number *</label>
-                    <input
-                      type="tel"
-                      value={customerInfo.phone}
-                      onChange={(e) => {
-                        setCustomerInfo({ ...customerInfo, phone: e.target.value });
-                        if (errors.phone) setErrors({ ...errors, phone: '' });
-                      }}
-                      placeholder="e.g. +60 12-987 6543"
-                      className="form-input"
-                      style={{ borderColor: errors.phone ? '#d9534f' : undefined }}
-                    />
-                    {errors.phone && <span style={{ color: '#d9534f', fontSize: '0.85rem' }}>{errors.phone}</span>}
-                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }} className="form-row">
+                    <div className="form-group">
+                      <label className="form-label">Work Email *</label>
+                      <input
+                        type="email"
+                        value={companyDetails.email}
+                        onChange={(e) => {
+                          setCompanyDetails({ ...companyDetails, email: e.target.value });
+                          if (errors.email) setErrors({ ...errors, email: '' });
+                        }}
+                        placeholder="e.g. marcus@company.com"
+                        className="form-input"
+                        style={{ borderColor: errors.email ? '#EF4444' : undefined }}
+                      />
+                      {errors.email && <span style={{ color: '#EF4444', fontSize: '0.8rem' }}>{errors.email}</span>}
+                    </div>
 
-                  <div className="form-group">
-                    <label className="form-label">Special Notes / Allergies (Optional)</label>
-                    <textarea
-                      value={customerInfo.notes}
-                      onChange={(e) => setCustomerInfo({ ...customerInfo, notes: e.target.value })}
-                      placeholder="Let us know if you have skin sensitivities or specific preferences..."
-                      className="form-textarea"
-                      style={{ minHeight: '90px' }}
-                    ></textarea>
+                    <div className="form-group">
+                      <label className="form-label">Desired Delivery Date</label>
+                      <input
+                        type="date"
+                        value={companyDetails.deliveryDate}
+                        onChange={(e) => setCompanyDetails({ ...companyDetails, deliveryDate: e.target.value })}
+                        className="form-input"
+                      />
+                    </div>
                   </div>
                 </div>
               )}
@@ -497,49 +524,44 @@ export default function BookingWizard({ isOpen, onClose, initialData = null, onC
               {/* STEP 6: SUMMARY */}
               {step === 6 && (
                 <div>
-                  <h4 style={{ fontSize: '1.4rem', fontFamily: 'var(--font-serif)', color: 'var(--color-forest)', marginBottom: '1.25rem' }}>
-                    Step 6: Review &amp; Confirm Appointment
+                  <h4 style={{ fontSize: '1.3rem', fontFamily: 'var(--font-serif)', color: 'var(--color-navy)', marginBottom: '1rem' }}>
+                    Step 6: Final Review &amp; Proposal Generation
                   </h4>
                   <div
                     style={{
-                      backgroundColor: 'var(--bg-cream)',
-                      border: '1px solid var(--color-border)',
-                      borderRadius: '6px',
-                      padding: '2rem',
+                      backgroundColor: 'var(--bg-slate)',
+                      border: '1px solid var(--color-border-subtle)',
+                      borderRadius: '10px',
+                      padding: '1.75rem',
                       display: 'flex',
                       flexDirection: 'column',
-                      gap: '1.25rem'
+                      gap: '0.85rem'
                     }}
                   >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.85rem' }}>
-                      <span style={{ color: 'var(--color-warm-gray)', fontSize: '1.05rem' }}>Selected Service:</span>
-                      <strong style={{ color: 'var(--color-forest)', fontSize: '1.05rem' }}>{selectedService?.name}</strong>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--color-border-subtle)', paddingBottom: '0.65rem' }}>
+                      <span style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem' }}>Selected Gift Item:</span>
+                      <strong style={{ color: 'var(--color-navy)', fontSize: '0.95rem' }}>{selectedProduct?.name}</strong>
                     </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.85rem' }}>
-                      <span style={{ color: 'var(--color-warm-gray)', fontSize: '1.05rem' }}>Specialist:</span>
-                      <strong style={{ color: 'var(--color-forest)', fontSize: '1.05rem' }}>{selectedSpecialist?.name} ({selectedSpecialist?.role})</strong>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--color-border-subtle)', paddingBottom: '0.65rem' }}>
+                      <span style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem' }}>Quantity &amp; Volume Tier:</span>
+                      <strong style={{ color: 'var(--color-navy)', fontSize: '0.95rem' }}>{quantity} Boxes (${unitPriceAfterDiscount}/unit)</strong>
                     </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.85rem' }}>
-                      <span style={{ color: 'var(--color-warm-gray)', fontSize: '1.05rem' }}>Date &amp; Time:</span>
-                      <strong style={{ color: 'var(--color-forest)', fontSize: '1.05rem' }}>{selectedDate} at {selectedTime}</strong>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--color-border-subtle)', paddingBottom: '0.65rem' }}>
+                      <span style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem' }}>Branding Methods:</span>
+                      <strong style={{ color: 'var(--color-navy)', fontSize: '0.95rem' }}>{selectedBranding.join(', ') || 'Standard'}</strong>
                     </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.85rem' }}>
-                      <span style={{ color: 'var(--color-warm-gray)', fontSize: '1.05rem' }}>Duration:</span>
-                      <strong style={{ color: 'var(--color-forest)', fontSize: '1.05rem' }}>{selectedService?.duration || '60 mins'}</strong>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--color-border-subtle)', paddingBottom: '0.65rem' }}>
+                      <span style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem' }}>Client &amp; Company:</span>
+                      <strong style={{ color: 'var(--color-navy)', fontSize: '0.95rem' }}>{companyDetails.companyName} ({companyDetails.contactName})</strong>
                     </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.85rem' }}>
-                      <span style={{ color: 'var(--color-warm-gray)', fontSize: '1.05rem' }}>Client:</span>
-                      <strong style={{ color: 'var(--color-forest)', fontSize: '1.05rem' }}>{customerInfo.name} ({customerInfo.email})</strong>
-                    </div>
-
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.75rem' }}>
-                      <span style={{ fontSize: '1.2rem', fontWeight: 600, color: 'var(--color-forest)' }}>Total Investment:</span>
-                      <span style={{ fontSize: '2.35rem', fontFamily: 'var(--font-serif)', fontWeight: 700, color: 'var(--color-forest)' }}>
-                        RM {selectedService?.price}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.5rem' }}>
+                      <span style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--color-navy)' }}>Total Proposal Amount:</span>
+                      <span style={{ fontSize: '2rem', fontFamily: 'var(--font-serif)', fontWeight: 800, color: 'var(--color-navy)' }}>
+                        ${grandTotal.toLocaleString()} USD
                       </span>
                     </div>
                   </div>
@@ -548,20 +570,20 @@ export default function BookingWizard({ isOpen, onClose, initialData = null, onC
             </div>
 
             {/* Navigation Actions */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--color-border)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2rem', paddingTop: '1.25rem', borderTop: '1px solid var(--color-border-subtle)' }}>
               {step > 1 ? (
-                <button onClick={handlePrevStep} className="btn btn-secondary">
+                <button onClick={handlePrevStep} className="btn btn-outline-navy btn-sm">
                   &larr; Back
                 </button>
-              ) : <div style={{}} />}
+              ) : <div />}
 
               {step < 6 ? (
-                <button onClick={handleNextStep} className="btn btn-primary">
+                <button onClick={handleNextStep} className="btn btn-navy btn-sm">
                   Continue &rarr;
                 </button>
               ) : (
-                <button onClick={handleConfirm} className="btn btn-gold">
-                  Confirm Appointment
+                <button onClick={handleConfirmQuote} className="btn btn-gold btn-sm">
+                  Generate Instant Quote
                 </button>
               )}
             </div>
@@ -571,3 +593,4 @@ export default function BookingWizard({ isOpen, onClose, initialData = null, onC
     </div>
   );
 }
+

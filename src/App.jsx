@@ -18,27 +18,31 @@ export default function App() {
   const [appointmentsDrawerOpen, setAppointmentsDrawerOpen] = useState(false);
   const [initialBookingData, setInitialBookingData] = useState(null);
 
-  // Initialize with a realistic sample confirmed booking so user can test drawer immediately
+  // Initial corporate proposal in quote cart
   const [confirmedBookings, setConfirmedBookings] = useState([
     {
-      id: '849201',
+      id: 'AQ-948102',
       service: {
-        id: 's3',
-        name: 'Signature Lumé Glow Facial',
-        price: 180,
-        duration: '75 mins'
+        id: 'cg1',
+        name: 'Aura Wireless Executive Desk Pad',
+        price: 110
       },
-      specialist: {
-        id: 'sp2',
-        name: 'Mei Lin Tan',
-        role: 'Skin Therapist'
+      product: {
+        id: 'cg1',
+        name: 'Aura Wireless Executive Desk Pad',
+        price: 110
       },
-      date: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0],
-      time: '2:00 PM',
+      quantity: 50,
+      selectedBranding: ['Laser Engraving', 'Gold Foil Stamping'],
+      grandTotal: 5250,
+      company: {
+        companyName: 'TechCorp International',
+        contactName: 'Victoria Sterling',
+        email: 'v.sterling@techcorp.com'
+      },
       customer: {
-        name: 'Sophia Chen',
-        email: 'sophia@example.com',
-        phone: '+60 12-345 6789'
+        name: 'Victoria Sterling',
+        email: 'v.sterling@techcorp.com'
       },
       createdAt: new Date().toISOString()
     }
@@ -54,13 +58,13 @@ export default function App() {
   };
 
   const handleCancelBooking = (bookingId) => {
-    if (window.confirm('Are you sure you wish to cancel this appointment ritual?')) {
+    if (window.confirm('Are you sure you wish to remove this proposal from your quote cart?')) {
       setConfirmedBookings((prev) => prev.filter((b) => b.id !== bookingId));
     }
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-cream)' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-slate)' }}>
       {/* Navigation Bar */}
       <Navbar
         onOpenBooking={() => handleOpenBooking()}
@@ -68,12 +72,12 @@ export default function App() {
         appointmentCount={confirmedBookings.length}
       />
 
-      {/* Main Page Content */}
+      {/* Main Content */}
       <main style={{ flexGrow: 1 }}>
         <Hero
           onBookNow={() => handleOpenBooking()}
           onExploreServices={() => {
-            const el = document.querySelector('#services');
+            const el = document.querySelector('#catalog');
             if (el) el.scrollIntoView({ behavior: 'smooth' });
           }}
         />
@@ -82,15 +86,15 @@ export default function App() {
           onSelectService={(service) => handleOpenBooking({ service })}
         />
 
-        <Specialists
-          onSelectSpecialist={(specialist) => handleOpenBooking({ specialist })}
-        />
+        <WhyChooseLume />
 
         <Packages
           onSelectPackage={(pkg) => handleOpenBooking({ package: pkg })}
         />
 
-        <WhyChooseLume />
+        <Specialists
+          onSelectSpecialist={(specialist) => handleOpenBooking({ specialist })}
+        />
 
         <Testimonials />
 
@@ -108,7 +112,7 @@ export default function App() {
         onOpenBooking={() => handleOpenBooking()}
       />
 
-      {/* Interactive Multi-Step Booking Wizard Modal */}
+      {/* Interactive Multi-Step Quote Builder Modal */}
       <BookingWizard
         isOpen={bookingWizardOpen}
         onClose={() => {
@@ -119,7 +123,7 @@ export default function App() {
         onConfirmBooking={handleConfirmBooking}
       />
 
-      {/* Appointments Drawer Modal */}
+      {/* Quote Items & Proposal Cart Drawer */}
       <AppointmentsDrawer
         isOpen={appointmentsDrawerOpen}
         onClose={() => setAppointmentsDrawerOpen(false)}
@@ -130,3 +134,4 @@ export default function App() {
     </div>
   );
 }
+
