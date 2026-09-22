@@ -1,0 +1,8 @@
+{
+    "name": "umpsa/corpgift-system",
+    "description": "UMPSA Holdings Corporate Gift Management System",
+    "require": {
+        "google/apiclient": "^2.19",
+        "phpmailer/phpmailer": "^7.0"
+    }
+}
