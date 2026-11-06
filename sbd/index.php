@@ -25,6 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                     ->execute([$sbd_id, $notes, $req_id]);
                 $pdo->prepare("UPDATE gifts SET stock_count = stock_count - ?, status = CASE WHEN (stock_count - ?) <= 0 THEN 'Out of Stock' WHEN (stock_count - ?) <= 5 THEN 'Low Stock' ELSE 'Available' END WHERE id=?")
                     ->execute([$request['quantity'], $request['quantity'], $request['quantity'], $request['gift_id']]);
+                
+                logAudit('Approvals', 'SBD_APPROVE', "Head of SBD (" . $_SESSION['name'] . ") granted final approval for Request #$req_id (" . $request['gift_name'] . " x" . $request['quantity'] . "). Stock deducted automatically." . (!empty($notes) ? " Notes: " . $notes : ""), $req_id);
+
                 $gift = ['name' => $request['gift_name']];
                 $requester = ['name' => $request['requester_name'], 'email' => $request['requester_email'], 'department' => $request['requester_dept']];
                 $request['sbd_notes'] = $notes;
@@ -36,6 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         } elseif ($action === 'reject') {
             $pdo->prepare("UPDATE requests SET status='rejected_sbd', sbd_id=?, sbd_notes=?, sbd_actioned_at=NOW() WHERE id=?")
                 ->execute([$sbd_id, $notes, $req_id]);
+            
+            logAudit('Approvals', 'SBD_REJECT', "Head of SBD (" . $_SESSION['name'] . ") rejected Request #$req_id (" . $request['gift_name'] . ")." . (!empty($notes) ? " Reason: " . $notes : ""), $req_id);
+
             $gift = ['name' => $request['gift_name']];
             $requester = ['name' => $request['requester_name'], 'email' => $request['requester_email'], 'department' => $request['requester_dept']];
             Mailer::sendRejectionNotification($request, $requester, $gift, $_SESSION['name'] . ' (Head of SBD)', $notes);

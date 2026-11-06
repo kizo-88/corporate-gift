@@ -64,6 +64,25 @@ CREATE TABLE IF NOT EXISTS `login_logs` (
   FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Comprehensive System Activity & Audit Trail logs
+CREATE TABLE IF NOT EXISTS `audit_logs` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NULL,
+  `user_name` VARCHAR(255) NOT NULL DEFAULT 'System',
+  `user_role` VARCHAR(50) NOT NULL DEFAULT 'system',
+  `module` VARCHAR(50) NOT NULL,
+  `action` VARCHAR(50) NOT NULL,
+  `target_id` INT NULL,
+  `description` TEXT NOT NULL,
+  `ip_address` VARCHAR(45) DEFAULT NULL,
+  `user_agent` VARCHAR(255) DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX (`module`),
+  INDEX (`action`),
+  INDEX (`user_id`),
+  INDEX (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- Dynamic System Settings table
 CREATE TABLE IF NOT EXISTS `settings` (
   `key_name` VARCHAR(100) PRIMARY KEY,

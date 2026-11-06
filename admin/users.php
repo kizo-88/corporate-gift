@@ -17,6 +17,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     if (in_array($role, $allowed_roles) && $user_id > 0) {
         $stmt = $pdo->prepare("UPDATE users SET role = ?, department = ? WHERE id = ?");
         $stmt->execute([$role, $department ?: null, $user_id]);
+
+        $target_user = $pdo->prepare("SELECT name, email FROM users WHERE id = ?");
+        $target_user->execute([$user_id]);
+        $u_info = $target_user->fetch();
+        $target_name = $u_info ? $u_info['name'] : "User #$user_id";
+
+        logAudit('Users', 'USER_ROLE_UPDATE', "Admin updated user '$target_name' to Role: " . strtoupper($role) . ($department ? " | Dept: $department" : ""), $user_id);
+
         $_SESSION['flash'] = [
             'type' => 'success',
             'title' => 'User Updated',

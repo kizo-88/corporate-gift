@@ -52,10 +52,10 @@
           <li class="nav-item"><a class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'index.php' && strpos($_SERVER['PHP_SELF'], '/sbd/') !== false ? 'active' : '' ?>" href="<?= SITE_URL ?>/sbd/index.php"><i class="fa-solid fa-badge-check me-1"></i>SBD Approvals</a></li>
         <?php endif; ?>
         <?php if (hasRole('admin')): ?>
-          <li class="nav-item"><a class="nav-link" href="<?= SITE_URL ?>/admin/index.php"><i class="fa-solid fa-gauge-high me-1"></i>Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link" href="<?= SITE_URL ?>/admin/inventory.php"><i class="fa-solid fa-boxes-stacked me-1"></i>Inventory</a></li>
-          <li class="nav-item"><a class="nav-link" href="<?= SITE_URL ?>/admin/users.php"><i class="fa-solid fa-users me-1"></i>Users</a></li>
-          <li class="nav-item"><a class="nav-link" href="<?= SITE_URL ?>/admin/logs.php"><i class="fa-solid fa-shield-halved me-1"></i>Logs</a></li>
+          <li class="nav-item"><a class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'index.php' && strpos($_SERVER['PHP_SELF'], '/admin/') !== false ? 'active' : '' ?>" href="<?= SITE_URL ?>/admin/index.php"><i class="fa-solid fa-gauge-high me-1"></i>Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'inventory.php' ? 'active' : '' ?>" href="<?= SITE_URL ?>/admin/inventory.php"><i class="fa-solid fa-boxes-stacked me-1"></i>Inventory</a></li>
+          <li class="nav-item"><a class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'users.php' ? 'active' : '' ?>" href="<?= SITE_URL ?>/admin/users.php"><i class="fa-solid fa-users me-1"></i>Users</a></li>
+          <li class="nav-item"><a class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'logs.php' ? 'active' : '' ?>" href="<?= SITE_URL ?>/admin/logs.php"><i class="fa-solid fa-shield-halved me-1"></i>Audit Logs</a></li>
         <?php endif; ?>
       </ul>
       <ul class="navbar-nav ms-auto align-items-center gap-2">

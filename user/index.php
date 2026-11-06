@@ -57,7 +57,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         // Insert request
         $ins = $pdo->prepare("INSERT INTO requests (user_id, gift_id, quantity, purpose, recipient_name, event_name, justification_file, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'pending_hod')");
         $ins->execute([$user_id, $gift_id, $quantity, $purpose, $recipient_name, $event_name, $justification_file]);
-        $request_id = $pdo->lastInsertId();
+        $request_id = (defined('DB_DRIVER') && DB_DRIVER === 'pgsql') ? (int)$pdo->lastInsertId('requests_id_seq') : (int)$pdo->lastInsertId();
+
+        logAudit('Requests', 'SUBMIT_REQUEST', "Submitted Request #$request_id for {$quantity}x '{$gift['name']}' (Event: '{$event_name}', Recipient: '{$recipient_name}')", $request_id);
 
         $request = ['id' => $request_id, 'quantity' => $quantity, 'purpose' => $purpose, 'recipient_name' => $recipient_name, 'event_name' => $event_name, 'justification_file' => $justification_file, 'requested_at' => date('Y-m-d H:i:s'), 'hod_notes' => null];
         $requester_data = ['name' => $_SESSION['name'], 'email' => $_SESSION['email'], 'department' => $_SESSION['department']];

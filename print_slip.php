@@ -30,6 +30,7 @@ if (!$request) {
 
 $generated_at = date('d F Y, h:i A');
 $ref_no = 'UMPSAH-CG-' . str_pad($request_id, 5, '0', STR_PAD_LEFT);
+logAudit('Requests', 'PRINT_SLIP', "Generated/Viewed Gift Issuance Slip for Request #$request_id ($ref_no - " . $request['gift_name'] . ")", $request_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">

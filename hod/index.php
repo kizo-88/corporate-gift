@@ -24,6 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $pdo->prepare("UPDATE requests SET status='pending_sbd', hod_id=?, hod_notes=?, hod_actioned_at=NOW() WHERE id=?")
                 ->execute([$hod_id, $notes, $req_id]);
             
+            logAudit('Approvals', 'HOD_APPROVE', "HOD (" . $_SESSION['name'] . ") approved Request #$req_id (" . $request['gift_name'] . " x" . $request['quantity'] . ") for requester " . $request['requester_name'] . (!empty($notes) ? ". Notes: " . $notes : ""), $req_id);
+
             $gift = ['name' => $request['gift_name']];
             $requester = ['name' => $request['requester_name'], 'email' => $request['requester_email'], 'department' => $request['requester_dept']];
             $hod_data = ['name' => $_SESSION['name']];
@@ -33,6 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         } elseif ($action === 'reject') {
             $pdo->prepare("UPDATE requests SET status='rejected_hod', hod_id=?, hod_notes=?, hod_actioned_at=NOW() WHERE id=?")
                 ->execute([$hod_id, $notes, $req_id]);
+            
+            logAudit('Approvals', 'HOD_REJECT', "HOD (" . $_SESSION['name'] . ") rejected Request #$req_id (" . $request['gift_name'] . ") for requester " . $request['requester_name'] . (!empty($notes) ? ". Reason: " . $notes : ""), $req_id);
+
             $gift = ['name' => $request['gift_name']];
             $requester = ['name' => $request['requester_name'], 'email' => $request['requester_email'], 'department' => $request['requester_dept']];
             Mailer::sendRejectionNotification($request, $requester, $gift, $_SESSION['name'] . ' (HOD)', $notes);

@@ -3,6 +3,7 @@ require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/includes/db.php';
 
 if (isLoggedIn()) {
+    logAudit('Authentication', 'LOGOUT', "User " . ($_SESSION['name'] ?? 'User') . " signed out of the system", $_SESSION['user_id']);
     // Log the logout action
     try {
         $pdo->prepare("INSERT INTO login_logs (user_id, action, ip_address, user_agent) VALUES (?, 'logout', ?, ?)")

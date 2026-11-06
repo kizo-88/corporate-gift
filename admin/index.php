@@ -11,7 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $key   = trim($_POST['key_name'] ?? '');
     $value = trim($_POST['key_value'] ?? '');
     if ($key && $value) {
-        $pdo->prepare("INSERT INTO settings (key_name, key_value) VALUES (?, ?) ON DUPLICATE KEY UPDATE key_value = VALUES(key_value)")->execute([$key, $value]);
+        if (defined('DB_DRIVER') && DB_DRIVER === 'pgsql') {
+            $pdo->prepare("INSERT INTO settings (key_name, key_value) VALUES (?, ?) ON CONFLICT (key_name) DO UPDATE SET key_value = EXCLUDED.key_value")->execute([$key, $value]);
+        } else {
+            $pdo->prepare("INSERT INTO settings (key_name, key_value) VALUES (?, ?) ON DUPLICATE KEY UPDATE key_value = VALUES(key_value)")->execute([$key, $value]);
+        }
+        logAudit('Settings', 'SETTING_UPDATE', "Admin updated system setting '$key' to '$value'");
         $_SESSION['flash'] = ['type' => 'success', 'title' => 'Settings Updated', 'message' => 'System setting has been saved successfully.'];
     }
     header('Location: ' . SITE_URL . '/admin/index.php'); exit;
@@ -188,7 +193,7 @@ require_once __DIR__ . '/../includes/header.php';
       <div class="list-group list-group-flush">
         <a href="<?= SITE_URL ?>/admin/inventory.php" class="list-group-item list-group-item-action d-flex align-items-center gap-3"><i class="fa-solid fa-boxes-stacked text-blue"></i><div><strong>Inventory</strong><br><small class="text-muted">Manage gift catalog</small></div></a>
         <a href="<?= SITE_URL ?>/admin/users.php"     class="list-group-item list-group-item-action d-flex align-items-center gap-3"><i class="fa-solid fa-users text-blue"></i><div><strong>User Management</strong><br><small class="text-muted">Assign roles & departments</small></div></a>
-        <a href="<?= SITE_URL ?>/admin/logs.php"      class="list-group-item list-group-item-action d-flex align-items-center gap-3"><i class="fa-solid fa-shield-halved text-blue"></i><div><strong>Login Logs</strong><br><small class="text-muted">View all user activity</small></div></a>
+        <a href="<?= SITE_URL ?>/admin/logs.php"      class="list-group-item list-group-item-action d-flex align-items-center gap-3"><i class="fa-solid fa-shield-halved text-blue"></i><div><strong>Audit Logs</strong><br><small class="text-muted">System activity & security trail</small></div></a>
       </div>
     </div>
   </div>

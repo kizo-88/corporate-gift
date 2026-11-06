@@ -44,7 +44,7 @@ if (isset($_GET['code'])) {
                 $role = ($email === ADMIN_EMAIL) ? 'admin' : 'user';
                 $pdo->prepare("INSERT INTO users (google_id, name, email, picture, role) VALUES (?, ?, ?, ?, ?)")
                     ->execute([$google_id, $name, $email, $picture, $role]);
-                $newId = $pdo->lastInsertId();
+                $newId = (defined('DB_DRIVER') && DB_DRIVER === 'pgsql') ? (int)$pdo->lastInsertId('users_id_seq') : (int)$pdo->lastInsertId();
                 $_SESSION['user_id']    = $newId;
                 $_SESSION['role']       = $role;
                 $_SESSION['name']       = $name;
@@ -60,6 +60,8 @@ if (isset($_GET['code'])) {
                 $pdo->prepare("INSERT INTO login_logs (user_id, action, ip_address, user_agent) VALUES (?, 'login', ?, ?)")
                     ->execute([$_SESSION['user_id'], $_SERVER['REMOTE_ADDR'] ?? '', $_SERVER['HTTP_USER_AGENT'] ?? '']);
             } catch (Exception $e) { /* non-critical */ }
+
+            logAudit('Authentication', 'LOGIN', "User {$name} signed in successfully via Google OAuth", $_SESSION['user_id'], $_SESSION['user_id'], $name, $_SESSION['role']);
 
             // Role-based redirect
             $role = $_SESSION['role'];

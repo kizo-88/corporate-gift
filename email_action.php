@@ -51,6 +51,9 @@ if ($action === 'approve') {
     if ($role === 'hod') {
         $pdo->prepare("UPDATE requests SET status='pending_sbd', hod_id=?, hod_notes='Approved via email.', hod_actioned_at=NOW() WHERE id=?")
             ->execute([$approver_id, $request_id]);
+        
+        logAudit('Approvals', 'EMAIL_HOD_APPROVE', "HOD (" . ($approver['name'] ?? 'HOD') . ") approved Request #$request_id (" . $request['gift_name'] . " x" . $request['quantity'] . ") via email 1-click link.", $request_id, $approver_id, $approver['name'] ?? 'HOD', 'hod');
+
         $gift     = ['name' => $request['gift_name']];
         $requester = ['name' => $request['requester_name'], 'email' => $request['requester_email'], 'department' => $request['requester_dept']];
         $hod_data  = ['name' => $approver['name'] ?? 'HOD'];
@@ -63,6 +66,9 @@ if ($action === 'approve') {
                 ->execute([$approver_id, $request_id]);
             $pdo->prepare("UPDATE gifts SET stock_count = stock_count - ?, status = CASE WHEN (stock_count - ?) <= 0 THEN 'Out of Stock' WHEN (stock_count - ?) <= 5 THEN 'Low Stock' ELSE 'Available' END WHERE id=?")
                 ->execute([$request['quantity'], $request['quantity'], $request['quantity'], $request['gift_id']]);
+            
+            logAudit('Approvals', 'EMAIL_SBD_APPROVE', "Head of SBD (" . ($approver['name'] ?? 'Head of SBD') . ") granted final approval for Request #$request_id (" . $request['gift_name'] . " x" . $request['quantity'] . ") via email 1-click link. Stock deducted automatically.", $request_id, $approver_id, $approver['name'] ?? 'Head of SBD', 'sbd');
+
             $gift      = ['name' => $request['gift_name']];
             $requester  = ['name' => $request['requester_name'], 'email' => $request['requester_email'], 'department' => $request['requester_dept']];
             $request['sbd_notes'] = 'Approved via email.';
@@ -83,9 +89,11 @@ if ($action === 'reject') {
         if ($role === 'hod') {
             $pdo->prepare("UPDATE requests SET status='rejected_hod', hod_id=?, hod_notes=?, hod_actioned_at=NOW() WHERE id=?")
                 ->execute([$approver_id, $notes, $request_id]);
+            logAudit('Approvals', 'EMAIL_HOD_REJECT', "HOD (" . ($approver['name'] ?? 'HOD') . ") rejected Request #$request_id via email 1-click link. Reason: $notes", $request_id, $approver_id, $approver['name'] ?? 'HOD', 'hod');
         } else {
             $pdo->prepare("UPDATE requests SET status='rejected_sbd', sbd_id=?, sbd_notes=?, sbd_actioned_at=NOW() WHERE id=?")
                 ->execute([$approver_id, $notes, $request_id]);
+            logAudit('Approvals', 'EMAIL_SBD_REJECT', "Head of SBD (" . ($approver['name'] ?? 'Head of SBD') . ") rejected Request #$request_id via email 1-click link. Reason: $notes", $request_id, $approver_id, $approver['name'] ?? 'Head of SBD', 'sbd');
         }
         $gift      = ['name' => $request['gift_name']];
         $requester  = ['name' => $request['requester_name'], 'email' => $request['requester_email'], 'department' => $request['requester_dept']];

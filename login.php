@@ -32,6 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['dev_login'])) {
                     ->execute([$user['id'], $_SERVER['REMOTE_ADDR'] ?? '', $_SERVER['HTTP_USER_AGENT'] ?? '']);
             } catch (Exception $e) {}
 
+            logAudit('Authentication', 'DEV_LOGIN', "User signed in via Quick Login as {$user['name']} (" . strtoupper($user['role']) . ")", $user['id'], $user['id'], $user['name'], $user['role']);
+
             $role = $user['role'];
             if ($role === 'admin') header('Location: ' . SITE_URL . '/admin/index.php');
             elseif ($role === 'hod') header('Location: ' . SITE_URL . '/hod/index.php');

@@ -27,6 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'add') {
     $status = $stock_count > 5 ? 'Available' : ($stock_count > 0 ? 'Low Stock' : 'Out of Stock');
     $pdo->prepare("INSERT INTO gifts (name, description, category, stock_count, cost, image_url, status) VALUES (?,?,?,?,?,?,?)")
         ->execute([$name, $description, $category, $stock_count, $cost, $image_url, $status]);
+    $new_id = (defined('DB_DRIVER') && DB_DRIVER === 'pgsql') ? (int)$pdo->lastInsertId('gifts_id_seq') : (int)$pdo->lastInsertId();
+    logAudit('Inventory', 'GIFT_CREATE', "Admin added new gift '$name' (Category: $category, Initial Stock: $stock_count, Cost: RM " . number_format($cost, 2) . ")", $new_id);
     $_SESSION['flash'] = ['type' => 'success', 'title' => 'Gift Added', 'message' => "$name has been added to the catalog."];
     header('Location: ' . SITE_URL . '/admin/inventory.php'); exit;
 }
@@ -51,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edit') {
     $status = $stock_count > 5 ? 'Available' : ($stock_count > 0 ? 'Low Stock' : 'Out of Stock');
     $pdo->prepare("UPDATE gifts SET name=?, description=?, category=?, stock_count=?, cost=?, image_url=?, status=? WHERE id=?")
         ->execute([$name, $description, $category, $stock_count, $cost, $image_url, $status, $id]);
+    logAudit('Inventory', 'GIFT_UPDATE', "Admin updated gift #$id '$name' (Stock: $stock_count, Status: $status, Cost: RM " . number_format($cost, 2) . ")", $id);
     $_SESSION['flash'] = ['type' => 'success', 'title' => 'Updated', 'message' => "$name has been updated."];
     header('Location: ' . SITE_URL . '/admin/inventory.php'); exit;
 }
@@ -64,7 +67,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'delete') {
     if ((int)$chk->fetchColumn() > 0) {
         $_SESSION['flash'] = ['type' => 'error', 'title' => 'Cannot Delete', 'message' => 'This gift has pending requests and cannot be deleted.'];
     } else {
+        $g_info = $pdo->prepare("SELECT name FROM gifts WHERE id = ?");
+        $g_info->execute([$id]);
+        $g_name = $g_info->fetchColumn() ?: "ID #$id";
+
         $pdo->prepare("DELETE FROM gifts WHERE id=?")->execute([$id]);
+        logAudit('Inventory', 'GIFT_DELETE', "Admin removed gift #$id '$g_name' from the catalog", $id);
         $_SESSION['flash'] = ['type' => 'success', 'title' => 'Deleted', 'message' => 'Gift has been removed from the catalog.'];
     }
     header('Location: ' . SITE_URL . '/admin/inventory.php'); exit;
