@@ -60,8 +60,8 @@ require_once __DIR__ . '/../includes/header.php';
     <h1 class="page-title"><i class="fa-solid fa-users me-2 text-primary"></i>User Management</h1>
     <p class="page-subtitle">View system users, assign role access levels, and set department affiliations.</p>
   </div>
-  <a href="<?= SITE_URL ?>/admin/index.php" class="btn btn-umpsa-teal">
-    <i class="fa-solid fa-arrow-left me-2"></i>Back to Dashboard
+  <a href="<?= SITE_URL ?>/admin/index.php" class="btn btn-secondary">
+    <i class="fa-solid fa-arrow-left me-1"></i>Back to Dashboard
   </a>
 </div>
 
@@ -103,57 +103,78 @@ require_once __DIR__ . '/../includes/header.php';
   </div>
   <div class="p-3">
     <div class="table-responsive">
-      <table id="usersTable" class="table table-hover align-middle" style="width:100%">
+      <table id="usersTable" class="table table-hover align-middle single-column-list-table" style="width:100%">
         <thead>
           <tr>
-            <th>User</th>
-            <th>Email</th>
-            <th class="text-center">Role</th>
-            <th>Department</th>
-            <th>Joined Date</th>
-            <th>Actions</th>
+            <th class="py-2">User Profiles Directory</th>
           </tr>
         </thead>
         <tbody>
           <?php foreach ($users as $u): ?>
           <tr>
-            <td>
-              <div class="d-flex align-items-center gap-2">
-                <?php if (!empty($u['picture'])): ?>
-                  <img src="<?= htmlspecialchars($u['picture']) ?>" alt="avatar" class="rounded-circle" style="width:36px;height:36px;object-fit:cover;">
-                <?php else: ?>
-                  <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width:36px;height:36px;background:#005A9C;font-size:0.85rem;">
-                    <?= strtoupper(substr($u['name'], 0, 1)) ?>
+            <td class="p-3">
+              <div class="row g-2 align-items-center">
+                <!-- Left: Avatar & Info -->
+                <div class="col-12 col-md-8">
+                  <div class="d-flex align-items-center gap-3">
+                    <?php if (!empty($u['picture'])): ?>
+                      <img src="<?= htmlspecialchars($u['picture']) ?>" alt="avatar" class="rounded-circle border flex-shrink-0" style="width:50px;height:50px;object-fit:cover;">
+                    <?php else: ?>
+                      <div class="rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center text-white fw-bold shadow-sm" style="width:50px;height:50px;background:linear-gradient(135deg, #005A9C 0%, #00A3A1 100%);font-size:1.3rem;">
+                        <?= strtoupper(substr($u['name'], 0, 1)) ?>
+                      </div>
+                    <?php endif; ?>
+                    
+                    <div class="overflow-hidden">
+                      <h6 class="mb-1 fw-bold text-dark text-truncate" style="font-size:1rem;"><?= htmlspecialchars($u['name']) ?></h6>
+                      <div class="d-flex flex-wrap align-items-center gap-2 small text-muted">
+                        <span><i class="fa-regular fa-envelope me-1"></i><?= htmlspecialchars($u['email']) ?></span>
+                        <?php if (!empty($u['department'])): ?>
+                          &bull; <span class="badge bg-light text-dark border"><?= htmlspecialchars($u['department']) ?></span>
+                        <?php endif; ?>
+                      </div>
+                    </div>
                   </div>
-                <?php endif; ?>
-                <div>
-                  <strong><?= htmlspecialchars($u['name']) ?></strong>
+                </div>
+
+                <!-- Right: Role Status (Visible first!) & Actions -->
+                <div class="col-12 col-md-4">
+                  <div class="d-flex align-items-center justify-content-between justify-content-md-end gap-2 pt-2 pt-md-0 border-top border-md-0">
+                    <!-- Role ALWAYS visible before button click -->
+                    <span class="role-badge badge-<?= htmlspecialchars($u['role']) ?> m-0 py-1.5 px-3">
+                      <?= strtoupper($u['role']) ?>
+                    </span>
+
+                    <div class="d-flex align-items-center gap-1">
+                      <!-- 1 Main Button to see ALL information -->
+                      <button class="btn btn-sm btn-umpsa-blue px-3 py-1.5 text-nowrap" onclick="viewUserDetail(<?= htmlspecialchars(json_encode($u)) ?>)" title="View Information">
+                        <i class="fa-solid fa-eye me-1"></i><span>View Details</span>
+                      </button>
+                      <button class="btn btn-sm btn-outline-primary py-1.5 px-2" onclick="openEditUser(<?= htmlspecialchars(json_encode($u)) ?>)" title="Edit User">
+                        <i class="fa-solid fa-user-pen"></i>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </td>
-            <td><?= htmlspecialchars($u['email']) ?></td>
-            <td class="text-center">
-              <span class="role-badge badge-<?= htmlspecialchars($u['role']) ?>">
-                <?= strtoupper($u['role']) ?>
-              </span>
-            </td>
-            <td>
-              <?php if (!empty($u['department'])): ?>
-                <span class="badge bg-light text-dark border"><?= htmlspecialchars($u['department']) ?></span>
-              <?php else: ?>
-                <span class="text-muted small"><em>Not assigned</em></span>
-              <?php endif; ?>
-            </td>
-            <td><?= date('d M Y', strtotime($u['created_at'])) ?></td>
-            <td>
-              <button class="btn btn-sm btn-umpsa-blue" onclick="openEditUser(<?= htmlspecialchars(json_encode($u)) ?>)">
-                <i class="fa-solid fa-user-pen me-1"></i>Edit
-              </button>
             </td>
           </tr>
           <?php endforeach; ?>
         </tbody>
       </table>
+    </div>
+  </div>
+</div>
+
+<!-- View User Detail Modal -->
+<div class="modal fade" id="userDetailModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header modal-header-umpsa">
+        <h5 class="modal-title"><i class="fa-solid fa-circle-info me-2"></i>User Profile Information</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4" id="userDetailBody"></div>
     </div>
   </div>
 </div>
@@ -210,11 +231,34 @@ require_once __DIR__ . '/../includes/header.php';
 $(document).ready(function() {
     if ($('#usersTable').length) {
         $('#usersTable').DataTable({
-            order: [[4, 'desc']],
-            pageLength: 10
+            order: [],
+            pageLength: 10,
+            columnDefs: [
+                { orderable: false, targets: '_all' }
+            ]
         });
     }
 });
+
+function viewUserDetail(u) {
+    let pic = u.picture 
+        ? `<div class="text-center mb-3"><img src="${u.picture}" class="rounded-circle border shadow-sm" style="width:72px;height:72px;object-fit:cover;"></div>` 
+        : `<div class="text-center mb-3"><div class="rounded-circle d-inline-flex align-items-center justify-content-center text-white fw-bold shadow-sm" style="width:72px;height:72px;background:linear-gradient(135deg, #005A9C 0%, #00A3A1 100%);font-size:1.8rem;">${(u.name || 'U').charAt(0).toUpperCase()}</div></div>`;
+    
+    let html = `
+    ${pic}
+    <table class="table table-bordered mb-0" style="font-size:.88rem;">
+      <tr><th width="35%">User ID</th><td>#${u.id}</td></tr>
+      <tr><th>Full Name</th><td><strong>${u.name}</strong></td></tr>
+      <tr><th>Email Address</th><td>${u.email}</td></tr>
+      <tr><th>System Role</th><td><span class="role-badge badge-${u.role}">${u.role.toUpperCase()}</span></td></tr>
+      <tr><th>Department</th><td>${u.department ? `<span class="badge bg-light text-dark border">${u.department}</span>` : '<em class="text-muted">Not assigned</em>'}</td></tr>
+      <tr><th>Registered Date</th><td>${u.created_at || 'N/A'}</td></tr>
+    </table>`;
+    
+    document.getElementById('userDetailBody').innerHTML = html;
+    new bootstrap.Modal(document.getElementById('userDetailModal')).show();
+}
 
 function openEditUser(u) {
     document.getElementById('edit_user_id').value = u.id;

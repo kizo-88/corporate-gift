@@ -132,8 +132,8 @@ function getActionBadge($action) {
     <a href="<?= SITE_URL ?>/admin/logs.php?export=csv" class="btn btn-outline-primary bg-white shadow-sm" title="Download Audit Trail as CSV">
       <i class="fa-solid fa-file-csv me-1 text-success"></i>Export CSV
     </a>
-    <a href="<?= SITE_URL ?>/admin/index.php" class="btn btn-umpsa-teal">
-      <i class="fa-solid fa-arrow-left me-2"></i>Dashboard
+    <a href="<?= SITE_URL ?>/admin/index.php" class="btn btn-secondary">
+      <i class="fa-solid fa-arrow-left me-1"></i>Back to Dashboard
     </a>
   </div>
 </div>

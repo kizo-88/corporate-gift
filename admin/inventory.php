@@ -87,15 +87,26 @@ require_once __DIR__ . '/../includes/header.php';
     <h1 class="page-title"><i class="fa-solid fa-boxes-stacked me-2 text-primary"></i>Inventory Management</h1>
     <p class="page-subtitle">Manage the corporate gift catalog, stock levels, and item images.</p>
   </div>
-  <button class="btn btn-umpsa-teal" data-bs-toggle="modal" data-bs-target="#addGiftModal"><i class="fa-solid fa-plus me-2"></i>Add New Gift</button>
+  <div class="d-flex align-items-center gap-2 flex-wrap">
+    <a href="<?= SITE_URL ?>/admin/index.php" class="btn btn-secondary">
+      <i class="fa-solid fa-arrow-left me-1"></i>Back to Dashboard
+    </a>
+    <button class="btn btn-umpsa-teal" data-bs-toggle="modal" data-bs-target="#addGiftModal">
+      <i class="fa-solid fa-plus me-1"></i>Add New Gift
+    </button>
+  </div>
 </div>
 
 <div class="card-premium">
   <div class="card-header-umpsa"><i class="fa-solid fa-boxes-stacked me-2"></i>Gift Catalog</div>
   <div class="p-3">
     <div class="table-responsive">
-      <table id="inventoryTable" class="table table-hover align-middle" style="width:100%">
-        <thead><tr><th>Image</th><th>Name</th><th>Category</th><th class="text-center">Stock</th><th>Cost (RM)</th><th class="text-center">Status</th><th>Actions</th></tr></thead>
+      <table id="inventoryTable" class="table table-hover align-middle single-column-list-table" style="width:100%">
+        <thead>
+          <tr>
+            <th class="py-2">Gift Inventory Products</th>
+          </tr>
+        </thead>
         <tbody>
           <?php foreach ($gifts as $g): ?>
           <?php
@@ -104,30 +115,71 @@ require_once __DIR__ . '/../includes/header.php';
                       ? SITE_URL . '/uploads/gifts/' . rawurlencode($g['image_url']) : null;
           ?>
           <tr>
-            <td>
-              <?php if ($imgUrl): ?>
-                <img src="<?= $imgUrl ?>" style="width:56px;height:44px;object-fit:cover;border-radius:6px;border:1px solid #e2e8f0;">
-              <?php else: ?>
-                <div style="width:56px;height:44px;border-radius:6px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;color:#94a3b8;"><i class="fa-solid fa-image"></i></div>
-              <?php endif; ?>
-            </td>
-            <td><strong><?= htmlspecialchars($g['name']) ?></strong><br><small class="text-muted"><?= htmlspecialchars(substr($g['description'] ?? '', 0, 50)) ?>...</small></td>
-            <td><?= htmlspecialchars($g['category']) ?></td>
-            <td class="text-center"><strong><?= $g['stock_count'] ?></strong></td>
-            <td>RM <?= number_format($g['cost'], 2) ?></td>
-            <td class="text-center"><span class="stock-badge <?= $sc ?>"><?= $g['status'] ?></span></td>
-            <td>
-              <button class="btn btn-sm btn-umpsa-blue me-1" onclick='editGift(<?= json_encode($g) ?>)'><i class="fa-solid fa-edit"></i></button>
-              <form method="POST" class="d-inline" onsubmit="showLoading('Deleting...')">
-                <input type="hidden" name="action" value="delete">
-                <input type="hidden" name="gift_id" value="<?= $g['id'] ?>">
-                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete \'<?= htmlspecialchars(addslashes($g['name'])) ?>\'?')"><i class="fa-solid fa-trash"></i></button>
-              </form>
+            <td class="p-3">
+              <div class="row g-2 align-items-center">
+                <!-- Left: Thumbnail & Info -->
+                <div class="col-12 col-md-8">
+                  <div class="d-flex align-items-center gap-3">
+                    <?php if ($imgUrl): ?>
+                      <img src="<?= $imgUrl ?>" alt="<?= htmlspecialchars($g['name']) ?>" class="rounded-3 border flex-shrink-0" style="width:58px;height:58px;object-fit:cover;">
+                    <?php else: ?>
+                      <div class="rounded-3 border flex-shrink-0 bg-light d-flex align-items-center justify-content-center text-primary" style="width:58px;height:58px;font-size:1.5rem;">
+                        <i class="fa-solid fa-gift"></i>
+                      </div>
+                    <?php endif; ?>
+                    
+                    <div class="overflow-hidden">
+                      <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                        <span class="badge bg-light text-primary border"><?= htmlspecialchars($g['category']) ?></span>
+                        <h6 class="mb-0 fw-bold text-dark text-truncate" style="font-size:1rem;"><?= htmlspecialchars($g['name']) ?></h6>
+                      </div>
+                      <div class="d-flex flex-wrap align-items-center gap-2 small text-muted">
+                        <span class="fw-bold text-dark">RM <?= number_format($g['cost'], 2) ?></span> &bull;
+                        <span>Current Stock: <strong class="<?= $g['stock_count'] <= 5 ? 'text-danger' : 'text-success' ?>"><?= $g['stock_count'] ?></strong></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right: Status (Visible first!) & Actions -->
+                <div class="col-12 col-md-4">
+                  <div class="d-flex align-items-center justify-content-between justify-content-md-end gap-2 pt-2 pt-md-0 border-top border-md-0">
+                    <!-- Status ALWAYS visible before button click -->
+                    <span class="stock-badge <?= $sc ?> m-0 py-1.5 px-3"><?= $g['status'] ?></span>
+
+                    <div class="d-flex align-items-center gap-1">
+                      <!-- 1 Main Button to see ALL information -->
+                      <button class="btn btn-sm btn-umpsa-blue px-3 py-1.5 text-nowrap" onclick='viewGiftDetail(<?= json_encode($g) ?>, "<?= $imgUrl ?? '' ?>")' title="View Full Information">
+                        <i class="fa-solid fa-eye me-1"></i><span>View Details</span>
+                      </button>
+                      <button class="btn btn-sm btn-outline-primary py-1.5 px-2" onclick='editGift(<?= json_encode($g) ?>)' title="Edit Gift"><i class="fa-solid fa-edit"></i></button>
+                      <form method="POST" class="d-inline" onsubmit="showLoading('Deleting...')">
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="gift_id" value="<?= $g['id'] ?>">
+                        <button type="submit" class="btn btn-sm btn-danger py-1.5 px-2" onclick="return confirm('Delete \'<?= htmlspecialchars(addslashes($g['name'])) ?>\'?')" title="Delete Gift"><i class="fa-solid fa-trash"></i></button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </td>
           </tr>
           <?php endforeach; ?>
         </tbody>
       </table>
+    </div>
+  </div>
+</div>
+
+<!-- Info Modal -->
+<div class="modal fade" id="giftDetailModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header modal-header-umpsa">
+        <h5 class="modal-title"><i class="fa-solid fa-circle-info me-2"></i>Product Information</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4" id="giftDetailBody"></div>
     </div>
   </div>
 </div>
@@ -177,9 +229,37 @@ require_once __DIR__ . '/../includes/header.php';
 <script>
 $(document).ready(function() {
     if ($('#inventoryTable').length) {
-        $('#inventoryTable').DataTable({ order: [[0, 'desc']] });
+        $('#inventoryTable').DataTable({
+            order: [],
+            pageLength: 10,
+            columnDefs: [
+                { orderable: false, targets: '_all' }
+            ]
+        });
     }
 });
+
+function viewGiftDetail(g, imgUrl) {
+    const sc = g.status === 'Available' ? 'stock-available' : (g.status === 'Low Stock' ? 'stock-low' : 'stock-out');
+    let imgBlock = imgUrl 
+        ? `<div class="text-center mb-3"><img src="${imgUrl}" class="rounded-3 border shadow-sm" style="max-height:180px;max-width:100%;object-fit:cover;"></div>` 
+        : '';
+    
+    let html = `
+    ${imgBlock}
+    <table class="table table-bordered mb-0" style="font-size:.88rem;">
+      <tr><th width="35%">Gift ID</th><td>#${g.id}</td></tr>
+      <tr><th>Product Name</th><td><strong>${g.name}</strong></td></tr>
+      <tr><th>Category</th><td><span class="badge bg-light text-primary border">${g.category}</span></td></tr>
+      <tr><th>Unit Cost</th><td><strong>RM ${parseFloat(g.cost).toFixed(2)}</strong></td></tr>
+      <tr><th>Stock Count</th><td><strong class="${g.stock_count <= 5 ? 'text-danger' : 'text-success'}">${g.stock_count} unit(s)</strong></td></tr>
+      <tr><th>Status</th><td><span class="stock-badge ${sc}">${g.status}</span></td></tr>
+      <tr><th>Description</th><td>${g.description ? g.description : '<em class="text-muted">No description provided.</em>'}</td></tr>
+    </table>`;
+    
+    document.getElementById('giftDetailBody').innerHTML = html;
+    new bootstrap.Modal(document.getElementById('giftDetailModal')).show();
+}
 
 function editGift(g) {
     document.getElementById('edit_gift_id').value = g.id;
