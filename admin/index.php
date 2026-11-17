@@ -37,10 +37,13 @@ $approved_count  = $total_approved;
 $completed_count = $total_approved;
 
 // Recent requests
-$recent = $pdo->query("SELECT r.*, g.name AS gift_name, u.name AS requester_name FROM requests r JOIN gifts g ON r.gift_id = g.id JOIN users u ON r.user_id = u.id ORDER BY r.requested_at DESC LIMIT 8")->fetchAll();
+$recent = $pdo->query("SELECT r.*, g.name AS gift_name, g.image_url, g.cost, u.name AS requester_name, u.email AS requester_email, u.department AS requester_dept FROM requests r JOIN gifts g ON r.gift_id = g.id JOIN users u ON r.user_id = u.id ORDER BY r.requested_at DESC LIMIT 8")->fetchAll();
 
 // Settings
 $sbd_email = getSystemSetting('sbd_email', 'sbd.head@umpsaholdings.my');
+
+// Include Chart.js in Header section BEFORE document ready
+$extra_head = '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>';
 
 require_once __DIR__ . '/../includes/header.php';
 ?>
@@ -82,21 +85,73 @@ require_once __DIR__ . '/../includes/header.php';
   </div>
   <div class="p-3">
     <div class="table-responsive">
-      <table id="recentTable" class="table table-hover align-middle" style="width:100%;font-size:.875rem;">
-        <thead><tr><th>#</th><th>Requester</th><th>Gift</th><th>Qty</th><th>Event</th><th>Status</th><th>Date</th><th></th></tr></thead>
+      <table id="recentTable" class="table table-hover align-middle single-column-list-table" style="width:100%;font-size:.875rem;">
+        <thead>
+          <tr>
+            <th class="py-2">Recent Requests Activity</th>
+          </tr>
+        </thead>
         <tbody>
           <?php
-          $sLabels = ['pending_hod'=>['Pending HOD','status-pending-hod'],'pending_sbd'=>['Pending SBD','status-pending-sbd'],'approved'=>['Approved','status-approved'],'rejected_hod'=>['Rejected HOD','status-rejected-hod'],'rejected_sbd'=>['Rejected SBD','status-rejected-sbd']];
-          foreach($recent as $r): $sl = $sLabels[$r['status']] ?? [$r['status'],'status-pending-hod']; ?>
+          $sLabels = [
+              'pending_hod'  => ['Pending HOD', 'status-pending-hod', 'fa-hourglass-half'],
+              'pending_sbd'  => ['Pending SBD', 'status-pending-sbd', 'fa-clock'],
+              'approved'     => ['Approved',    'status-approved',    'fa-circle-check'],
+              'rejected_hod' => ['Rejected HOD','status-rejected-hod','fa-circle-xmark'],
+              'rejected_sbd' => ['Rejected SBD','status-rejected-sbd','fa-circle-xmark']
+          ];
+          foreach($recent as $r):
+              $sl = $sLabels[$r['status']] ?? [$r['status'], 'status-pending-hod', 'fa-circle'];
+              $imgUrl = !empty($r['image_url']) && file_exists(__DIR__ . '/../uploads/gifts/' . $r['image_url'])
+                        ? SITE_URL . '/uploads/gifts/' . rawurlencode($r['image_url']) : null;
+          ?>
           <tr>
-            <td><strong>#<?= $r['id'] ?></strong></td>
-            <td><?= htmlspecialchars($r['requester_name']) ?></td>
-            <td><?= htmlspecialchars($r['gift_name']) ?></td>
-            <td><?= $r['quantity'] ?></td>
-            <td><?= htmlspecialchars($r['event_name']) ?></td>
-            <td><span class="status-badge <?= $sl[1] ?>"><?= $sl[0] ?></span></td>
-            <td><?= date('d M Y', strtotime($r['requested_at'])) ?></td>
-            <td><?php if ($r['status'] === 'approved'): ?><a href="<?= SITE_URL ?>/print_slip.php?id=<?= $r['id'] ?>" target="_blank" class="btn btn-sm btn-umpsa-blue"><i class="fa-solid fa-print"></i></a><?php endif; ?></td>
+            <td class="p-3">
+              <div class="row g-2 align-items-center">
+                <!-- Left: Thumbnail & Info -->
+                <div class="col-12 col-md-8">
+                  <div class="d-flex align-items-center gap-3">
+                    <?php if ($imgUrl): ?>
+                      <img src="<?= $imgUrl ?>" alt="<?= htmlspecialchars($r['gift_name']) ?>" class="rounded-3 border flex-shrink-0" style="width:52px;height:52px;object-fit:cover;">
+                    <?php else: ?>
+                      <div class="rounded-3 border flex-shrink-0 bg-light d-flex align-items-center justify-content-center text-primary" style="width:52px;height:52px;font-size:1.3rem;">
+                        <i class="fa-solid fa-gift"></i>
+                      </div>
+                    <?php endif; ?>
+                    
+                    <div class="overflow-hidden">
+                      <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                        <span class="badge bg-light text-primary border">#<?= $r['id'] ?></span>
+                        <h6 class="mb-0 fw-bold text-dark text-truncate" style="font-size:0.95rem;"><?= htmlspecialchars($r['gift_name']) ?></h6>
+                      </div>
+                      <div class="d-flex flex-wrap align-items-center gap-2 small text-muted">
+                        <?php if (isset($r['cost']) && $r['cost'] > 0): ?>
+                          <span class="fw-bold text-dark">RM <?= number_format($r['cost'], 2) ?></span> &bull;
+                        <?php endif; ?>
+                        <span>Qty: <strong><?= $r['quantity'] ?></strong></span> &bull;
+                        <span>By: <?= htmlspecialchars($r['requester_name']) ?></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right: Status & Actions -->
+                <div class="col-12 col-md-4">
+                  <div class="d-flex align-items-center justify-content-between justify-content-md-end gap-2 pt-2 pt-md-0 border-top border-md-0">
+                    <span class="status-badge <?= $sl[1] ?> m-0 py-1.5 px-3"><i class="fa-solid <?= $sl[2] ?> me-1"></i><?= $sl[0] ?></span>
+                    
+                    <div class="d-flex align-items-center gap-1">
+                      <button class="btn btn-sm btn-umpsa-blue px-3 py-1.5 text-nowrap" onclick="viewRecentDetail(<?= htmlspecialchars(json_encode($r)) ?>)" title="View Details">
+                        <i class="fa-solid fa-eye me-1"></i><span>View Details</span>
+                      </button>
+                      <?php if ($r['status'] === 'approved'): ?>
+                        <a href="<?= SITE_URL ?>/print_slip.php?id=<?= $r['id'] ?>" target="_blank" class="btn btn-sm btn-success py-1.5 px-2" title="Print Delivery Slip"><i class="fa-solid fa-print"></i></a>
+                      <?php endif; ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
           </tr>
           <?php endforeach; ?>
         </tbody>
@@ -205,7 +260,7 @@ require_once __DIR__ . '/../includes/header.php';
 <script>
 $(document).ready(function() {
   if ($('#recentTable').length) {
-    $('#recentTable').DataTable({ paging: false, searching: false, info: false, order: [[6,'desc']] });
+    $('#recentTable').DataTable({ paging: false, searching: false, info: false, order: [] });
   }
 
   const canvas = document.getElementById('requestOverviewChart');
@@ -287,6 +342,7 @@ $(document).ready(function() {
         scales: {
           y: {
             beginAtZero: true,
+            suggestedMax: 5,
             ticks: {
               precision: 0,
               stepSize: 1,
@@ -310,5 +366,54 @@ $(document).ready(function() {
     });
   }
 });
+</script>
+
+<!-- Recent Request Detail Modal -->
+<div class="modal fade" id="recentDetailModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header modal-header-umpsa">
+        <h5 class="modal-title"><i class="fa-solid fa-circle-info me-2"></i>Corporate Gift Request Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4" id="recentDetailBody"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function viewRecentDetail(r) {
+    const sLabels = {
+        'pending_hod':  ['Pending HOD', 'status-pending-hod'],
+        'pending_sbd':  ['Pending SBD', 'status-pending-sbd'],
+        'approved':     ['Approved',    'status-approved'],
+        'rejected_hod': ['Rejected HOD','status-rejected-hod'],
+        'rejected_sbd': ['Rejected SBD','status-rejected-sbd']
+    };
+    const sl = sLabels[r.status] || [r.status, 'status-pending-hod'];
+    const costText = r.cost ? 'RM ' + parseFloat(r.cost).toFixed(2) : 'N/A';
+    
+    let html = `
+    <table class="table table-bordered mb-3" style="font-size:.88rem;">
+      <tr><th width="35%">Request ID</th><td><strong>#${r.id}</strong></td></tr>
+      <tr><th>Gift Item</th><td><strong>${r.gift_name}</strong> (${costText})</td></tr>
+      <tr><th>Quantity</th><td><strong>${r.quantity} unit(s)</strong></td></tr>
+      <tr><th>Requester</th><td>${r.requester_name} &lt;${r.requester_email || 'N/A'}&gt;</td></tr>
+      <tr><th>Department</th><td>${r.requester_dept || 'N/A'}</td></tr>
+      <tr><th>Event Name</th><td>${r.event_name || 'N/A'}</td></tr>
+      <tr><th>Recipient</th><td>${r.recipient_name || 'N/A'}</td></tr>
+      <tr><th>Purpose</th><td>${r.purpose || 'N/A'}</td></tr>
+      <tr><th>Date Submitted</th><td>${r.requested_at}</td></tr>
+      <tr><th>Justification Document</th><td>${r.justification_file ? `<a href="<?= SITE_URL ?>/uploads/justifications/${encodeURIComponent(r.justification_file)}" target="_blank" class="btn btn-sm btn-umpsa-blue"><i class="fa-solid fa-file me-1"></i>View Uploaded File</a>` : '<em class="text-muted">None</em>'}</td></tr>
+      <tr><th>Current Status</th><td><span class="status-badge ${sl[1]}">${sl[0]}</span></td></tr>
+    </table>`;
+
+    if (r.status === 'approved') {
+        html += `<div class="text-center mt-3"><a href="<?= SITE_URL ?>/print_slip.php?id=${r.id}" target="_blank" class="btn btn-success"><i class="fa-solid fa-print me-2"></i>Print Official Delivery Slip</a></div>`;
+    }
+
+    document.getElementById('recentDetailBody').innerHTML = html;
+    new bootstrap.Modal(document.getElementById('recentDetailModal')).show();
+}
 </script>
 

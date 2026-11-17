@@ -55,7 +55,7 @@ $pending_stmt = $pdo->query("SELECT COUNT(*) FROM requests WHERE status='pending
 $pending_count = (int)$pending_stmt->fetchColumn();
 
 $requests_stmt = $pdo->query("
-    SELECT r.*, g.name AS gift_name, u.name AS requester_name, u.email AS requester_email, u.department,
+    SELECT r.*, g.name AS gift_name, g.image_url, g.cost, u.name AS requester_name, u.email AS requester_email, u.department,
            hu.name AS hod_name
     FROM requests r
     JOIN gifts g ON r.gift_id = g.id
@@ -89,29 +89,86 @@ require_once __DIR__ . '/../includes/header.php';
   <div class="card-header-umpsa"><i class="fa-solid fa-badge-check me-2"></i>Requests Awaiting SBD Decision</div>
   <div class="p-3">
     <div class="table-responsive">
-      <table id="sbdTable" class="table table-hover align-middle" style="width:100%">
+      <table id="sbdTable" class="table table-hover align-middle single-column-list-table" style="width:100%">
         <thead>
-          <tr><th>#ID</th><th>Requester</th><th>Dept</th><th>Gift</th><th>Qty</th><th>Event</th><th>HOD</th><th>Justification</th><th>Action</th></tr>
+          <tr>
+            <th class="py-2">Requests Awaiting SBD Decision</th>
+          </tr>
         </thead>
         <tbody>
           <?php foreach ($requests as $r): ?>
+          <?php
+            $imgUrl = !empty($r['image_url']) && file_exists(__DIR__ . '/../uploads/gifts/' . $r['image_url'])
+                      ? SITE_URL . '/uploads/gifts/' . rawurlencode($r['image_url']) : null;
+          ?>
           <tr>
-            <td><strong>#<?= $r['id'] ?></strong></td>
-            <td><?= htmlspecialchars($r['requester_name']) ?></td>
-            <td><span class="badge bg-secondary"><?= htmlspecialchars($r['department'] ?? 'N/A') ?></span></td>
-            <td><?= htmlspecialchars($r['gift_name']) ?></td>
-            <td><?= $r['quantity'] ?></td>
-            <td><?= htmlspecialchars($r['event_name']) ?></td>
-            <td><?= htmlspecialchars($r['hod_name'] ?? '—') ?></td>
-            <td><a href="<?= SITE_URL ?>/uploads/justifications/<?= urlencode($r['justification_file']) ?>" target="_blank" class="btn btn-sm btn-umpsa-blue"><i class="fa-solid fa-file"></i></a></td>
-            <td>
-              <button class="btn btn-sm btn-success me-1" onclick="openAction(<?= $r['id'] ?>, 'approve', '<?= htmlspecialchars(addslashes($r['requester_name'])) ?>', '<?= htmlspecialchars(addslashes($r['gift_name'])) ?>')"><i class="fa-solid fa-check me-1"></i>Approve</button>
-              <button class="btn btn-sm btn-danger" onclick="openAction(<?= $r['id'] ?>, 'reject', '<?= htmlspecialchars(addslashes($r['requester_name'])) ?>', '<?= htmlspecialchars(addslashes($r['gift_name'])) ?>')"><i class="fa-solid fa-times me-1"></i>Reject</button>
+            <td class="p-3">
+              <div class="row g-2 align-items-center">
+                <!-- Left: Thumbnail & Info -->
+                <div class="col-12 col-md-8">
+                  <div class="d-flex align-items-center gap-3">
+                    <?php if ($imgUrl): ?>
+                      <img src="<?= $imgUrl ?>" alt="<?= htmlspecialchars($r['gift_name']) ?>" class="rounded-3 border flex-shrink-0" style="width:58px;height:58px;object-fit:cover;">
+                    <?php else: ?>
+                      <div class="rounded-3 border flex-shrink-0 bg-light d-flex align-items-center justify-content-center text-primary" style="width:58px;height:58px;font-size:1.5rem;">
+                        <i class="fa-solid fa-gift"></i>
+                      </div>
+                    <?php endif; ?>
+                    
+                    <div class="overflow-hidden">
+                      <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                        <span class="badge bg-light text-primary border">#<?= $r['id'] ?></span>
+                        <h6 class="mb-0 fw-bold text-dark text-truncate" style="font-size:1rem;"><?= htmlspecialchars($r['gift_name']) ?></h6>
+                      </div>
+                      <div class="d-flex flex-wrap align-items-center gap-2 small text-muted">
+                        <?php if (isset($r['cost']) && $r['cost'] > 0): ?>
+                          <span class="fw-bold text-dark">RM <?= number_format($r['cost'], 2) ?></span> &bull;
+                        <?php endif; ?>
+                        <span>Qty: <strong><?= $r['quantity'] ?></strong></span> &bull;
+                        <span>Dept: <strong class="text-secondary"><?= htmlspecialchars($r['department'] ?? 'N/A') ?></strong></span> &bull;
+                        <span>By: <?= htmlspecialchars($r['requester_name']) ?></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right: Status (Visible first!) & Actions -->
+                <div class="col-12 col-md-4">
+                  <div class="d-flex align-items-center justify-content-between justify-content-md-end gap-2 pt-2 pt-md-0 border-top border-md-0">
+                    <!-- Status ALWAYS visible before button click -->
+                    <span class="status-badge status-pending-sbd m-0 py-1.5 px-3">
+                      <i class="fa-solid fa-clock me-1"></i>Pending SBD
+                    </span>
+
+                    <div class="d-flex align-items-center gap-1">
+                      <!-- 1 Main Button to see ALL information -->
+                      <button class="btn btn-sm btn-umpsa-blue px-3 py-1.5 text-nowrap" onclick="viewSbdDetail(<?= htmlspecialchars(json_encode($r)) ?>)" title="View Full Information">
+                        <i class="fa-solid fa-eye me-1"></i><span>View Details</span>
+                      </button>
+                      <button class="btn btn-sm btn-success py-1.5 px-2" onclick="openAction(<?= $r['id'] ?>, 'approve', '<?= htmlspecialchars(addslashes($r['requester_name'])) ?>', '<?= htmlspecialchars(addslashes($r['gift_name'])) ?>')" title="Authorize Issuance"><i class="fa-solid fa-check"></i></button>
+                      <button class="btn btn-sm btn-danger py-1.5 px-2" onclick="openAction(<?= $r['id'] ?>, 'reject', '<?= htmlspecialchars(addslashes($r['requester_name'])) ?>', '<?= htmlspecialchars(addslashes($r['gift_name'])) ?>')" title="Reject Request"><i class="fa-solid fa-times"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </td>
           </tr>
           <?php endforeach; ?>
         </tbody>
       </table>
+    </div>
+  </div>
+</div>
+
+<!-- Info Modal -->
+<div class="modal fade" id="sbdDetailModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header modal-header-umpsa">
+        <h5 class="modal-title"><i class="fa-solid fa-circle-info me-2"></i>SBD Request Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4" id="sbdDetailBody"></div>
     </div>
   </div>
 </div>
@@ -147,12 +204,40 @@ require_once __DIR__ . '/../includes/header.php';
 $(document).ready(function() {
     if ($('#sbdTable').length) {
         $('#sbdTable').DataTable({
+            order: [],
+            pageLength: 10,
+            columnDefs: [
+                { orderable: false, targets: '_all' }
+            ],
             language: {
                 emptyTable: "<div class='py-3 text-muted'><i class='fa-solid fa-circle-check me-2 text-success'></i>No pending requests. All clear!</div>"
             }
         });
     }
 });
+
+function viewSbdDetail(r) {
+    const costText = r.cost ? 'RM ' + parseFloat(r.cost).toFixed(2) : 'N/A';
+    let html = `
+    <table class="table table-bordered mb-3" style="font-size:.88rem;">
+      <tr><th width="35%">Request ID</th><td><strong>#${r.id}</strong></td></tr>
+      <tr><th>Gift Item</th><td><strong>${r.gift_name}</strong> (${costText})</td></tr>
+      <tr><th>Quantity</th><td><strong>${r.quantity} unit(s)</strong></td></tr>
+      <tr><th>Requester</th><td>${r.requester_name} &lt;${r.requester_email || 'N/A'}&gt;</td></tr>
+      <tr><th>Department</th><td><span class="badge bg-secondary">${r.department || 'N/A'}</span></td></tr>
+      <tr><th>Event Name</th><td>${r.event_name || 'N/A'}</td></tr>
+      <tr><th>Recipient</th><td>${r.recipient_name || 'N/A'}</td></tr>
+      <tr><th>Purpose</th><td>${r.purpose || 'N/A'}</td></tr>
+      <tr><th>HOD Endorsed By</th><td>${r.hod_name || 'N/A'}</td></tr>
+      <tr><th>HOD Notes</th><td>${r.hod_notes || '<em class="text-muted">None</em>'}</td></tr>
+      <tr><th>Date Submitted</th><td>${r.requested_at}</td></tr>
+      <tr><th>Justification Document</th><td><a href="<?= SITE_URL ?>/uploads/justifications/${encodeURIComponent(r.justification_file)}" target="_blank" class="btn btn-sm btn-umpsa-blue"><i class="fa-solid fa-file me-1"></i>View Uploaded File</a></td></tr>
+      <tr><th>Status</th><td><span class="status-badge status-pending-sbd"><i class="fa-solid fa-clock me-1"></i>Pending SBD</span></td></tr>
+    </table>`;
+
+    document.getElementById('sbdDetailBody').innerHTML = html;
+    new bootstrap.Modal(document.getElementById('sbdDetailModal')).show();
+}
 
 function openAction(id, action, name, gift) {
     document.getElementById('action_req_id').value = id;

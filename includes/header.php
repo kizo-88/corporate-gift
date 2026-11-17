@@ -17,8 +17,9 @@
     <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <!-- SweetAlert2 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="<?= SITE_URL ?>/assets/css/style.css" rel="stylesheet">
+    <!-- Custom CSS (with cache-buster) -->
+    <link href="<?= SITE_URL ?>/assets/css/style.css?v=<?= time() ?>" rel="stylesheet">
+    <?php if (!empty($extra_head)) echo $extra_head; ?>
 </head>
 <body>
 

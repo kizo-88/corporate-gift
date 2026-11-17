@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
 // Fetch user requests
 $stmt = $pdo->prepare("
-    SELECT r.*, g.name AS gift_name, g.image_url,
+    SELECT r.*, g.name AS gift_name, g.image_url, g.cost,
            hu.name AS hod_name, su.name AS sbd_name
     FROM requests r
     JOIN gifts g ON r.gift_id = g.id
@@ -58,40 +58,78 @@ $statusLabels = [
   </div>
   <div class="p-3">
     <div class="table-responsive">
-      <table id="requestsTable" class="table table-hover align-middle" style="width:100%">
+      <table id="requestsTable" class="table table-hover align-middle single-column-list-table" style="width:100%">
         <thead>
           <tr>
-            <th>#ID</th>
-            <th>Gift</th>
-            <th>Qty</th>
-            <th>Event Name</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th class="py-2">Corporate Gift Requests</th>
           </tr>
         </thead>
         <tbody>
           <?php foreach ($requests as $r): ?>
-          <?php $s = $statusLabels[$r['status']] ?? ['label' => $r['status'], 'class' => 'status-pending-hod', 'icon' => 'fa-circle']; ?>
+          <?php
+            $s = $statusLabels[$r['status']] ?? ['label' => $r['status'], 'class' => 'status-pending-hod', 'icon' => 'fa-circle'];
+            $imgUrl = !empty($r['image_url']) && file_exists(__DIR__ . '/../uploads/gifts/' . $r['image_url'])
+                      ? SITE_URL . '/uploads/gifts/' . rawurlencode($r['image_url']) : null;
+          ?>
           <tr>
-            <td><strong>#<?= $r['id'] ?></strong></td>
-            <td><?= htmlspecialchars($r['gift_name']) ?></td>
-            <td><?= $r['quantity'] ?></td>
-            <td><?= htmlspecialchars($r['event_name']) ?></td>
-            <td><?= date('d M Y', strtotime($r['requested_at'])) ?></td>
-            <td><span class="status-badge <?= $s['class'] ?>"><i class="fa-solid <?= $s['icon'] ?> me-1"></i><?= $s['label'] ?></span></td>
-            <td>
-              <button class="btn btn-sm btn-umpsa-blue" onclick="viewDetail(<?= htmlspecialchars(json_encode($r)) ?>)"><i class="fa-solid fa-eye"></i></button>
-              <?php if ($r['status'] === 'approved'): ?>
-                <a href="<?= SITE_URL ?>/print_slip.php?id=<?= $r['id'] ?>" target="_blank" class="btn btn-sm btn-success ms-1" title="Print Delivery Slip"><i class="fa-solid fa-print"></i></a>
-              <?php endif; ?>
-              <?php if ($r['status'] === 'pending_hod'): ?>
-                <form method="POST" class="d-inline ms-1" onsubmit="showLoading('Cancelling request...')">
-                  <input type="hidden" name="action" value="cancel">
-                  <input type="hidden" name="request_id" value="<?= $r['id'] ?>">
-                  <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Cancel this request?')"><i class="fa-solid fa-trash"></i></button>
-                </form>
-              <?php endif; ?>
+            <td class="p-3">
+              <div class="row g-2 align-items-center">
+                <!-- Left: Thumbnail & Info -->
+                <div class="col-12 col-md-8">
+                  <div class="d-flex align-items-center gap-3">
+                    <?php if ($imgUrl): ?>
+                      <img src="<?= $imgUrl ?>" alt="<?= htmlspecialchars($r['gift_name']) ?>" class="rounded-3 border flex-shrink-0" style="width:58px;height:58px;object-fit:cover;">
+                    <?php else: ?>
+                      <div class="rounded-3 border flex-shrink-0 bg-light d-flex align-items-center justify-content-center text-primary" style="width:58px;height:58px;font-size:1.5rem;">
+                        <i class="fa-solid fa-gift"></i>
+                      </div>
+                    <?php endif; ?>
+                    
+                    <div class="overflow-hidden">
+                      <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                        <span class="badge bg-light text-primary border">#<?= $r['id'] ?></span>
+                        <h6 class="mb-0 fw-bold text-dark text-truncate" style="font-size:1rem;"><?= htmlspecialchars($r['gift_name']) ?></h6>
+                      </div>
+                      <div class="d-flex flex-wrap align-items-center gap-2 small text-muted">
+                        <?php if (isset($r['cost']) && $r['cost'] > 0): ?>
+                          <span class="fw-bold text-dark">RM <?= number_format($r['cost'], 2) ?></span> &bull;
+                        <?php endif; ?>
+                        <span>Qty: <strong><?= $r['quantity'] ?></strong></span> &bull;
+                        <span><?= date('d M Y', strtotime($r['requested_at'])) ?></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right: Status (Visible first!) & Action Button -->
+                <div class="col-12 col-md-4">
+                  <div class="d-flex align-items-center justify-content-between justify-content-md-end gap-2 pt-2 pt-md-0 border-top border-md-0">
+                    <!-- Status ALWAYS visible before button click -->
+                    <span class="status-badge <?= $s['class'] ?> m-0 py-1.5 px-3">
+                      <i class="fa-solid <?= $s['icon'] ?> me-1"></i><?= $s['label'] ?>
+                    </span>
+
+                    <div class="d-flex align-items-center gap-1">
+                      <!-- 1 Main Button to see ALL information -->
+                      <button class="btn btn-sm btn-umpsa-blue px-3 py-1.5 text-nowrap" onclick="viewDetail(<?= htmlspecialchars(json_encode($r)) ?>)" title="View All Information">
+                        <i class="fa-solid fa-eye me-1"></i><span>View Details</span>
+                      </button>
+                      
+                      <?php if ($r['status'] === 'approved'): ?>
+                        <a href="<?= SITE_URL ?>/print_slip.php?id=<?= $r['id'] ?>" target="_blank" class="btn btn-sm btn-success py-1.5 px-2" title="Print Delivery Slip"><i class="fa-solid fa-print"></i></a>
+                      <?php endif; ?>
+                      
+                      <?php if ($r['status'] === 'pending_hod'): ?>
+                        <form method="POST" class="d-inline" onsubmit="showLoading('Cancelling request...')">
+                          <input type="hidden" name="action" value="cancel">
+                          <input type="hidden" name="request_id" value="<?= $r['id'] ?>">
+                          <button type="submit" class="btn btn-sm btn-outline-danger py-1.5 px-2" onclick="return confirm('Cancel this request?')" title="Cancel Request"><i class="fa-solid fa-trash"></i></button>
+                        </form>
+                      <?php endif; ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </td>
           </tr>
           <?php endforeach; ?>
@@ -119,7 +157,13 @@ $statusLabels = [
 <script>
 $(document).ready(function() {
     if ($('#requestsTable').length) {
-        $('#requestsTable').DataTable({ order: [[4, 'desc']], pageLength: 10 });
+        $('#requestsTable').DataTable({
+            order: [],
+            pageLength: 10,
+            columnDefs: [
+                { orderable: false, targets: '_all' }
+            ]
+        });
     }
 });
 
@@ -127,26 +171,29 @@ const statusLabels = <?= json_encode($statusLabels) ?>;
 
 function viewDetail(r) {
     const s = statusLabels[r.status] || { label: r.status, class: 'status-pending-hod', icon: 'fa-circle' };
+    const costText = r.cost ? 'RM ' + parseFloat(r.cost).toFixed(2) : 'N/A';
     let html = `
-    <table class="table table-bordered" style="font-size:.88rem;">
-      <tr><th width="35%">Request ID</th><td><strong>#${r.id}</strong></td></tr>
-      <tr><th>Gift</th><td>${r.gift_name}</td></tr>
-      <tr><th>Quantity</th><td>${r.quantity}</td></tr>
-      <tr><th>Event Name</th><td>${r.event_name}</td></tr>
-      <tr><th>Recipient</th><td>${r.recipient_name}</td></tr>
-      <tr><th>Purpose</th><td>${r.purpose}</td></tr>
-      <tr><th>Date Submitted</th><td>${r.requested_at}</td></tr>
-      <tr><th>Justification</th><td><a href="<?= SITE_URL ?>/uploads/justifications/${r.justification_file}" target="_blank" class="btn btn-sm btn-umpsa-blue"><i class="fa-solid fa-file me-1"></i>View File</a></td></tr>
-      <tr><th>Status</th><td><span class="status-badge ${s.class}"><i class="fa-solid ${s.icon} me-1"></i>${s.label}</span></td></tr>
-    </table>`;
+    <div class="table-responsive">
+      <table class="table table-bordered mb-0" style="font-size:.88rem; width:100%;">
+        <tr><th class="bg-light" style="width:35%;">Request ID</th><td><strong class="text-primary">#${r.id}</strong></td></tr>
+        <tr><th class="bg-light">Gift Item</th><td><strong>${r.gift_name}</strong> (${costText})</td></tr>
+        <tr><th class="bg-light">Quantity</th><td><strong>${r.quantity} unit(s)</strong></td></tr>
+        <tr><th class="bg-light">Event Name</th><td>${r.event_name || 'N/A'}</td></tr>
+        <tr><th class="bg-light">Recipient Name</th><td>${r.recipient_name || 'N/A'}</td></tr>
+        <tr><th class="bg-light">Purpose</th><td>${r.purpose || 'N/A'}</td></tr>
+        <tr><th class="bg-light">Date Submitted</th><td>${r.requested_at}</td></tr>
+        <tr><th class="bg-light">Justification File</th><td><a href="<?= SITE_URL ?>/uploads/justifications/${encodeURIComponent(r.justification_file)}" target="_blank" class="btn btn-sm btn-umpsa-blue"><i class="fa-solid fa-file me-1"></i>View Uploaded Document</a></td></tr>
+        <tr><th class="bg-light">Current Status</th><td><span class="status-badge ${s.class}"><i class="fa-solid ${s.icon} me-1"></i>${s.label}</span></td></tr>
+      </table>
+    </div>`;
 
     if (r.hod_name) {
-        html += `<div class="card-premium p-3 mb-3"><strong><i class="fa-solid fa-stamp me-1 text-blue"></i>Level 1 — HOD Review</strong><br>
+        html += `<div class="card-premium p-3 mt-3"><strong><i class="fa-solid fa-stamp me-1 text-primary"></i>Level 1 — HOD Review</strong><br>
         <small class="text-muted">By: ${r.hod_name} | ${r.hod_actioned_at ? r.hod_actioned_at : 'N/A'}</small><br>
         ${r.hod_notes ? '<p class="mt-2 mb-0">' + r.hod_notes + '</p>' : '<em class="text-muted">No notes provided.</em>'}</div>`;
     }
     if (r.sbd_name) {
-        html += `<div class="card-premium p-3"><strong><i class="fa-solid fa-badge-check me-1 text-teal"></i>Level 2 — SBD Review</strong><br>
+        html += `<div class="card-premium p-3 mt-3"><strong><i class="fa-solid fa-badge-check me-1 text-teal"></i>Level 2 — SBD Review</strong><br>
         <small class="text-muted">By: ${r.sbd_name} | ${r.sbd_actioned_at ? r.sbd_actioned_at : 'N/A'}</small><br>
         ${r.sbd_notes ? '<p class="mt-2 mb-0">' + r.sbd_notes + '</p>' : '<em class="text-muted">No notes provided.</em>'}</div>`;
     }
