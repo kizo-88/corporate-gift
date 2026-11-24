@@ -3,10 +3,15 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Dynamically determine SITE_URL to support various ports and encodings
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || ($_SERVER['SERVER_PORT'] ?? 80) == 443) ? "https://" : "http://";
-$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-define('SITE_URL', $protocol . $host . '/UMPSAH%20Corpgift');
+// Dynamically determine SITE_URL to support production (umpt.my) and local development (Laragon)
+if (isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'umpt.my') !== false) {
+    define('SITE_URL', 'https://umpt.my/Corporategift');
+} elseif (isset($_SERVER['HTTP_HOST']) && (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false)) {
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || ($_SERVER['SERVER_PORT'] ?? 80) == 443) ? "https://" : "http://";
+    define('SITE_URL', $protocol . $_SERVER['HTTP_HOST'] . '/UMPSAH%20Corpgift');
+} else {
+    define('SITE_URL', 'https://umpt.my/Corporategift');
+}
 
 // ==========================================
 // Database Configuration
@@ -31,16 +36,16 @@ if (DB_DRIVER === 'pgsql') {
 }
 
 // Google OAuth 2.0 Configuration
-define('GOOGLE_CLIENT_ID', getenv('GOOGLE_CLIENT_ID') ?: 'YOUR_GOOGLE_CLIENT_ID');
+define('GOOGLE_CLIENT_ID', getenv('GOOGLE_CLIENT_ID') ?: '471257823860-g81ib43tb064vrdnha9c4jaqs04ch8vi.apps.googleusercontent.com');
 define('GOOGLE_CLIENT_SECRET', getenv('GOOGLE_CLIENT_SECRET') ?: 'YOUR_GOOGLE_CLIENT_SECRET');
 // Must match the URI registered in Google Cloud Console
-define('GOOGLE_REDIRECT_URL', getenv('GOOGLE_REDIRECT_URL') ?: 'http://localhost/UMPSAHStatManager/auth_callback.php');
+define('GOOGLE_REDIRECT_URL', getenv('GOOGLE_REDIRECT_URL') ?: (rtrim(SITE_URL, '/') . '/auth_callback.php'));
 
 // SMTP configuration for email notifications
-define('ADMIN_EMAIL', getenv('ADMIN_EMAIL') ?: 'admin@example.com');
+define('ADMIN_EMAIL', getenv('ADMIN_EMAIL') ?: 'no-reply@umpsaholdings.my');
 define('SMTP_HOST', getenv('SMTP_HOST') ?: 'smtp.gmail.com');
-define('SMTP_USER', getenv('SMTP_USER') ?: 'user@example.com');
-define('SMTP_PASS', getenv('SMTP_PASS') ?: 'YOUR_SMTP_PASSWORD');
+define('SMTP_USER', getenv('SMTP_USER') ?: 'no-reply@umpsaholdings.my');
+define('SMTP_PASS', getenv('SMTP_PASS') ?: 'YOUR_GMAIL_APP_PASSWORD');
 define('SMTP_PORT', getenv('SMTP_PORT') ?: 587);
 
 // Cryptographic Secret Salt for Email approval actions
